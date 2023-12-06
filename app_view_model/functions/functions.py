@@ -276,8 +276,10 @@ def check_and_highlight(entry):
 def validate_combobox(combobox, label):
     if combobox.get() == '':
         label.config(borderwidth=2, relief="solid", foreground='red')
+        # button.config(state=tk.DISABLED, background='LightGray', fg='white')
     else:
         label.config(borderwidth=0, relief="flat", foreground='black')
+        # button.config(state=tk.NORMAL, background='red', fg='white')
 
 
 def validate_input_btn_ok(*args):

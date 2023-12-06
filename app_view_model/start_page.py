@@ -10,6 +10,24 @@ from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
 
 
+def start_page():
+    root = tk.Tk()
+    StartPage(root)
+    root.mainloop()
+
+
+def new_referral():
+    NewReferralWin()
+
+
+def new_parent():
+    NewParentWin()
+
+
+def child_birth_certificate():
+    pass
+
+
 class StartPage:
     def __init__(self, root):
         self.root = root
@@ -76,9 +94,9 @@ class ProjectAddNew(Gui):
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Паспорт родителя/представителя", command=self.open_window_parent,
                   width=30, height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Адреса регистрации/проживания", command=self.open_window, width=30,
+        tk.Button(self.root, text="Свидетельство о рождении", command=self.open_birth_certificate, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Свидетельство о рождении", command=self.open_window, width=30,
+        tk.Button(self.root, text="Адреса регистрации/проживания", command=self.open_window, width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Компенсация родит.платы", command=self.open_window, width=30,
                   height=1).pack(padx=5, pady=5)
@@ -96,6 +114,10 @@ class ProjectAddNew(Gui):
     def open_window_parent(self):
         self.root.destroy()
         NewParentWin()
+
+    def open_birth_certificate(self):
+        self.root.destroy()
+        child_birth_certificate()
 
     def open_window(self):
         self.root.destroy()
@@ -129,17 +151,3 @@ class Gui_4(Gui):
     def return_to_start_page(self):
         self.root.destroy()
         start_page()
-
-
-def start_page():
-    root = tk.Tk()
-    StartPage(root)
-    root.mainloop()
-
-
-def new_referral():
-    NewReferralWin()
-
-
-def new_parent():
-    NewParentWin()
