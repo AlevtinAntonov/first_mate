@@ -6,14 +6,21 @@ referral, person, child, parents, building, age = 'referral', 'person', 'child',
 focus, mode, benefit, team, gender = 'focus', 'mode', 'benefit', 'team', 'gender'
 document, address, address_type = 'document', 'address', 'address_type'
 citizenship, document_type, status = 'citizenship', 'document_type', 'status'
+person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email'
 
 DB_DICT = {
     'referral': (
         'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', 'mode_id',
         'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'),
     'person': ('last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'),
+    'person_parent': ('last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'citizenship_id',
+                      'document_id', 'sniils', 'date_of_add'),
+
     'child': ('person_id', 'date_of_add'),
-    'parents': ('parents_id', 'person_id', 'date_of_add'),
+    'parents': ('person_id', 'status_id', 'date_of_add'),
+    'family': ('child_id', 'parents_id'),
+    'phone': ('phone_number', 'parents_id'),
+    'email': ('email_name', 'parents_id'),
     'building': ('building_id', 'building_name'),
     'age': ('age_id', 'age_name'),
     'focus': ('focus_id', 'focus_name'),
@@ -25,7 +32,7 @@ DB_DICT = {
     'status': ('status_id', 'status_name'),
     'document_type': ('document_type_id', 'document_type_name'),
     'document': ('document_series', 'document_number', 'document_issued_by', 'document_date_of_issue',
-                 'document_date_of_expire', 'document_type_id', 'date_of_add'),
+                 'document_date_of_expire', 'document_type_id', 'date_of_add', 'document_assembly_record'),
     'address': ('address_type_id', 'zipcode', 'region', 'region_type_id', 'district', 'town', 'town_type_id',
                 'locality', 'locality_type_id', 'street', 'street_type_id', 'house', 'house_body', 'house_liter',
                 'house_building', 'flat', 'is_registration', 'is_fact', 'is_residence'),
@@ -61,12 +68,12 @@ query_login = "SELECT user_name, user_password FROM users WHERE (user_name = ? A
 def query_insert_into(table_name):
     fields = ', '.join(('%s',) * (len(DB_DICT[table_name])))
     val = ', '.join(('?',) * (len(DB_DICT[table_name])))
-    return f'INSERT INTO {table_name} ({fields}) VALUES ( {val});'
+    return f'INSERT INTO {table_name} ({fields}) VALUES ( {val}) ;'
 
 
-def query_insert_into_person(table_name):
-    fields = ', '.join(('%s',) * (len(DB_DICT[table_name])))
-    val = ', '.join(('?',) * (len(DB_DICT[table_name])))
+def query_insert_into_table_return_id(table_name, fields_name):
+    fields = ', '.join(('%s',) * (len(DB_DICT[fields_name])))
+    val = ', '.join(('?',) * (len(DB_DICT[fields_name])))
     name_id = '_'.join((table_name, 'id'))
     return f'INSERT INTO {table_name} ({fields}) VALUES ( {val}) RETURNING {name_id} ;'
 

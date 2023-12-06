@@ -10,7 +10,7 @@ from tkcalendar import DateEntry
 from app_model.db.db_query import query_insert_into, REFERRAL_SAVE, CHECK_PERSON_CHILD, CHECK_PARENT, DB_DICT, gender, \
     child, \
     referral, parents, query_check_person, query_check_document, document, building, person, query_find_id, \
-    query_insert_into_person, team, age, focus, mode, benefit
+    query_insert_into_table_return_id, team, age, focus, mode, benefit
 from app_model.variables import CONF_D_W, CONF
 
 
@@ -130,12 +130,12 @@ def referral_save(db, referral_number, referral_date, referral_begin_date, refer
     if not check_if_exists(db, person, child_last_name, child_first_name, child_patronymic,
                            child_date_of_birth):
         with db as cur:
-            query = query_insert_into_person(person) % DB_DICT[person]
+            query = query_insert_into_table_return_id(person, person) % DB_DICT[person]
             cur.execute(query,
                         (child_last_name, child_first_name, child_patronymic, child_date_of_birth, gender_id,
                          current_timestamp()))
             person_id = cur.fetchone()[0]
-            query_add_child = query_insert_into_person(child) % DB_DICT[child]
+            query_add_child = query_insert_into_table_return_id(child, child) % DB_DICT[child]
             cur.execute(query_add_child, (person_id, current_timestamp()))
             child_id = cur.fetchone()[0]
 
@@ -181,29 +181,30 @@ def on_validate_input(new_text):
 #         entry_widget.config(style='Red.TEntry')
 #         return False
 
-def parent_save(db, last_name: str, first_name: str, patronymic: str, date_of_birth, parent_male, citizenship,
-                document_type, document_series, document_number, document_date_of_issue, document_issued_by,
-                document_date_of_expire, address_id=None):
-    last_name, first_name, patronymic = last_name.capitalize(), first_name.capitalize(), patronymic.capitalize()
-    gender_id = find_id(db, gender, DB_DICT[gender][0], DB_DICT[gender][1], parent_male)
-    citizenship_id = find_id(db, 'citizenship', 'citizenship_id', 'citizenship_short_name',
-                             citizenship)
-    document_type_id = find_id(db, 'document_type', 'document_type_id', 'document_type_name',
-                               document_type)
-    if not check_if_exists(db, document, document_series, document_number, document_date_of_issue, document_type_id):
-        query = query_insert_into(document) % DB_DICT[document]
-        with db as cur:
-            cur.execute(query, (
-                document_series, document_number, document_issued_by, document_date_of_issue, document_date_of_expire,
-                document_type_id, current_timestamp()))
-    document_id = check_if_exists(db, document, document_series, document_number, document_date_of_issue,
-                                  document_type_id)
-    if not check_if_exists(db, parents, last_name, first_name, patronymic, date_of_birth):
-        query = query_insert_into(parents) % DB_DICT[parents]
-        with db as cur:
-            cur.execute(query,
-                        (last_name, first_name, patronymic, date_of_birth, gender_id, citizenship_id, document_id,
-                         address_id, current_timestamp()))
+
+# def parent_save(db, last_name: str, first_name: str, patronymic: str, date_of_birth, parent_male, citizenship,
+#                 document_type, document_series, document_number, document_date_of_issue, document_issued_by,
+#                 document_date_of_expire, address_id=None):
+#     last_name, first_name, patronymic = last_name.capitalize(), first_name.capitalize(), patronymic.capitalize()
+#     gender_id = find_id(db, gender, DB_DICT[gender][0], DB_DICT[gender][1], parent_male)
+#     citizenship_id = find_id(db, 'citizenship', 'citizenship_id', 'citizenship_short_name',
+#                              citizenship)
+#     document_type_id = find_id(db, 'document_type', 'document_type_id', 'document_type_name',
+#                                document_type)
+#     if not check_if_exists(db, document, document_series, document_number, document_date_of_issue, document_type_id):
+#         query = query_insert_into(document) % DB_DICT[document]
+#         with db as cur:
+#             cur.execute(query, (
+#                 document_series, document_number, document_issued_by, document_date_of_issue, document_date_of_expire,
+#                 document_type_id, current_timestamp()))
+#     document_id = check_if_exists(db, document, document_series, document_number, document_date_of_issue,
+#                                   document_type_id)
+#     if not check_if_exists(db, parents, last_name, first_name, patronymic, date_of_birth):
+#         query = query_insert_into(parents) % DB_DICT[parents]
+#         with db as cur:
+#             cur.execute(query,
+#                         (last_name, first_name, patronymic, date_of_birth, gender_id, citizenship_id, document_id,
+#                          address_id, current_timestamp()))
 
 
 def insert_into_table(db, table_name, fields, values):
@@ -277,6 +278,16 @@ def validate_combobox(combobox, label):
         label.config(borderwidth=2, relief="solid", foreground='red')
     else:
         label.config(borderwidth=0, relief="flat", foreground='black')
+
+
+def validate_input_btn_ok(*args):
+    all_entries_filled = all(entry.get() for entry in entry_list)
+
+    if all_entries_filled:
+        btn_ok.config(state=tk.NORMAL, background='red', fg='white')
+    else:
+        btn_ok.config(state=tk.DISABLED, background='LightGray', fg='white')
+
 
 # def validate_combobox_event(event):
 #     if combobox.get() == '':
