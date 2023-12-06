@@ -1,10 +1,22 @@
 from app_model.db.db_connect import DB
-from app_model.db.db_query import query_insert_into_person, person, DB_DICT, child, query_find_id, building, benefit
+from app_model.db.db_query import query_insert_into_table_return_id, person, DB_DICT, child, query_find_id, building, \
+    benefit, document
 from app_model.variables import CONF_D_W
 from app_view_model.functions.functions import current_timestamp, check_if_exists, find_person, find_id, select_from_db, \
     fill_combobox, get_key, find_child
 
-db = DB('C:/Users/anton/PycharmProjects/FM/app_model/db/DB_PROD.FDB')
+db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
+with db as cur:
+    document_assembly_record = None
+    # Add document of parent to table DOCUMENT and return document_id for table PERSON
+    query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
+    print(query_add_doc)
+    cur.execute(query_add_doc, ('0000', '123456', 'document_issued_by', '10.10.2005',
+                                '10.10.2050', 1, current_timestamp(), document_assembly_record))
+    # document_id from table DOCUMENT
+    document_id = cur.fetchone()[0]
+    print(document_id)
+
 # query = query_insert_into_person(person) % DB_DICT[person]
 # print(query)
 # with db as cur:
@@ -74,14 +86,14 @@ from tkinter import ttk
 #     4: ('Сидоров', 'виктор', 'Сидорович')
 # }
 
-def select_from_db(frame, db, tbl_name, field_id, field_data, row, column, cnf, columnspan=1, width=30):
-    value_from_db = [v for v in fill_combobox(db, tbl_name, field_id, field_data).values()]
-    value_selected = ttk.Combobox(frame, values=value_from_db, state='readonly', width=width)
-    if value_selected and tbl_name != 'child_list':
-        value_selected.current(0)
-        # print(f'{value_selected=} {value_selected.current(0)=} {value_selected.current()}')
-    value_selected.grid(row=row, column=column, cnf=cnf, columnspan=columnspan)
-    return value_selected
+# def select_from_db(frame, db, tbl_name, field_id, field_data, row, column, cnf, columnspan=1, width=30):
+#     value_from_db = [v for v in fill_combobox(db, tbl_name, field_id, field_data).values()]
+#     value_selected = ttk.Combobox(frame, values=value_from_db, state='readonly', width=width)
+#     if value_selected and tbl_name != 'child_list':
+#         value_selected.current(0)
+#         # print(f'{value_selected=} {value_selected.current(0)=} {value_selected.current()}')
+#     value_selected.grid(row=row, column=column, cnf=cnf, columnspan=columnspan)
+#     return value_selected
 
 
 # def find_child(child_dict):
@@ -259,35 +271,35 @@ def select_from_db(frame, db, tbl_name, field_id, field_data, row, column, cnf, 
 # combobox.pack()
 #
 # root.mainloop()
-def format_address_specific(address_dict):
-    ignored_keys = ['address_type_id', 'is_registration', 'is_fact', 'is_residence']
-    values = [str(value).strip() for key, value in address_dict.items() if key not in ignored_keys and str(value).strip()]
-    formatted_address = ', '.join(values)
-    return formatted_address
-
-# Пример словаря
-address = {'address_type_id': 1, 'zipcode': '123456', 'region': 'РФ', 'region_type_id': 1, 'district': '', 'town': 'Москва', 'town_type_id': 1, 'locality': '', 'locality_type_id': 0, 'street': 'Ленина', 'street_type_id': 1, 'house': '1', 'house_body': '2', 'house_liter': 'в', 'house_building': '   25', 'flat': '  656', 'is_registration': True, 'is_fact': False, 'is_residence': False}
-formatted = format_address_specific(address)
-print(formatted)  # Вывод: "123456, РФ, Москва, Ленина, 1, 2в, 25, 656"
-
-address_type_id
-zipcode
-region
-region_type_id
-district
-town
-town_type_id
-locality
-locality_type_id
-street
-street_type_id
-house
-house_body
-house_liter
-house_building
-flat
-is_registration
-is_fact
-is_residence
-is_visible
+# def format_address_specific(address_dict):
+#     ignored_keys = ['address_type_id', 'is_registration', 'is_fact', 'is_residence']
+#     values = [str(value).strip() for key, value in address_dict.items() if key not in ignored_keys and str(value).strip()]
+#     formatted_address = ', '.join(values)
+#     return formatted_address
+#
+# # Пример словаря
+# address = {'address_type_id': 1, 'zipcode': '123456', 'region': 'РФ', 'region_type_id': 1, 'district': '', 'town': 'Москва', 'town_type_id': 1, 'locality': '', 'locality_type_id': 0, 'street': 'Ленина', 'street_type_id': 1, 'house': '1', 'house_body': '2', 'house_liter': 'в', 'house_building': '   25', 'flat': '  656', 'is_registration': True, 'is_fact': False, 'is_residence': False}
+# formatted = format_address_specific(address)
+# print(formatted)  # Вывод: "123456, РФ, Москва, Ленина, 1, 2в, 25, 656"
+#
+# address_type_id
+# zipcode
+# region
+# region_type_id
+# district
+# town
+# town_type_id
+# locality
+# locality_type_id
+# street
+# street_type_id
+# house
+# house_body
+# house_liter
+# house_building
+# flat
+# is_registration
+# is_fact
+# is_residence
+# is_visible
 

@@ -10,12 +10,13 @@ from app_model.variables import LARGE_FONT, label_parent_list, CONF_D_W, CONF, D
     DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, label_address_list, MAIN_ICO
 from app_view.gui_input_window import Gui
 from app_view_model.functions.functions import on_validate_input, create_labels_in_grid, next_entries, buttons_add_new, \
-    save_access, parent_save, select_from_db, select_date, fill_combobox, find_child, get_key, validate_combobox, \
+    select_from_db, select_date, fill_combobox, find_child, get_key, validate_combobox, \
     position_center, find_id, check_type_address
+from app_view_model.functions.parent_create import parent_create
 
 
 class NewParent(Gui):
-    def __init__(self, parents: Parents = None, width: str = '650', height: str = '500', child: Child = None,
+    def __init__(self, parents: Parents = None, width: str = '650', height: str = '600', child: Child = None,
                  comment: str = None):
         super().__init__(width, height)
         self.parents = parents
@@ -33,7 +34,7 @@ class NewParent(Gui):
         tk.Label(frame, text="Ввод родитель/представитель", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W,
                                                                                   columnspan=4, sticky="nsew")
         child_select_label = ttk.Label(frame, text='Выберите ФИО ребенка*', foreground='red')
-        child_select_label.grid(row=2, column=0, sticky='W')
+        child_select_label.grid(row=2, column=0, cnf=CONF_D_W)
 
         create_labels_in_grid(frame, label_parent_list)
         child_dict = fill_combobox(db, 'child_list', None, None)
@@ -62,6 +63,15 @@ class NewParent(Gui):
         document_issued_by.grid(row=22, column=1, cnf=CONF_D_W, columnspan=3, sticky="ew")
         document_date_of_issue = select_date(frame, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, 24, 1, CONF_D_W)
         document_date_of_expire = select_date(frame, 2050, 1, 1, 26, 1, CONF_D_W)
+        # document_assembly_record: str = None
+        # document_assembly_record = ttk.Entry(frame)
+        # document_assembly_record.grid(row=28, column=1, cnf=CONF_D_W)
+        phone_number = ttk.Entry(frame)
+        phone_number.grid(row=30, column=1, cnf=CONF_D_W)
+        email_name = ttk.Entry(frame)
+        email_name.grid(row=32, column=1, cnf=CONF_D_W)
+        sniils = ttk.Entry(frame)
+        sniils.grid(row=34, column=1, cnf=CONF_D_W)
         # comment = ttk.Entry(frame, width=50)
         # comment.grid(row=24, column=1, cnf=CONF_D_W, columnspan=3)
 
@@ -69,28 +79,52 @@ class NewParent(Gui):
                   command=lambda: self.create_address_window(), width=25, height=1).grid(row=48, column=1)
 
         buttons_add_new(self, frame, 40)
+
+        # entry_list = [last_name, first_name, patronymic]
+        # btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
+
         btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
         btn_ok.grid(row=40, column=3, cnf=CONF)
-        btn_ok.bind('<Button-1>',
-                    lambda event: (print(get_key(child_select.get(), child_dict)), validate_combobox(child_select,
-                                                                                                     child_select_label)))
+        # btn_check_entry = tk.Button(frame, text='Проверка',
+        #                             command=validate_combobox(child_select, child_select_label, btn_ok))
+        # btn_check_entry.grid(row=39, column=3, cnf=CONF)
         # btn_ok.bind('<Button-1>',
-        #             lambda event: (parent_save(db, last_name.get(),
-        #                                        first_name.get(),
-        #                                        patronymic.get(),
-        #                                        date_of_birth.get(),
-        #                                        parent_male.get(),
-        #                                        citizenship_id.get(),
-        #                                        document_type_id.get(),
-        #                                        document_series.get(),
-        #                                        document_number.get(),
-        #                                        document_date_of_issue.get(),
-        #                                        document_issued_by.get(),
-        #                                        document_date_of_expire.get()
-        #
-        #                                        ), save_access()))
+        #             lambda event: (print(get_key(child_select.get(), child_dict)), validate_combobox(child_select,
+        #                                                                                              child_select_label)))
+
+        btn_ok.bind('<Button-1>', lambda event: (
+            validate_combobox(child_select, child_select_label), parent_create(db,
+                                                                               get_key(
+                                                                                   child_select.get(),
+                                                                                   child_dict),
+                                                                               status_id.get(),
+                                                                               last_name.get(),
+                                                                               first_name.get(),
+                                                                               patronymic.get(),
+                                                                               gender_id.get(),
+                                                                               date_of_birth.get(),
+                                                                               citizenship_id.get(),
+                                                                               document_type_id.get(),
+                                                                               document_series.get(),
+                                                                               document_number.get(),
+                                                                               document_issued_by.get(),
+                                                                               document_date_of_issue.get(),
+                                                                               document_date_of_expire.get(),
+                                                                               phone_number.get(),
+                                                                               email_name.get(),
+                                                                               sniils.get(),
+                                                                               )))
 
         next_entries(frame)
+
+    def validate_input_btn_ok(*args):
+        all_entries_filled = all(entry.get() for entry in entry_list)
+        all_comboboxes_selected = all(combobox.get() for combobox in combobox_list)
+
+        if all_entries_filled and all_comboboxes_selected:
+            btn_ok.config(state=tk.NORMAL, background='red', fg='white')
+        else:
+            btn_ok.config(state=tk.DISABLED, background='LightGray', fg='white')
 
     def create_address_window(self):
         # окно для ввода адреса
