@@ -2,13 +2,14 @@ import tkinter as tk
 from tkinter import ttk, BOTH
 
 from app_model.db.db_connect import db
-from app_model.db.db_query import gender, DB_DICT, citizenship, document_type, status
+from app_model.db.db_query import gender, DB_DICT, status
 from app_model.domain.address import Address
 from app_model.domain.child import Child
 from app_model.domain.parents import Parents
 from app_model.variables import LARGE_FONT, label_parent_list, CONF_D_W, CONF, DEFAULT_PARENT_BORN_YEAR, \
-    DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, label_address_list, MAIN_ICO
+    DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, label_address_list, MAIN_ICO
 from app_view.gui_input_window import Gui
+from app_view_model.functions.document_entries import document_entries
 from app_view_model.functions.functions import on_validate_input, create_labels_in_grid, next_entries, buttons_add_new, \
     select_from_db, select_date, fill_combobox, find_child, get_key, validate_combobox, \
     position_center, find_id, check_type_address
@@ -51,21 +52,12 @@ class NewParent(Gui):
         gender_id = select_from_db(frame, db, gender, DB_DICT[gender][0], DB_DICT[gender][1], 10, 1, CONF_D_W, width=15)
         date_of_birth = select_date(frame, DEFAULT_PARENT_BORN_YEAR, DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, 10, 3,
                                     CONF_D_W)
-        citizenship_id = select_from_db(frame, db, citizenship, DB_DICT[citizenship][0], DB_DICT[citizenship][1], 14, 1,
-                                        CONF_D_W, width=15)
-        document_type_id = select_from_db(frame, db, document_type, DB_DICT[document_type][0],
-                                          DB_DICT[document_type][1], 16, 1, CONF_D_W, width=25)
-        document_series = ttk.Entry(frame)
-        document_series.grid(row=18, column=1, cnf=CONF_D_W)
-        document_number = ttk.Entry(frame)
-        document_number.grid(row=20, column=1, cnf=CONF_D_W)
-        document_issued_by = ttk.Entry(frame)
-        document_issued_by.grid(row=22, column=1, cnf=CONF_D_W, columnspan=3, sticky="ew")
-        document_date_of_issue = select_date(frame, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, 24, 1, CONF_D_W)
+
+        citizenship_id, document_type_id, document_series, document_number, document_issued_by, document_date_of_issue = (
+            document_entries(
+            frame, (18, 1)))
         document_date_of_expire = select_date(frame, 2050, 1, 1, 26, 1, CONF_D_W)
-        # document_assembly_record: str = None
-        # document_assembly_record = ttk.Entry(frame)
-        # document_assembly_record.grid(row=28, column=1, cnf=CONF_D_W)
+
         phone_number = ttk.Entry(frame)
         phone_number.grid(row=30, column=1, cnf=CONF_D_W)
         email_name = ttk.Entry(frame)

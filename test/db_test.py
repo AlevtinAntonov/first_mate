@@ -1,21 +1,25 @@
 from app_model.db.db_connect import DB
 from app_model.db.db_query import query_insert_into_table_return_id, person, DB_DICT, child, query_find_id, building, \
-    benefit, document
+    benefit, document, query_child_person_id
 from app_model.variables import CONF_D_W
 from app_view_model.functions.functions import current_timestamp, check_if_exists, find_person, find_id, select_from_db, \
     fill_combobox, get_key, find_child
 
 db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
 with db as cur:
-    document_assembly_record = None
-    # Add document of parent to table DOCUMENT and return document_id for table PERSON
-    query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
-    print(query_add_doc)
-    cur.execute(query_add_doc, ('0000', '123456', 'document_issued_by', '10.10.2005',
-                                '10.10.2050', 1, current_timestamp(), document_assembly_record))
-    # document_id from table DOCUMENT
-    document_id = cur.fetchone()[0]
-    print(document_id)
+    # document_assembly_record = None
+    # # Add document of parent to table DOCUMENT and return document_id for table PERSON
+    # query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
+    # print(query_add_doc)
+    # cur.execute(query_add_doc, ('0000', '123456', 'document_issued_by', '10.10.2005',
+    #                             '10.10.2050', 1, current_timestamp(), document_assembly_record))
+    # # document_id from table DOCUMENT
+    # document_id = cur.fetchone()[0]
+    # print(document_id)
+
+    cur.execute(query_child_person_id, (22,))
+    person_id = cur.fetchone()[0]
+    print(f'{person_id=}')
 
 # query = query_insert_into_person(person) % DB_DICT[person]
 # print(query)

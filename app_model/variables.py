@@ -108,3 +108,26 @@ label_address_list = [
     {'text': 'Строение', 'row': 24, 'column': 0},
     {'text': 'Квартира', 'row': 26, 'column': 0},
 ]
+
+label_child_list = [
+    # {'text': 'Фамилия', 'row': 2, 'column': 0},
+    # {'text': 'Имя', 'row': 4, 'column': 0},
+    # {'text': 'Отчество', 'row': 6, 'column': 0},
+    # {'text': 'Пол', 'row': 6, 'column': 0},
+    # {'text': 'Дата рождения', 'row': 8, 'column': 0},
+    # {'text': 'ФИО отца', 'row': 10, 'column': 0},
+    # {'text': 'ФИО матери', 'row': 12, 'column': 0},
+    {'text': 'Гражданство', 'row': 14, 'column': 0},
+    {'text': 'Тип документа', 'row': 16, 'column': 0},
+    {'text': 'Место рождения', 'row': 18, 'column': 0},
+    {'text': '№ актовой записи (для Св-ва о рожд.)', 'row': 20, 'column': 0},
+    {'text': 'Серия', 'row': 22, 'column': 0},
+    {'text': 'Номер', 'row': 24, 'column': 0},
+    {'text': 'Кем выдан', 'row': 26, 'column': 0},
+    {'text': 'Дата выдачи', 'row': 28, 'column': 0},
+
+    {'text': 'СНИИЛС', 'row': 30, 'column': 0},
+    {'text': 'Адрес регистрации', 'row': 42, 'column': 0},
+    {'text': 'Адрес фактический', 'row': 44, 'column': 0},
+    {'text': 'Адрес рег. по месту пребывания', 'row': 46, 'column': 0},
+]

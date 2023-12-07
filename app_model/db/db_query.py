@@ -52,6 +52,9 @@ document_date_of_issue = ? AND document_type_id = ?) ;"""
 
 query_login = "SELECT user_name, user_password FROM users WHERE (user_name = ? AND user_password = ? AND " \
               "is_visible)"
+query_child_person_id = """SELECT person_id FROM child WHERE (child_id = ?) ;"""
+# query_update_child_person = """UPDATE person SET (document_id = ?, sniils = ?) WHERE (person_id = ?) ;"""
+query_update_child_person = "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE (%s=?); "
 
 
 # CHECK_ID_DICT = {

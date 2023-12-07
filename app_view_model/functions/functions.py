@@ -47,7 +47,16 @@ def path_to_file(dir_file, file):
 def fill_combobox(db, tbl_name, field_id, field_data):
     dict_combo = {}
     with db as cur:
-        if tbl_name == 'child_list':
+        if tbl_name == 'child_list_show':
+            cur.execute(
+                """SELECT child.child_id, person.last_name, person.first_name, person.patronymic, person.date_of_birth, 
+                gender.gender_name
+                FROM gender INNER JOIN (person INNER JOIN child ON person.person_id = child.person_id) 
+                ON gender.gender_id = person.gender_id
+                WHERE (((child.is_visible)=True))
+                ORDER BY person.last_name, person.first_name, person.patronymic;""")
+            [dict_combo.update({row[0]: (' '.join((row[1], row[2], row[3])), row[4], row[5])}) for row in cur.fetchall()]
+        elif tbl_name == 'child_list':
             cur.execute(
                 """SELECT child.child_id, person.last_name, person.first_name, person.patronymic FROM person 
                 INNER JOIN child ON person.person_id = child.person_id WHERE (((child.is_visible)=True))
@@ -308,6 +317,16 @@ def get_key(val, my_dict):
             if val == value:
                 return key
         return "Значение не найдено"
+
+# def get_key(val, my_dict):
+#     if hasattr(val, '__len__') and len(val) > 1:
+#         val_to_check = val[0] if val else None
+#     else:
+#         val_to_check = val
+#         for key, value in my_dict.items():
+#             if val_to_check == value:
+#                 return key
+#         return "Значение не найдено"
 
 
 def find_child(frame, child_dict, row, column, cnf=None, width=25):

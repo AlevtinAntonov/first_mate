@@ -6,6 +6,7 @@ from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO
 from app_view.gui_input_window import Gui
 from app_view.referral_labels import ReferralLabels, ReferralLabelsWin3
 from app_view_model.functions.functions import position_center
+from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
 
@@ -25,7 +26,7 @@ def new_parent():
 
 
 def child_birth_certificate():
-    pass
+    NewChildCertificateWin()
 
 
 class StartPage:
@@ -135,6 +136,12 @@ class NewReferralWin(NewReferral):
 
 
 class NewParentWin(NewParent):
+    def return_to_start_page(self):
+        self.root.destroy()
+        ProjectAddNew()
+
+
+class NewChildCertificateWin(NewChild):
     def return_to_start_page(self):
         self.root.destroy()
         ProjectAddNew()
