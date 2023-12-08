@@ -372,7 +372,7 @@ def clear_text(frame):
 def select_from_db(frame, db, tbl_name, field_id, field_data, row, column, cnf, columnspan=1, width=30):
     value_from_db = [v for v in fill_combobox(db, tbl_name, field_id, field_data).values()]
     value_selected = ttk.Combobox(frame, values=value_from_db, state='readonly', width=width)
-    if value_selected and tbl_name != 'child_list':
+    if value_selected and tbl_name != 'child_list' :
         value_selected.current(0)
         # print(f'{value_selected=} {value_selected.current(0)=} {value_selected.current()}')
     value_selected.grid(row=row, column=column, cnf=cnf, columnspan=columnspan)

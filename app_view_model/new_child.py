@@ -2,13 +2,15 @@ import tkinter as tk
 from tkinter import ttk, BOTH
 
 from app_model.db.db_connect import db
+from app_model.db.db_query import query_child_person_id
 from app_model.domain.child import Child
 from app_model.variables import LARGE_FONT, CONF_D_W, label_child_list, CONF
 from app_view.gui_input_window import Gui
+from app_view_model.address_toplevel import AddressWindow
 from app_view_model.functions.child_bd_certificate_create import child_db_cert_create
 from app_view_model.functions.document_entries import document_entries
 from app_view_model.functions.functions import on_validate_input, create_labels_in_grid, buttons_add_new, \
-    fill_combobox, validate_combobox, next_entries, get_key
+    fill_combobox, validate_combobox, next_entries
 
 
 class NewChild(Gui):
@@ -52,22 +54,12 @@ class NewChild(Gui):
         sniils = ttk.Entry(frame)
         sniils.grid(row=30, column=1, cnf=CONF_D_W)
 
+        tk.Button(frame, text="Добавить адрес", bg='LimeGreen', fg='white',
+                  command=lambda: self.create_address_window(), width=25, height=1).grid(row=48, column=1)
+
         buttons_add_new(self, frame, 40)
         btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
         btn_ok.grid(row=40, column=3, cnf=CONF)
-        # btn_ok.bind('<Button-1>', lambda event: (
-        #     validate_combobox(self.child_select, child_select_label), print(
-        #         self.child_id,
-        #         citizenship_id.get(),
-        #         sniils.get(),
-        #         document_type_id.get(),
-        #         place_of_birth.get(),
-        #         document_series.get(),
-        #         document_number.get(),
-        #         document_issued_by.get(),
-        #         document_date_of_issue.get(),
-        #         document_assembly_record.get(),
-        #     )))
         btn_ok.bind('<Button-1>', lambda event: (
             validate_combobox(self.child_select, child_select_label), child_db_cert_create(db,
                                                                                            self.child_id,
@@ -97,3 +89,10 @@ class NewChild(Gui):
         matching_values = [person_info[0] for person_info in self.data.values() if
                            search_text.lower() in person_info[0].lower()]
         self.child_select["values"] = matching_values
+
+    def create_address_window(self):
+        if isinstance(self.child_id, int):
+            with db as cur:
+                cur.execute(query_child_person_id, (self.child_id,))
+                self.person_id = cur.fetchone()[0]
+            AddressWindow(self.person_id)
