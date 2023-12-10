@@ -37,3 +37,7 @@ class ReferralLabelsWin3:
         self.label_referral_begin_date.grid(row=4, column=0, sticky="e")
         self.entry_referral_begin_date = tk.Entry(self.root)
         self.entry_referral_begin_date.grid(row=4, column=1)
+
+
+if __name__ == '__main__':
+    pass

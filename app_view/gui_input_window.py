@@ -31,3 +31,7 @@ class Gui(InputWindow):
         result = messagebox.askokcancel("Завершение работы", "Вы действительно хотите выйти?")
         if result:
             self.root.destroy()
+
+
+if __name__ == '__main__':
+    pass

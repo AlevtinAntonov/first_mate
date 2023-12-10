@@ -22,3 +22,7 @@ def document_entries(frame, row_column: tuple):
                                          row_column[1], CONF_D_W)
     return (citizenship_id, document_type_id, document_series, document_number, document_issued_by,
             document_date_of_issue)
+
+
+if __name__ == '__main__':
+    pass

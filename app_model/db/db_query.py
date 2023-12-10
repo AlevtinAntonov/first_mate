@@ -63,16 +63,42 @@ query_child_person_id = """SELECT person_id FROM child WHERE (child_id = ?) ;"""
 # query_update_child_person = """UPDATE person SET (document_id = ?, sniils = ?) WHERE (person_id = ?) ;"""
 query_update_child_person = "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE (%s=?); "
 
+query_full_addresses = """SELECT 
+    a.zipcode, 
+    a.region, 
+    rt.region_type_name_short, 
+    a.district, 
+    a.town, 
+    tt.town_type_name_short, 
+    a.locality, 
+    lt.locality_type_name_short, 
+    a.street, 
+    st.street_type_name_short, 
+    a.house, 
+    a.house_body, 
+    a.house_liter, 
+    a.house_building, 
+    a.flat
+FROM 
+    person_address pa
+JOIN 
+    address a ON pa.address_id = a.address_id
+JOIN 
+    address_type ad ON a.address_type_id = ad.address_type_id
+JOIN 
+    region_type rt ON a.region_type_id = rt.region_type_id
+JOIN 
+    town_type tt ON a.town_type_id = tt.town_type_id
+JOIN 
+    locality_type lt ON a.locality_type_id = lt.locality_type_id
+JOIN 
+    street_type st ON a.street_type_id = st.street_type_id
+WHERE 
+    pa.person_id = ?
+    AND pa.is_visible = True
+    AND a.%s  = True;
+"""
 
-# CHECK_ID_DICT = {
-# 'building': ('building_id', 'building_name'),
-# 'age': ('age_id', 'age_name'),
-# 'focus': ('focus_id', 'focus_name'),
-# 'mode': ('mode_id', 'mode_name'),
-# 'benefit': ('benefit_id', 'benefit_name'),
-# 'team': ('team_id', 'team_name'),
-
-# }
 
 
 def query_insert_into(table_name):
@@ -86,6 +112,7 @@ def query_insert_into_table_return_id(table_name, fields_name):
     val = ', '.join(('?',) * (len(DB_DICT[fields_name])))
     name_id = '_'.join((table_name, 'id'))
     return f'INSERT INTO {table_name} ({fields}) VALUES ( {val}) RETURNING {name_id} ;'
+
 
 
 # tbl_name = 'child'

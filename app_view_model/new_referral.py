@@ -78,3 +78,7 @@ class NewReferral(Gui):
                                                  ), save_access()))
 
         next_entries(frame)
+
+
+if __name__ == '__main__':
+    pass

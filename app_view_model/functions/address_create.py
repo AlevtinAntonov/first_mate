@@ -33,3 +33,7 @@ def address_create(db, person_id, address_type_id, zipcode, region, region_type_
             save_access()
     except:
         messagebox.showinfo(title="Внимание!", message=f'Адрес не записан попробуйте еще раз!')
+
+
+if __name__ == '__main__':
+    pass

@@ -171,62 +171,85 @@ from tkinter import ttk
 # root.mainloop()
 #
 # import
+# import tkinter as tk
+# from tkinter import ttk
+#
+# from app_model.db.db_connect import DB
+# from app_view_model.functions.functions import fill_combobox
+#
+#
+#
+# def update_combobox_values(event=None):
+#     search_text = combobox.get()
+#     matching_values = [person_info[0] for person_info in data.values() if search_text.lower() in person_info[0].lower()]
+#     combobox["values"] = matching_values
+#
+#
+# def display_info(*args):
+#     selected_name = combobox.get()
+#     for person, person_info in data.items():
+#         if person_info[0] == selected_name:
+#             dob_label.config(text="Дата рождения: " + person_info[1].strftime("%d.%m.%Y"))
+#             gender_label.config(text="Пол: " + person_info[2])
+#             break
+#     else:
+#         dob_label.config(text="Дата рождения: ")
+#         gender_label.config(text="Пол: ")
+#
+#
+# root = tk.Tk()
+# root.title("Информация о людях")
+# db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
+#
+# data = fill_combobox(db, 'child_list_show', None, None)
+# for k, v in data.items():
+#     print(k, v)
+#     #
+# #     {
+# #     1: ("Ианов Иван Ианович", "10.10.1980", "М"),
+# #     2: ("Петров Петр Петрович", "01.05.1995", "М"),
+# #     3: ("идорова Елена Петрова", "15.12.1978", "Ж"),
+# # }
+#
+# frame = ttk.Frame(root, padding=10)
+# frame.grid(row=0, column=0, sticky='we')
+#
+# label = ttk.Label(frame, text="Выберите ФИО:")
+# label.grid(row=0, column=0, sticky=tk.W)
+#
+# combobox = ttk.Combobox(frame)
+# combobox["values"] = [person_info[0] for person_info in data.values()]
+# combobox.grid(row=1, column=0, sticky=tk.W)
+# combobox.bind("<<ComboboxSelected>>", display_info)
+# combobox.bind("<KeyRelease>", update_combobox_values)
+#
+# dob_label = ttk.Label(frame, text="Дата рождения: ")
+# dob_label.grid(row=2, column=0, sticky=tk.W)
+#
+# gender_label = ttk.Label(frame, text="Пол: ")
+# gender_label.grid(row=3, column=0, sticky=tk.W)
+#
+# root.mainloop()
+
 import tkinter as tk
-from tkinter import ttk
 
-from app_model.db.db_connect import DB
-from app_view_model.functions.functions import fill_combobox
-
-
-
-def update_combobox_values(event=None):
-    search_text = combobox.get()
-    matching_values = [person_info[0] for person_info in data.values() if search_text.lower() in person_info[0].lower()]
-    combobox["values"] = matching_values
-
-
-def display_info(*args):
-    selected_name = combobox.get()
-    for person, person_info in data.items():
-        if person_info[0] == selected_name:
-            dob_label.config(text="Дата рождения: " + person_info[1].strftime("%d.%m.%Y"))
-            gender_label.config(text="Пол: " + person_info[2])
-            break
-    else:
-        dob_label.config(text="Дата рождения: ")
-        gender_label.config(text="Пол: ")
-
-
+# Создаем окно
 root = tk.Tk()
-root.title("Информация о людях")
-db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
+root.title("Адреса")
 
-data = fill_combobox(db, 'child_list_show', None, None)
-for k, v in data.items():
-    print(k, v)
-    #
-#     {
-#     1: ("Ианов Иван Ианович", "10.10.1980", "М"),
-#     2: ("Петров Петр Петрович", "01.05.1995", "М"),
-#     3: ("идорова Елена Петрова", "15.12.1978", "Ж"),
-# }
+# Словарь с данными
+addresses = {1: ('is_registration', 'Адрес регистрации', "123456, Санкт-Петербург г., Вербная ул., д. 18, корп. 1, лит. А, кв. 1"),
+2: ('is_fact', 'Адрес фактический', "123456, Санкт-Петербург г., Вербная ул., д. 18, корп. 1, лит. А, кв. 1"),
+3: ('is_residence', 'Адрес рег. по м.преб.', "197375, Санкт-Петербург, Санкт-Петербург г., Вербная ул., д. 20/3, лит. А, кв. 300")}
 
-frame = ttk.Frame(root, padding=10)
-frame.grid(row=0, column=0, sticky='we')
+# Функция для печати адресов
+def print_addresses():
+    for key, value in addresses.items():
+        label = tk.Label(root, text=f"{value[1]}: {value[2]}")
+        label.pack()
 
-label = ttk.Label(frame, text="Выберите ФИО:")
-label.grid(row=0, column=0, sticky=tk.W)
-
-combobox = ttk.Combobox(frame)
-combobox["values"] = [person_info[0] for person_info in data.values()]
-combobox.grid(row=1, column=0, sticky=tk.W)
-combobox.bind("<<ComboboxSelected>>", display_info)
-combobox.bind("<KeyRelease>", update_combobox_values)
-
-dob_label = ttk.Label(frame, text="Дата рождения: ")
-dob_label.grid(row=2, column=0, sticky=tk.W)
-
-gender_label = ttk.Label(frame, text="Пол: ")
-gender_label.grid(row=3, column=0, sticky=tk.W)
+# Кнопка для печати адресов
+print_button = tk.Button(root, text="Печать адресов", command=print_addresses)
+print_button.pack()
 
 root.mainloop()

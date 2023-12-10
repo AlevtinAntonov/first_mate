@@ -10,9 +10,11 @@ from app_model.variables import LARGE_FONT, label_parent_list, CONF_D_W, CONF, D
 from app_view.gui_input_window import Gui
 from app_view_model.address_toplevel import AddressWindow
 from app_view_model.functions.document_entries import document_entries
+from app_view_model.functions.find_address import print_addresses
 from app_view_model.functions.functions import on_validate_input, create_labels_in_grid, next_entries, buttons_add_new, \
     select_from_db, select_date, fill_combobox, find_child, get_key, validate_combobox, check_if_exists
 from app_view_model.functions.parent_create import parent_create
+from app_view_model.new_address import AddressWin
 
 
 class NewParent(Gui):
@@ -50,7 +52,7 @@ class NewParent(Gui):
         self.patronymic.grid(row=8, column=1, cnf=CONF_D_W)
         gender_id = select_from_db(frame, db, gender, DB_DICT[gender][0], DB_DICT[gender][1], 10, 1, CONF_D_W, width=15)
         self.date_of_birth = select_date(frame, DEFAULT_PARENT_BORN_YEAR, DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, 10, 3,
-                                    CONF_D_W)
+                                         CONF_D_W)
 
         citizenship_id, document_type_id, document_series, document_number, document_issued_by, document_date_of_issue = (
             document_entries(
@@ -95,8 +97,14 @@ class NewParent(Gui):
                                                                                email_name.get(),
                                                                                sniils.get(),
                                                                                )))
-
         next_entries(frame)
+        pers_id = check_if_exists(db, person, self.last_name.get(), self.first_name.get(), self.patronymic.get(),
+                                  self.date_of_birth.get())
+        print(f'{pers_id=}')
+        if pers_id:
+            print_addresses(db, frame, pers_id)
+        else:
+            print_addresses(db, frame, pers_id)
 
     def validate_input_btn_ok(*args):
         all_entries_filled = all(entry.get() for entry in entry_list)
@@ -110,5 +118,10 @@ class NewParent(Gui):
     def create_address_window(self):
         self.person_id = check_if_exists(db, person, self.last_name.get(), self.first_name.get(), self.patronymic.get(),
                                          self.date_of_birth.get())
+        print(f'{self.person_id=}')
         if self.person_id:
-            AddressWindow(self.person_id)
+            AddressWin(self.person_id)
+
+
+if __name__ == '__main__':
+    pass

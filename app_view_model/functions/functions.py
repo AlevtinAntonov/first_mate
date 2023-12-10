@@ -332,7 +332,7 @@ def get_key(val, my_dict):
 def find_child(frame, child_dict, row, column, cnf=None, width=25):
     selected_name = tk.StringVar()
     combobox_var = ttk.Combobox(frame, textvariable=selected_name, values=list(child_dict.values()), width=width)
-    combobox_var.grid(row=row, column=column, cnf=cnf)
+    combobox_var.grid(row=row, column=column, columnspan=2, sticky='we', cnf=cnf)
 
     def on_combobox_key(event):
         value = event.widget.get()
@@ -456,3 +456,7 @@ def create_labels_in_grid(win, label_info_list):
 
 # if __name__ == '__main__':
 #     insert_into_table(building, DB_DICT[building], ['aa', 'bb'])
+
+
+if __name__ == '__main__':
+    pass

@@ -34,7 +34,8 @@ def dict_to_string(dictionary):
 
 
 # Format address from DataBase to string without empty data
-def format_address(dict_input, list_input):
+def format_address(list_input):
+    dict_input = dict_address
     formatted_list = ''
     if list_input[0] != "" and list_input[0] is not None:
         formatted_list = list_input[0]
@@ -59,5 +60,7 @@ if __name__ == '__main__':
     address_list = (
         '197375', 'Санкт-Петербург', None, '', 'Санкт-Петербург', 'г.', '', None, 'Вербная', 'ул.', '20/3', '', 'А', '',
         '300')
-    print(dict_to_string(assign_values(dict_address, address_list)))
-    print(format_address(dict_address, address_list))
+    # print(dict_to_string(assign_values(dict_address, address_list)))
+    print(format_address(address_list))
+
+

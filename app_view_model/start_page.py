@@ -6,6 +6,7 @@ from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO
 from app_view.gui_input_window import Gui
 from app_view.referral_labels import ReferralLabels, ReferralLabelsWin3
 from app_view_model.functions.functions import position_center
+from app_view_model.new_address import AddressWin
 from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
@@ -26,6 +27,10 @@ def new_parent():
 
 
 def child_birth_certificate():
+    NewChildCertificateWin()
+
+
+def new_address():
     NewChildCertificateWin()
 
 
@@ -97,7 +102,7 @@ class ProjectAddNew(Gui):
                   width=30, height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Свидетельство о рождении", command=self.open_birth_certificate, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Адреса регистрации/проживания", command=self.open_window, width=30,
+        tk.Button(self.root, text="Адреса регистрации/проживания", command=self.open_window_address, width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Компенсация родит.платы", command=self.open_window, width=30,
                   height=1).pack(padx=5, pady=5)
@@ -115,6 +120,10 @@ class ProjectAddNew(Gui):
     def open_window_parent(self):
         self.root.destroy()
         NewParentWin()
+
+    def open_window_address(self):
+        self.root.destroy()
+        NewAddressWin()
 
     def open_birth_certificate(self):
         self.root.destroy()
@@ -141,6 +150,12 @@ class NewParentWin(NewParent):
         ProjectAddNew()
 
 
+class NewAddressWin(AddressWin):
+    def return_to_start_page(self):
+        self.root.destroy()
+        ProjectAddNew()
+
+
 class NewChildCertificateWin(NewChild):
     def return_to_start_page(self):
         self.root.destroy()
@@ -158,3 +173,7 @@ class Gui_4(Gui):
     def return_to_start_page(self):
         self.root.destroy()
         start_page()
+
+
+if __name__ == '__main__':
+    pass

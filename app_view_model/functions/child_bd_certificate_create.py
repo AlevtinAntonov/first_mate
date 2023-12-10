@@ -39,3 +39,7 @@ def child_db_cert_create(db, child_id: int, citizenship_id, sniils: str, documen
         messagebox.showinfo(title="Внимание!",
                             message=f'Документ серия: {document_series} номер: {document_number} ,'
                                     f'дата выдачи:  {document_date_of_issue} - уже существует в базе!')
+
+
+if __name__ == '__main__':
+    pass

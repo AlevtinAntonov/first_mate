@@ -2,6 +2,8 @@ from app_model.db.db_connect import DB
 from app_model.db.db_query import query_insert_into_table_return_id, person, DB_DICT, child, query_find_id, building, \
     benefit, document, query_child_person_id, address, query_insert_into, person_address
 from app_model.variables import CONF_D_W
+from app_view_model.functions.find_address import find_full_addresses
+from app_view_model.functions.format_address import format_address
 from app_view_model.functions.functions import current_timestamp, check_if_exists, find_person, find_id, select_from_db, \
     fill_combobox, get_key, find_child
 
@@ -342,41 +344,43 @@ JOIN
 JOIN 
     STREET_TYPE st ON a.STREET_TYPE_ID = st.STREET_TYPE_ID
 WHERE 
-    pa.PERSON_ID = 29
+    pa.PERSON_ID = ?
     AND pa.IS_VISIBLE = True
-    AND (a.ADDRESS_TYPE_ID = 1 OR a.IS_REGISTRATION  = True) 
-    ;"""
+    AND a.%s  = True;"""
 with db as cur:
-    adrs = cur.execute(query).fetchone()
-    print(type(list(adrs)), adrs)
+    try:
+        adrs = cur.execute(query % ('is_fact',), (29,)).fetchone()
+        print(type(list(adrs)), adrs)
+    except Exception as e:
+        print(f'Ошибка! - {e}')
 
 
-def format_address(address_list):
-    if address_list[0] != "" and address_list[0] is not None:
-        formatted_list = address_list[0]
-    if address_list[1] != "" and address_list[1] is not None:
-        formatted_list += ', ' + address_list[1]
-        if address_list[2] != "" and address_list[2] is not None:
-            formatted_list += ' ' + address_list[2]
-    if address_list[3] != "" and address_list[3] is not None:
-        formatted_list += ', ' + address_list[3] + 'р-н'
-    if address_list[4] != "" and address_list[4] is not None:
-        formatted_list += ', ' + address_list[4] + ' ' + address_list[5]
-    if address_list[6] != "" and address_list[6] is not None:
-        formatted_list += ', ' + address_list[6] + ' ' + address_list[7]
-    if address_list[8] != "" and address_list[8] is not None:
-        formatted_list += ', ' + address_list[8] + ' ' + address_list[9]
-    if address_list[10] != "" and address_list[10] is not None:
-        formatted_list += ', д.' + address_list[10]
-    if address_list[11] != "" and address_list[11] is not None:
-        formatted_list += ', корп.' + address_list[11]
-    if address_list[12] != "" and address_list[12] is not None:
-        formatted_list += ', лит.' + address_list[12]
-    if address_list[13] != "" and address_list[13] is not None:
-        formatted_list += ', стр.' + address_list[13]
-    if address_list[14] != "" and address_list[14] is not None:
-        formatted_list += ', кв.' + address_list[14]
-    return formatted_list
+# def format_address(address_list):
+#     if address_list[0] != "" and address_list[0] is not None:
+#         formatted_list = address_list[0]
+#     if address_list[1] != "" and address_list[1] is not None:
+#         formatted_list += ', ' + address_list[1]
+#         if address_list[2] != "" and address_list[2] is not None:
+#             formatted_list += ' ' + address_list[2]
+#     if address_list[3] != "" and address_list[3] is not None:
+#         formatted_list += ', ' + address_list[3] + 'р-н'
+#     if address_list[4] != "" and address_list[4] is not None:
+#         formatted_list += ', ' + address_list[4] + ' ' + address_list[5]
+#     if address_list[6] != "" and address_list[6] is not None:
+#         formatted_list += ', ' + address_list[6] + ' ' + address_list[7]
+#     if address_list[8] != "" and address_list[8] is not None:
+#         formatted_list += ', ' + address_list[8] + ' ' + address_list[9]
+#     if address_list[10] != "" and address_list[10] is not None:
+#         formatted_list += ', д.' + address_list[10]
+#     if address_list[11] != "" and address_list[11] is not None:
+#         formatted_list += ', корп.' + address_list[11]
+#     if address_list[12] != "" and address_list[12] is not None:
+#         formatted_list += ', лит.' + address_list[12]
+#     if address_list[13] != "" and address_list[13] is not None:
+#         formatted_list += ', стр.' + address_list[13]
+#     if address_list[14] != "" and address_list[14] is not None:
+#         formatted_list += ', кв.' + address_list[14]
+#     return formatted_list
 
 
 # address_without_empty = [elem for elem in list(address_tuple) if elem and elem != "" and elem is not None]
@@ -422,6 +426,11 @@ dict_address = {
     'кв.': None,
 }
 
-dict_address = assign_values(dict_address, lst)
-print(dict_address)
-print(dict_to_string(dict_address))
+# dict_address = assign_values(dict_address, lst)
+# print(dict_address)
+# print(dict_to_string(dict_address))
+
+p = find_full_addresses(db, 29)
+for k, v in p.items():
+    if v[1]:
+        print(k, v)

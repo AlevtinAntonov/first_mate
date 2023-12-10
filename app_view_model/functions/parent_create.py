@@ -63,3 +63,7 @@ def parent_create(db, child_select: int, status_id: int, last_name: str, first_n
     else:
         messagebox.showinfo(title="Внимание!", message=f'Родитель(представитель): {last_name} {first_name} {patronymic},'
                                                        f' {date_of_birth} г.р. - уже существует в базе!')
+
+
+if __name__ == '__main__':
+    pass

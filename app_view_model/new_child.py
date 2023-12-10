@@ -96,3 +96,7 @@ class NewChild(Gui):
                 cur.execute(query_child_person_id, (self.child_id,))
                 self.person_id = cur.fetchone()[0]
             AddressWindow(self.person_id)
+
+
+if __name__ == '__main__':
+    pass

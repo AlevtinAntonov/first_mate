@@ -53,7 +53,6 @@ class AddressWindow:
         address.region_type = select_from_db(self.address_window, db, 'region_type', 'region_type_id',
                                              'region_type_name', 8, 2,
                                              CONF_D_W, width=10)
-        # self.region_type_id = find_id(db, 'region_type', 'region_type_id', 'region_type_name', region_type.get())
         address.district = ttk.Entry(self.address_window)
         address.district.grid(row=10, column=3, cnf=CONF_D_W)
         address.town = ttk.Entry(self.address_window)
@@ -61,15 +60,12 @@ class AddressWindow:
         address.town_type = select_from_db(self.address_window, db, 'town_type', 'town_type_id', 'town_type_name', 12,
                                            2,
                                            CONF_D_W, width=10)
-        # self.town_type_id = find_id(db, 'town_type', 'town_type_id', 'town_type_name', town_type.get())
         address.locality = ttk.Entry(self.address_window)
         address.locality.grid(row=14, column=3, cnf=CONF_D_W)
         address.locality_type = select_from_db(self.address_window, db, 'locality_type', 'locality_type_id',
                                                'locality_type_name', 14,
                                                2,
                                                CONF_D_W, width=10)
-        # self.locality_type_id = find_id(db, 'locality_type', 'locality_type_id', 'locality_type_name',
-        #                                 locality_type.get())
         address.street = ttk.Entry(self.address_window)
         address.street.grid(row=16, column=3, cnf=CONF_D_W)
         address.street_type = select_from_db(self.address_window, db, 'street_type', 'street_type_id',
@@ -77,7 +73,6 @@ class AddressWindow:
                                              2,
                                              CONF_D_W,
                                              width=10)
-        # self.street_type_id = find_id(db, 'street_type', 'street_type_id', 'street_type_name', street_type.get())
         address.house = ttk.Entry(self.address_window)
         address.house.grid(row=18, column=3, cnf=CONF_D_W)
         address.house_body = ttk.Entry(self.address_window)
@@ -134,38 +129,9 @@ class AddressWindow:
                 self.same_fact_as_register_var.get(),
                 self.same_residence_as_fact_var.get())
 
-        # def take_input_data():
-        #     address_dict = {'address_type_id': parent_address.address_type_id,
-        #                     'zipcode': parent_address.zipcode.get(),
-        #                     'region': parent_address.region.get(),
-        #                     'region_type_id': parent_address.region_type_id,
-        #                     'district': parent_address.district.get(),
-        #                     'town': parent_address.town.get(),
-        #                     'town_type_id': parent_address.town_type_id,
-        #                     'locality': parent_address.locality.get(),
-        #                     'locality_type_id': parent_address.locality_type_id,
-        #                     'street': parent_address.street.get(),
-        #                     'street_type_id': parent_address.street_type_id,
-        #                     'house': parent_address.house.get(),
-        #                     'house_body': parent_address.house_body.get(),
-        #                     'house_liter': parent_address.house_liter.get(),
-        #                     'house_building': parent_address.house_building.get(),
-        #                     'flat': parent_address.flat.get(),
-        #                     'is_registration': parent_address.is_registration,
-        #                     'is_fact': parent_address.is_fact,
-        #                     'is_residence': parent_address.is_residence}
-        #     # ', '.join(filter(None, map(str, address_dict.values())))
-        #     self.address_dict = address_dict
-        #     return self.address_dict
-
-        def save_input_address():
-            self.address_window.destroy()
-            # self.address_dict = take_input_data()
-            # print(self.address_dict)
-
-            # a = ', '.join(filter(None, map(str, take_input_data().values())))
-            # address_label = tk.Label(self.address_window, text=f"Адрес: {a}")
-            # address_label.grid(row=26, column=1, columnspan=2)
-
         self.address_window.grab_set()
         self.address_window.focus_set()
+
+
+if __name__ == '__main__':
+    pass
