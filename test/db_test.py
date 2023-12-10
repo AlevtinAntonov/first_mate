@@ -1,25 +1,30 @@
 from app_model.db.db_connect import DB
 from app_model.db.db_query import query_insert_into_table_return_id, person, DB_DICT, child, query_find_id, building, \
-    benefit, document, query_child_person_id
+    benefit, document, query_child_person_id, address, query_insert_into, person_address
 from app_model.variables import CONF_D_W
 from app_view_model.functions.functions import current_timestamp, check_if_exists, find_person, find_id, select_from_db, \
     fill_combobox, get_key, find_child
 
 db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
-with db as cur:
-    # document_assembly_record = None
-    # # Add document of parent to table DOCUMENT and return document_id for table PERSON
-    # query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
-    # print(query_add_doc)
-    # cur.execute(query_add_doc, ('0000', '123456', 'document_issued_by', '10.10.2005',
-    #                             '10.10.2050', 1, current_timestamp(), document_assembly_record))
-    # # document_id from table DOCUMENT
-    # document_id = cur.fetchone()[0]
-    # print(document_id)
+# with db as cur:
+# query_add_address = query_insert_into_table_return_id(address, address) % DB_DICT[address]
+# print(query_add_address)
 
-    cur.execute(query_child_person_id, (22,))
-    person_id = cur.fetchone()[0]
-    print(f'{person_id=}')
+# query_person_address = query_insert_into(person_address) % DB_DICT[person_address]
+# print(query_person_address)
+# document_assembly_record = None
+# # Add document of parent to table DOCUMENT and return document_id for table PERSON
+# query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
+# print(query_add_doc)
+# cur.execute(query_add_doc, ('0000', '123456', 'document_issued_by', '10.10.2005',
+#                             '10.10.2050', 1, current_timestamp(), document_assembly_record))
+# # document_id from table DOCUMENT
+# document_id = cur.fetchone()[0]
+# print(document_id)
+
+# cur.execute(query_child_person_id, (22,))
+# person_id = cur.fetchone()[0]
+# print(f'{person_id=}')
 
 # query = query_insert_into_person(person) % DB_DICT[person]
 # print(query)
@@ -80,7 +85,6 @@ with db as cur:
 ###############################
 import tkinter as tk
 from tkinter import ttk
-
 
 # Пример словаря
 # data = {
@@ -306,4 +310,118 @@ from tkinter import ttk
 # is_fact
 # is_residence
 # is_visible
+query = """
+SELECT 
+    a.zipcode, 
+    a.region, 
+    rt.region_type_name_short, 
+    a.district, 
+    a.town, 
+    tt.town_type_name_short, 
+    a.locality, 
+    lt.locality_type_name_short, 
+    a.street, 
+    st.street_type_name_short, 
+    a.house, 
+    a.house_body, 
+    a.house_liter, 
+    a.house_building, 
+    a.flat
+FROM 
+    PERSON_ADDRESS pa
+JOIN 
+    ADDRESS a ON pa.ADDRESS_ID = a.ADDRESS_ID
+JOIN 
+    ADDRESS_TYPE ad ON a.ADDRESS_TYPE_ID = ad.ADDRESS_TYPE_ID
+JOIN 
+    REGION_TYPE rt ON a.REGION_TYPE_ID = rt.REGION_TYPE_ID
+JOIN 
+    TOWN_TYPE tt ON a.TOWN_TYPE_ID = tt.TOWN_TYPE_ID
+JOIN 
+    LOCALITY_TYPE lt ON a.LOCALITY_TYPE_ID = lt.LOCALITY_TYPE_ID
+JOIN 
+    STREET_TYPE st ON a.STREET_TYPE_ID = st.STREET_TYPE_ID
+WHERE 
+    pa.PERSON_ID = 29
+    AND pa.IS_VISIBLE = True
+    AND (a.ADDRESS_TYPE_ID = 1 OR a.IS_REGISTRATION  = True) 
+    ;"""
+with db as cur:
+    adrs = cur.execute(query).fetchone()
+    print(type(list(adrs)), adrs)
 
+
+def format_address(address_list):
+    if address_list[0] != "" and address_list[0] is not None:
+        formatted_list = address_list[0]
+    if address_list[1] != "" and address_list[1] is not None:
+        formatted_list += ', ' + address_list[1]
+        if address_list[2] != "" and address_list[2] is not None:
+            formatted_list += ' ' + address_list[2]
+    if address_list[3] != "" and address_list[3] is not None:
+        formatted_list += ', ' + address_list[3] + 'р-н'
+    if address_list[4] != "" and address_list[4] is not None:
+        formatted_list += ', ' + address_list[4] + ' ' + address_list[5]
+    if address_list[6] != "" and address_list[6] is not None:
+        formatted_list += ', ' + address_list[6] + ' ' + address_list[7]
+    if address_list[8] != "" and address_list[8] is not None:
+        formatted_list += ', ' + address_list[8] + ' ' + address_list[9]
+    if address_list[10] != "" and address_list[10] is not None:
+        formatted_list += ', д.' + address_list[10]
+    if address_list[11] != "" and address_list[11] is not None:
+        formatted_list += ', корп.' + address_list[11]
+    if address_list[12] != "" and address_list[12] is not None:
+        formatted_list += ', лит.' + address_list[12]
+    if address_list[13] != "" and address_list[13] is not None:
+        formatted_list += ', стр.' + address_list[13]
+    if address_list[14] != "" and address_list[14] is not None:
+        formatted_list += ', кв.' + address_list[14]
+    return formatted_list
+
+
+# address_without_empty = [elem for elem in list(address_tuple) if elem and elem != "" and elem is not None]
+# print(address_without_empty)
+# formatted = ', '.join(address_without_empty)
+print(format_address(adrs))  # Вывод: "197375, Санкт-Петербург, Вербная ул. 20/3, А, кв. 300"
+address_list2 = (
+'197375', 'Санкт-Петербург', None, '', 'Санкт-Петербург', 'г.', '', None, 'Вербная', 'ул.', '20/3', '', 'А', '', '300')
+formatted = format_address(adrs)
+print(formatted)
+
+dict_address = {
+    'д.': None,
+    'корп.': None,
+    'лит.': None,
+    'стр.': None,
+    'кв.': None,
+}
+
+
+def dict_to_string(dictionary):
+    result = ""
+    for key, value in dictionary.items():
+        if value != '' and value is not None:
+            result += f"{key} {value}, "
+    return result.rstrip(", ")
+
+print(dict_to_string(dict_address))
+
+def assign_values(dictionary, lst):
+    keys = list(dictionary.keys())
+    values = lst[-5:]
+    for i in range(5):
+        dictionary[keys[i]] = values[i] if values[i] != '' and values[i] is not None else None
+    return dictionary
+
+lst = ['г.', '', None, 'Вербная', 'ул.', '20/3', '', 'А', '', '300']
+dict_address = {
+    'д.': None,
+    'корп.': None,
+    'лит.': None,
+    'стр.': None,
+    'кв.': None,
+}
+
+dict_address = assign_values(dict_address, lst)
+print(dict_address)
+print(dict_to_string(dict_address))

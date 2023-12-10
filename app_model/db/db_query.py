@@ -7,6 +7,8 @@ focus, mode, benefit, team, gender = 'focus', 'mode', 'benefit', 'team', 'gender
 document, address, address_type = 'document', 'address', 'address_type'
 citizenship, document_type, status = 'citizenship', 'document_type', 'status'
 person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email'
+region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
+person_address = 'person_address'
 
 DB_DICT = {
     'referral': (
@@ -37,6 +39,11 @@ DB_DICT = {
                 'locality', 'locality_type_id', 'street', 'street_type_id', 'house', 'house_body', 'house_liter',
                 'house_building', 'flat', 'is_registration', 'is_fact', 'is_residence'),
     'address_type': ('address_type_id', 'address_type_name'),
+    'region_type': ('region_type_id', 'region_type_name'),
+    'town_type': ('town_type_id', 'town_type_name'),
+    'locality_type': ('locality_type_id', 'locality_type_name'),
+    'street_type': ('street_type_id', 'street_type_name'),
+    'person_address': ('person_id', 'address_id'),
 }
 # registration_address = registration_address_entry.get()
 # residence_address = residence_address_entry.get()

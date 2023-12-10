@@ -1,7 +1,7 @@
 from datetime import date
 from tkinter import messagebox
 
-from app_model.db.db_query import query_insert_into, parents, DB_DICT, document, gender, citizenship, \
+from app_model.db.db_query import parents, DB_DICT, document, gender, citizenship, \
     query_insert_into_table_return_id, person, person_parent, family, phone, email, document_type, status
 from app_view_model.functions.functions import current_timestamp, check_if_exists, find_id, capitalize_double_surname, \
     save_access
