@@ -29,7 +29,6 @@ combo.grid(row=0, column=0)
 
 
 # Функция для обновления информации при выборе персоны
-# Функция для обновления информации при выборе персоны
 def update_info(event):
     person_name = combo.get()
     try:
