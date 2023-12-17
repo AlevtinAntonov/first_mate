@@ -102,7 +102,7 @@ class ProjectAddNew(Gui):
                   width=30, height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Свидетельство о рождении", command=self.open_birth_certificate, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Адреса регистрации/проживания", command=self.open_window_address, width=30,
+        tk.Button(self.root, text="Ввод адреса", command=self.open_window_address, width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Компенсация родит.платы", command=self.open_window, width=30,
                   height=1).pack(padx=5, pady=5)

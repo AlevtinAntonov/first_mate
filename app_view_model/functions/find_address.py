@@ -42,6 +42,13 @@ def print_addresses(dbase, frame, pers_id, row=42, row_step=2):
             row += row_step
 
 
+# def load_full_addresses(db, person_id):
+#         with db as cur:
+#             cur.execute(query_full_addresses % (value[0],), (person_id,)).fetchone()
+#     return address_type
+
+
+
 if __name__ == '__main__':
     db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
     p = find_full_addresses(db, 29)

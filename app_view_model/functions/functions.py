@@ -356,7 +356,8 @@ def find_child(frame, child_dict, row, column, cnf=None, width=25):
 
 def buttons_add_new(self, frame, row):
     tk.Button(frame, text="Назад в меню приема", bg='DarkSlateGray', fg='white',
-              command=lambda: self.return_to_start_page(), width=25, height=1).grid(row=row, column=1)
+              command=lambda: self.return_to_start_page(), width=25, height=1).grid(row=row, column=0, columnspan=2,
+                                                                                    sticky='e')
     tk.Button(frame, text="Очистить форму", bg='grey', fg='white',
               command=lambda: clear_text(frame), width=15, height=1).grid(row=row, column=2)
 

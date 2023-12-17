@@ -1,4 +1,3 @@
-from datetime import date
 from tkinter import messagebox
 
 from app_model.db.db_query import address, query_insert_into_table_return_id, DB_DICT, address_type, region_type, \
@@ -6,7 +5,8 @@ from app_model.db.db_query import address, query_insert_into_table_return_id, DB
 from app_view_model.functions.functions import find_id, save_access
 
 
-def address_create(db, person_id, address_type_id, zipcode, region, region_type_id, district, town, town_type_id, locality,
+def address_create(db, person_id, address_type_id, zipcode, region, region_type_id, district, town, town_type_id,
+                   locality,
                    locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,
                    is_registration, is_fact, is_residence):
     # address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1], address_type_id)

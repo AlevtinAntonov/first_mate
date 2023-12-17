@@ -9,6 +9,7 @@ from app_view.gui_input_window import Gui
 from app_view_model.functions.address_create import address_create
 from app_view_model.functions.functions import position_center, create_labels_in_grid, select_from_db, next_entries, \
     find_id, check_type_address, buttons_add_new, fill_combobox, find_child, get_key
+from app_view_model.functions.person_select_combo import person_select_combo
 
 
 class AddressWin(Gui):
@@ -19,13 +20,6 @@ class AddressWin(Gui):
         self.height = height
         # self.person_id = person_id
         self.root.geometry('x'.join((self.width, self.height)))
-        # self.address_window = tk.Toplevel()
-        # self.address_window.title("Ввод адреса")
-        # self.address_window.geometry('600x450')
-        # self.address_window.iconbitmap(MAIN_ICO)
-        # position_center(self.address_window, 600, 450)
-
-        # self.create_address_window()
 
     def create_widgets(self):
         frame = ttk.Frame(self.root)
@@ -33,8 +27,10 @@ class AddressWin(Gui):
         address = Address()
         child_select_label = ttk.Label(frame, text='Выберите ФИО*', foreground='red')
         child_select_label.grid(row=2, column=0, cnf=CONF_D_W)
-        child_dict = fill_combobox(db, 'child_list', None, None)
-        child_select = find_child(frame, child_dict, 2, 1, CONF_D_W)
+        person_select = person_select_combo(db, frame, 2, 1)
+        # person_select.bind("<KeyRelease>", update_combo_options)
+        # child_dict = fill_combobox(db, 'child_list', None, None)
+        # child_select = find_child(frame, child_dict, 2, 1, CONF_D_W)
         # tk.Label(frame, text=self.person_id).grid(row=55, column=0)
         create_labels_in_grid(frame, label_address_list)
 
@@ -55,7 +51,7 @@ class AddressWin(Gui):
         same_residence_as_fact_checkbox.grid(row=30, column=0, cnf=CONF, columnspan=3)
         address.address_type_id = select_from_db(frame, db, 'address_type', 'address_type_id',
                                                  'address_type_name', 4,
-                                                 1, CONF_D_W, 2)
+                                                 1, CONF_D_W, 3, width=45)
 
         address.zipcode = ttk.Entry(frame)
         address.zipcode.grid(row=6, column=2, cnf=CONF_D_W)
@@ -143,7 +139,6 @@ class AddressWin(Gui):
 
         # self.address_window.grab_set()
         # self.address_window.focus_set()
-
 
 if __name__ == '__main__':
     pass
