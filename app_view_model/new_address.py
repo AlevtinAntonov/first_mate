@@ -12,19 +12,35 @@ from app_view_model.functions.functions import position_center, create_labels_in
 from app_view_model.functions.person_select_combo import person_select_combo
 
 
+# def update_address_info(event):
+#     # print(combo)
+#     # print(AddressWin.address.address_type_id.get())
+#     # print(AddressWin.address.address_type_id)
+#     print('Type!')
+
+
 class AddressWin(Gui):
     def __init__(self, width: str = '650', height: str = '450'):
         # окно для ввода адреса
         super().__init__(width, height)
         self.width = width
         self.height = height
-        # self.person_id = person_id
         self.root.geometry('x'.join((self.width, self.height)))
+        self.address = Address()
+
+    def update_address_info(self, event):
+        self.address_type_id_var.set(self.address.address_type_id.get())
+        print(f'{self.address_type_id_var.get()=}')
+        # print(combo)
+        # print(AddressWin.address.address_type_id.get())
+        # print(AddressWin.address.address_type_id)
+        print('Type!')
 
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
         address = Address()
+        self.address_type_id_var = tk.StringVar()
         child_select_label = ttk.Label(frame, text='Выберите ФИО*', foreground='red')
         child_select_label.grid(row=2, column=0, cnf=CONF_D_W)
         person_select = person_select_combo(db, frame, 2, 1)
@@ -49,12 +65,20 @@ class AddressWin(Gui):
                                                          offvalue=False)
 
         same_residence_as_fact_checkbox.grid(row=30, column=0, cnf=CONF, columnspan=3)
-        address.address_type_id = select_from_db(frame, db, 'address_type', 'address_type_id',
-                                                 'address_type_name', 4,
-                                                 1, CONF_D_W, 3, width=45)
+        # address.address_type_id = select_from_db(frame, db, 'address_type', 'address_type_id',
+        #                                          'address_type_name', 4,
+        #                                          1, CONF_D_W, 3, width=45, current=None)
 
+        value_from_db = [v for v in fill_combobox(db, 'address_type', 'address_type_id',
+                                                  'address_type_name').values()]
+        address.address_type_id = ttk.Combobox(frame, values=value_from_db, state='readonly', width=45)
+        address.address_type_id.grid(row=4, column=1, columnspan=3, cnf=CONF_D_W)
+        self.address_type_id_var.set(address.address_type_id.get())
+        address.address_type_id.bind("<<ComboboxSelected>>", self.update_address_info)
+        print(f'{address.address_type_id.get()=}')
         address.zipcode = ttk.Entry(frame)
         address.zipcode.grid(row=6, column=2, cnf=CONF_D_W)
+        print(f'{address.zipcode.get()=}')
         address.region = ttk.Entry(frame)
         address.region.grid(row=8, column=2, cnf=CONF_D_W)
         address.region_type = select_from_db(frame, db, 'region_type', 'region_type_id',
@@ -137,8 +161,6 @@ class AddressWin(Gui):
                 self.same_fact_as_register_var.get(),
                 self.same_residence_as_fact_var.get())
 
-        # self.address_window.grab_set()
-        # self.address_window.focus_set()
 
 if __name__ == '__main__':
     pass

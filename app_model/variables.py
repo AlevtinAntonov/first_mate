@@ -95,7 +95,7 @@ label_parent_list = [
 
 label_address_list = [
     {'text': 'Адрес', 'row': 0, 'column': 1},
-    {'text': 'Выберите тип адреса', 'row': 4, 'column': 0},
+    {'text': 'Выберите тип адреса*', 'row': 4, 'column': 0},
     {'text': 'Индекс', 'row': 6, 'column': 0},
     {'text': 'Субъект(республика, край, область)', 'row': 8, 'column': 0},
     {'text': 'Район области', 'row': 10, 'column': 0},

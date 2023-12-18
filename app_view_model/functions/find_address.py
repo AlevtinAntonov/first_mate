@@ -4,14 +4,19 @@ from app_model.db.db_query import query_full_addresses
 from app_model.variables import CONF_D_W
 from app_view_model.functions.format_address import format_address
 
-addresses_types = {
-    1: ('is_registration', 'Адрес регистрации',),
-    2: ('is_fact', 'Адрес фактический',),
-    3: ('is_residence', 'Адрес рег. по м.преб.',),
-}
+# addresses_types = {
+#     1: ('is_registration', 'Адрес регистрации'),
+#     2: ('is_fact', 'Адрес фактический'),
+#     3: ('is_residence', 'Адрес рег. по м.преб.'),
+# }
 
 
 def find_full_addresses(db, person_id):
+    addresses_types = {
+        1: ('is_registration', 'Адрес регистрации'),
+        2: ('is_fact', 'Адрес фактический'),
+        3: ('is_residence', 'Адрес рег. по м.преб.'),
+    }
     address_type = addresses_types
     for key, value in address_type.items():
         with db as cur:
@@ -19,7 +24,7 @@ def find_full_addresses(db, person_id):
                 _ = cur.execute(query_full_addresses % (value[0],), (person_id,)).fetchone()
                 address_type[key] += (_,)
             except Exception as e:
-                print(f'Ошибка! - {e}')
+                print(f'Ошибка def find_full_addresses! - {e}')
     return address_type
 
 

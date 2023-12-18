@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
+from app_model.domain.address import Address
 from app_model.domain.referral import Referral
 from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO
 from app_view.gui_input_window import Gui
@@ -151,6 +152,10 @@ class NewParentWin(NewParent):
 
 
 class NewAddressWin(AddressWin):
+    def __init__(self):
+        super().__init__()
+        self.address = Address()
+
     def return_to_start_page(self):
         self.root.destroy()
         ProjectAddNew()

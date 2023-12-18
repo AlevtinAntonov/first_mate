@@ -29,7 +29,9 @@ def person_select_combo(db, window_frame, row, column):
                         (last_name, first_name, patronymic, date_of_birth))
                     person = cur.fetchone()
                     if person:
+                        print(person[0])
                         addresses_from_db_dict = find_full_addresses(db, person[0])
+                        print(addresses_from_db_dict)
                         person_id_var.set(person[0])
                         # last_name_var.set(person[1])
                         # first_name_var.set(person[2])
@@ -40,7 +42,7 @@ def person_select_combo(db, window_frame, row, column):
                     print(f'Error len(person_name.split()) not equal 4 and person_name.split()[3] != д.р.:')
 
         except Exception as e:
-            print(f'Error Exception - {e}')
+            print(f'Error Exception def update_info  - {e}')
 
     def update_combo_options(event):
         typed_text = combo.get()
