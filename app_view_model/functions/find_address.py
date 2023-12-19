@@ -1,6 +1,6 @@
 import tkinter as tk
 from app_model.db.db_connect import DB
-from app_model.db.db_query import query_full_addresses
+# from app_model.db.db_query import query_full_addresses
 from app_model.variables import CONF_D_W
 from app_view_model.functions.format_address import format_address
 
@@ -11,7 +11,7 @@ from app_view_model.functions.format_address import format_address
 # }
 
 
-def find_full_addresses(db, person_id):
+def find_full_addresses(db, person_id, query_full_addresses):
     addresses_types = {
         1: ('is_registration', 'Адрес регистрации'),
         2: ('is_fact', 'Адрес фактический'),

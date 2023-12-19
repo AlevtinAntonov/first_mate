@@ -1,11 +1,7 @@
 import tkinter as tk
-from datetime import datetime
 from tkinter import ttk
 
-from app_model.db.db_query import query_full_addresses
-# from app_model.db.db_connect import DB
 from app_model.variables import CONF_D_W
-from app_view_model.functions.find_address import find_full_addresses
 
 
 def person_select_combo(db, window_frame, row, column):
@@ -29,14 +25,7 @@ def person_select_combo(db, window_frame, row, column):
                         (last_name, first_name, patronymic, date_of_birth))
                     person = cur.fetchone()
                     if person:
-                        print(person[0])
-                        addresses_from_db_dict = find_full_addresses(db, person[0])
-                        print(addresses_from_db_dict)
                         person_id_var.set(person[0])
-                        # last_name_var.set(person[1])
-                        # first_name_var.set(person[2])
-                        # patronymic_var.set(person[3])
-                        # date_of_birth_var.set(person[4])
                 else:
                     print(len(person_name.split()), person_name[3])
                     print(f'Error len(person_name.split()) not equal 4 and person_name.split()[3] != д.р.:')
@@ -55,17 +44,14 @@ def person_select_combo(db, window_frame, row, column):
 
         combo['values'] = filtered_values
 
-    # Строковые переменные для отображения информации в entry
+    # Строковые переменные для отображения person_id
     person_id_var = tk.StringVar()
-    # last_name_var = tk.StringVar()
-    # first_name_var = tk.StringVar()
-    # patronymic_var = tk.StringVar()
-    # date_of_birth_var = tk.StringVar()
 
     combo.bind("<<ComboboxSelected>>", update_info)
 
     # Привязка функции update_combo_options к событию ввода текста в combobox
     combo.bind("<KeyRelease>", update_combo_options)
+    return person_id_var
 
 
 def get_person_names(db):
