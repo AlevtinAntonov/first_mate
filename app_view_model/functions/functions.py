@@ -455,6 +455,8 @@ def create_labels_in_grid(win, label_info_list):
 
         ttk.Label(win, text=text).grid(row=row, column=column, cnf=CONF)
 
+
+
 # if __name__ == '__main__':
 #     insert_into_table(building, DB_DICT[building], ['aa', 'bb'])
 

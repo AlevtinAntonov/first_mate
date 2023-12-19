@@ -24,6 +24,10 @@ class AddressWin(Gui):
         self.address = Address()
 
     def create_widgets(self):
+        frame = ttk.Frame(self.root)
+        frame.pack(fill=BOTH, expand=1)
+        address = Address()
+
         def update_address_info(event):
             type_var = address.address_type_id.get()
             addresses_from_db_dict = find_full_addresses(db, person_select.get(), query_full_addresses)
@@ -35,10 +39,10 @@ class AddressWin(Gui):
                 case 'регистрации по месту пребывания':
                     dict_key = 3
 
-            if addresses_from_db_dict[dict_key][2]:
-                address_exists = True
+            # if addresses_from_db_dict[dict_key][2]:
+            #     address_exists = True
 
-            if person_select.get() and address_exists:
+            if person_select.get():
                 zipcode_var.set(addresses_from_db_dict[dict_key][2][0])
                 region_var.set(addresses_from_db_dict[dict_key][2][1])
                 region_type_id_var.set(addresses_from_db_dict[dict_key][2][2])
@@ -70,10 +74,6 @@ class AddressWin(Gui):
                 house_liter_var.set('')
                 house_building_var.set('')
                 flat_var.set('')
-
-        frame = ttk.Frame(self.root)
-        frame.pack(fill=BOTH, expand=1)
-        address = Address()
 
         self.address_type_id_var = tk.StringVar()
         child_select_label = ttk.Label(frame, text='Выберите ФИО*', foreground='red')
@@ -166,18 +166,19 @@ class AddressWin(Gui):
         btn_ok.grid(row=40, column=3, cnf=CONF)
 
         btn_ok.bind('<Button-1>',
-                    lambda event: (take_type_address(), print(f'{address_exists=}'),
-                                   address_create(db, person_select.get(), address.address_type_id,
-                                                  address.zipcode.get(),
-                                                  address.region.get(), address.region_type_id, address.district.get(),
-                                                  address.town.get(), address.town_type_id, address.locality.get(),
-                                                  address.locality_type_id, address.street.get(),
-                                                  address.street_type_id,
-                                                  address.house.get(), address.house_body.get(),
-                                                  address.house_liter.get(),
-                                                  address.house_building.get(), address.flat.get(),
-                                                  address.is_registration, address.is_fact, address.is_residence),
-                                   frame.destroy()))
+                    lambda event: (take_type_address(), address_create(db, person_select.get(), address.address_type_id,
+                                                                       address.zipcode.get(),
+                                                                       address.region.get(), address.region_type_id,
+                                                                       address.district.get(),
+                                                                       address.town.get(), address.town_type_id,
+                                                                       address.locality.get(),
+                                                                       address.locality_type_id, address.street.get(),
+                                                                       address.street_type_id,
+                                                                       address.house.get(), address.house_body.get(),
+                                                                       address.house_liter.get(),
+                                                                       address.house_building.get(), address.flat.get(),
+                                                                       address.is_registration, address.is_fact,
+                                                                       address.is_residence)))
         next_entries(frame)
 
         def take_type_address():
