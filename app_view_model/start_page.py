@@ -11,6 +11,7 @@ from app_view_model.new_address import AddressWin
 from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
+from app_view_model.reference_info.reference_citizenship import EditCitizenship
 
 
 def start_page():
@@ -32,7 +33,11 @@ def child_birth_certificate():
 
 
 def new_address():
-    NewChildCertificateWin()
+    NewAddressWin()
+
+
+def edit_citizenship():
+    EditCitizenship()
 
 
 class StartPage:
@@ -59,7 +64,7 @@ class StartPage:
         self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_window_5, width=30, height=1)
         self.button_5.pack(padx=5, pady=5)
 
-        self.button_6 = tk.Button(self.root, text="Резервная кнопка", command=self.open_window_6, width=30, height=1)
+        self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_window_6, width=30, height=1)
         self.button_6.pack(padx=5, pady=5)
 
         tk.Button(self.root, text="Выход", bg='DarkSlateGray', fg='white', command=lambda: self.root.destroy(),
@@ -76,7 +81,7 @@ class StartPage:
 
     def open_window_5(self):
         self.root.destroy()  # Close the Start Page
-        window_5 = Gui_4('250', '250')
+        window_5 = ReferenceInfoEdit('360', '500')
 
     def open_window_6(self):
         self.root.destroy()  # Close the Start Page
@@ -133,6 +138,53 @@ class ProjectAddNew(Gui):
     def open_window(self):
         self.root.destroy()
         new_referral()
+
+    def return_to_start_page(self):
+        self.root.destroy()
+        start_page()
+
+
+class ReferenceInfoEdit(Gui):
+    def __init__(self, width='360', height='500'):
+        super().__init__(width, height)
+        self.width = width
+        self.height = height
+        self.root.geometry('x'.join((self.width, self.height)))
+
+    def create_widgets(self):
+        tk.Label(self.root, text="Ввод справочников", font=LARGE_FONT).pack(pady=10, padx=10)
+        tk.Button(self.root, text="Гражданство", command=self.open_window_citizenship, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Льготные категории", command=self.open_window_benefit,
+                  width=30, height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Режим пребывания", command=self.open_window_mode, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Администрирование", command=self.open_window_admin, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
+                  command=self.return_to_start_page,
+                  width=25,
+                  height=1).pack()
+
+    def open_window_citizenship(self):
+        self.root.destroy()
+        EditCitizenship()
+        start_page()
+
+    def open_window_benefit(self):
+        self.root.destroy()
+        # EditBenefit()
+        start_page()
+
+    def open_window_mode(self):
+        self.root.destroy()
+        # EditMode()
+        start_page()
+
+    def open_window_admin(self):
+        self.root.destroy()
+        # EditAdmin()
+        start_page()
 
     def return_to_start_page(self):
         self.root.destroy()
