@@ -11,6 +11,7 @@ from app_view_model.new_address import AddressWin
 from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
+from app_view_model.reference_info.edit_benefit import EditBenefit
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
 
 
@@ -61,7 +62,7 @@ class StartPage:
                                   height=1)
         self.button_4.pack(padx=5, pady=5)
 
-        self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_window_5, width=30, height=1)
+        self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_references, width=30, height=1)
         self.button_5.pack(padx=5, pady=5)
 
         self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_window_6, width=30, height=1)
@@ -79,7 +80,7 @@ class StartPage:
         self.root.destroy()  # Close the Start Page
         window_4 = Gui_4('600', '600')
 
-    def open_window_5(self):
+    def open_open_references(self):
         self.root.destroy()  # Close the Start Page
         window_5 = ReferenceInfoEdit('360', '500')
 
@@ -144,6 +145,12 @@ class ProjectAddNew(Gui):
         start_page()
 
 
+class EditBenefitWin(EditBenefit):
+    def return_to_start_page(self):
+        self.root.destroy()
+        ProjectAddNew()
+
+
 class ReferenceInfoEdit(Gui):
     def __init__(self, width='360', height='500'):
         super().__init__(width, height)
@@ -169,22 +176,18 @@ class ReferenceInfoEdit(Gui):
     def open_window_citizenship(self):
         self.root.destroy()
         EditCitizenship()
-        start_page()
 
     def open_window_benefit(self):
         self.root.destroy()
-        # EditBenefit()
-        start_page()
+        EditBenefitWin()
 
     def open_window_mode(self):
         self.root.destroy()
         # EditMode()
-        start_page()
 
     def open_window_admin(self):
         self.root.destroy()
         # EditAdmin()
-        start_page()
 
     def return_to_start_page(self):
         self.root.destroy()

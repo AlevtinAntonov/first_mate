@@ -5,7 +5,7 @@ from datetime import date
 MAIN_TITLE = "Помощник 3.23.08.00 "
 
 
-ICO_DIRECTORY = 'ico'
+ICO_DIRECTORY = ''
 MAIN_ICO = "app_model/ico/mate.ico"
 START_IMAGE = 'app_model/ico/girl.png'
 ADD_PNG = 'app_model/ico/add.png'

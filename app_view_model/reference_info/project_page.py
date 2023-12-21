@@ -1,17 +1,18 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, BOTH
 
 from app_model.db.db_connect import db
 from app_model.variables import ICO_DIRECTORY, ADD_PNG, EDIT_PNG, DELETE_PNG, SEARCH_PNG, REFRESH_PNG, LARGE_FONT
+from app_view.gui_input_window import Gui
 from app_view_model.functions.functions import path_to_file, position_center, go_to_next_entry
 
 
-class ProjectPage(tk.Frame):
+class ProjectPage(Gui):
 
-    def __init__(self, parent, controller, project_title: str = None, tbl_name: str = None, field_id: str = None,
-                 sort_col: str = None, label_1: str = None, label_2: str = None, field_1=None, field_2=None,
-                 tree_columns: dict = None):
-        tk.Frame.__init__(self, parent)
+    def __init__(self, width: str, height: str, project_title: str = None, tbl_name: str = None,
+                 field_id: str = None, sort_col: str = None, label_1: str = None, label_2: str = None, field_1=None,
+                 field_2=None, tree_columns: dict = None):
+        super().__init__(width, height)
         if tree_columns is None:
             tree_columns = {'col_0': ['XXX', 0, 0], 'col_1': ['XXXXX', 250, 250],
                             'col_2': ['XXXX', 250, 250]}
@@ -24,19 +25,19 @@ class ProjectPage(tk.Frame):
         self.project_title = project_title
         self.label_1 = label_1
         self.label_2 = label_2
-        self.controller = controller
         self.add_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, ADD_PNG))
         self.update_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, EDIT_PNG))
         self.delete_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, DELETE_PNG))
         self.search_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, SEARCH_PNG))
         self.refresh_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, REFRESH_PNG))
         col_names = tuple(self.tree_columns)
-
+        # self.frame = ttk.Frame(self.root)
+        # self.frame.pack(fill=BOTH, expand=1)
         self.tree = ttk.Treeview(self, columns=col_names, height=15, show='headings')
 
         tk.Label(self, text=project_title, font=LARGE_FONT).pack(pady=5, padx=5)
         tk.Button(self, text="Назад к справочникам", bg='blue', fg='white',
-                  command=lambda: controller.show_frame("AddReferencesData"), width=25, height=1).pack(padx=5, pady=15)
+                  command=lambda: self.return_to_start_page(), width=25, height=1).pack(padx=5, pady=15)
 
     def init_main(self):
         toolbar = tk.Frame(self, bg='#d7d8e0', bd=2)

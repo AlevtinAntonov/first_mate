@@ -2,8 +2,8 @@ from app_view_model.reference_info.project_page import ProjectPage
 
 
 class EditCitizenship(ProjectPage):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self, width: str = '450', height: str = '450'):
+        super().__init__(width, height)
 
         self.tree_columns = {'col_0': ['ИД №', 0, 0],
                              'col_1': ['Краткое наименование', 150, 150],
