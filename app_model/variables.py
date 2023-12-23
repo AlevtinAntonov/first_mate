@@ -17,7 +17,7 @@ SEARCH_PNG = 'app_model/ico/search.png'
 DB_DIR = 'app_model'
 DB_SUB_DIR = 'db'
 DB_NAME = 'DB_PROD.FDB'
-ORGANIZATION_SHORT_NAME = "ГБДОУ дс № 25"
+ORGANIZATION_SHORT_NAME = "ГБДОУ дс № ХХ"
 
 LARGE_FONT = ("Verdana", 12)
 CONF = {'padx': 5, 'pady': 2, 'sticky': 'W'}

@@ -2,6 +2,7 @@ import fdb
 import pathlib
 from pathlib import Path
 
+from app_model.db_path import DB_PATH
 from app_model.variables import DB_NAME, DB_DIR, DB_SUB_DIR
 
 
@@ -34,11 +35,14 @@ class DB:
         self.cursor = self.connection = None
 
 
-db = DB(Path(pathlib.Path.cwd(), DB_DIR, DB_SUB_DIR, DB_NAME))
+db = DB(Path(pathlib.Path.cwd(), DB_PATH, DB_NAME))
 
 if __name__ == '__main__':
-    with db as cur:
-        ccc = cur.execute("""SELECT * FROM age""").fetchall()
-        for c in ccc:
-            print(c)
-    print('Connection -> Ok')
+    pass
+    # db = DB(Path(DB_PATH, DB_NAME))
+    # print(Path(DB_PATH, DB_NAME))
+    # with db as cur:
+    #     ccc = cur.execute("""SELECT * FROM age""").fetchall()
+    #     for c in ccc:
+    #         print(c)
+    # print('Connection -> Ok')
