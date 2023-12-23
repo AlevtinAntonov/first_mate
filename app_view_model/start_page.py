@@ -11,8 +11,10 @@ from app_view_model.new_address import AddressWin
 from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
+from app_view_model.print_forms.print_application import PrintAplication
 from app_view_model.reference_info.edit_benefit import EditBenefit
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
+from app_view_model.reference_info.reference_organization import EditOrganization
 
 
 def start_page():
@@ -65,7 +67,8 @@ class StartPage:
         self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_references, width=30, height=1)
         self.button_5.pack(padx=5, pady=5)
 
-        self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_window_6, width=30, height=1)
+        self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_print_forms, width=30,
+                                  height=1)
         self.button_6.pack(padx=5, pady=5)
 
         tk.Button(self.root, text="Выход", bg='DarkSlateGray', fg='white', command=lambda: self.root.destroy(),
@@ -80,9 +83,13 @@ class StartPage:
         self.root.destroy()  # Close the Start Page
         window_4 = Gui_4('600', '600')
 
-    def open_open_references(self):
+    def open_references(self):
         self.root.destroy()  # Close the Start Page
         window_5 = ReferenceInfoEdit('360', '500')
+
+    def open_print_forms(self):
+        self.root.destroy()  # Close the Start Page
+        window_5 = PrintForms('360', '500')
 
     def open_window_6(self):
         self.root.destroy()  # Close the Start Page
@@ -151,6 +158,12 @@ class EditBenefitWin(EditBenefit):
         ProjectAddNew()
 
 
+class PrintApplicationWin(PrintAplication):
+    def return_to_start_page(self):
+        self.root.destroy()
+        PrintForms()
+
+
 class ReferenceInfoEdit(Gui):
     def __init__(self, width='360', height='500'):
         super().__init__(width, height)
@@ -160,6 +173,8 @@ class ReferenceInfoEdit(Gui):
 
     def create_widgets(self):
         tk.Label(self.root, text="Ввод справочников", font=LARGE_FONT).pack(pady=10, padx=10)
+        tk.Button(self.root, text="Сведения об организации", command=self.open_window_organization, width=30,
+                  height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Гражданство", command=self.open_window_citizenship, width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Льготные категории", command=self.open_window_benefit,
@@ -172,6 +187,10 @@ class ReferenceInfoEdit(Gui):
                   command=self.return_to_start_page,
                   width=25,
                   height=1).pack()
+
+    def open_window_organization(self):
+        self.root.destroy()
+        EditOrganization()
 
     def open_window_citizenship(self):
         self.root.destroy()
@@ -186,6 +205,74 @@ class ReferenceInfoEdit(Gui):
         # EditMode()
 
     def open_window_admin(self):
+        self.root.destroy()
+        # EditAdmin()
+
+    def return_to_start_page(self):
+        self.root.destroy()
+        start_page()
+
+
+class PrintForms(Gui):
+    def __init__(self, width='360', height='500'):
+        super().__init__(width, height)
+        self.width = width
+        self.height = height
+        self.root.geometry('x'.join((self.width, self.height)))
+
+    def create_widgets(self):
+        tk.Label(self.root, text="Печать документов", font=LARGE_FONT).pack(pady=10, padx=10)
+        tk.Button(self.root, text="Пакет документов при приеме", command=self.open_window_all_docs, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Заявление на зачисление", command=self.open_window_application,
+                  width=30, height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Договор об образовании", command=self.open_window_agreement, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Согласие на обработку данных", command=self.open_window_consent, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Заявление на компенсацию РП", command=self.open_window_compensation, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Расписка о приеме заявления на КРП", command=self.open_window_receipt, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Доп.соглашение к договору", command=self.open_window_add_agreement,
+                  width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Экспорт данных в АИСУ ПараГраф", command=self.open_window_export, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
+                  command=self.return_to_start_page,
+                  width=25,
+                  height=1).pack()
+
+    def open_window_all_docs(self):
+        self.root.destroy()
+        # EditCitizenship()
+
+    def open_window_application(self):
+        self.root.destroy()
+        PrintApplicationWin()
+
+    def open_window_agreement(self):
+        self.root.destroy()
+        # EditMode()
+
+    def open_window_consent(self):
+        self.root.destroy()
+        # EditAdmin()
+
+    def open_window_compensation(self):
+        self.root.destroy()
+        # EditAdmin()
+
+    def open_window_receipt(self):
+        self.root.destroy()
+        # EditAdmin()
+
+    def open_window_add_agreement(self):
+        self.root.destroy()
+        # EditAdmin()
+
+    def open_window_export(self):
         self.root.destroy()
         # EditAdmin()
 

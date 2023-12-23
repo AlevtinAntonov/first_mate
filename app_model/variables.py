@@ -2,7 +2,7 @@ import tkinter as tk
 from datetime import date
 # import pathlib
 # from pathlib import Path
-MAIN_TITLE = "Помощник 3.23.08.00 "
+MAIN_TITLE = "Помощник 3.23.12.01 "
 
 
 ICO_DIRECTORY = ''
@@ -23,20 +23,6 @@ LARGE_FONT = ("Verdana", 12)
 CONF = {'padx': 5, 'pady': 2, 'sticky': 'W'}
 CONF_DATA = {'bg': 'white', 'relief': tk.GROOVE}
 CONF_D_W = {'padx': 5, 'pady': 2, 'sticky': 'W'}
-# pages_dict = {
-#     ProjectAdmin: '520x500',
-#     ProjectAddNew: '360x500',
-#     AddReferencesData: '500x500',
-#     ReferenceCitizenship: '520x500',
-#     ReferenceBenefit: '800x500',
-#     ReferenceMode: '800x500',
-#     AddNewReferral: '600x150',
-#     ProjectAddNewChild: '800x600',
-#     Project_3: '800x500',
-#     ProjectChildren: '1366x705',
-#     StartPage: '360x500',
-#     LoginPage: '360x500'
-# }
 CURRENT_YEAR = date.today().year
 CURRENT_MONTH = date.today().month
 CURRENT_DAY = date.today().day

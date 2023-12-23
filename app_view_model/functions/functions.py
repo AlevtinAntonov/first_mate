@@ -7,11 +7,10 @@ from tkinter import ttk, messagebox
 
 from tkcalendar import DateEntry
 
-from app_model.db.db_query import query_insert_into, REFERRAL_SAVE, CHECK_PERSON_CHILD, CHECK_PARENT, DB_DICT, gender, \
-    child, \
-    referral, parents, query_check_person, query_check_document, document, building, person, query_find_id, \
+from app_model.db.db_query import query_insert_into, DB_DICT, gender, child, referral, query_check_person, \
+    query_check_document, building, person, query_find_id, \
     query_insert_into_table_return_id, team, age, focus, mode, benefit
-from app_model.variables import CONF_D_W, CONF
+from app_model.variables import CONF
 
 
 def position_center(win, width, height):
@@ -27,23 +26,12 @@ def position_center(win, width, height):
     return win.geometry(f"+{x_coordinate}+{y_coordinate}")
 
 
+# Функция возвращает абсолютный путь к файлу.
 def path_to_file(dir_file, file):
     return path.abspath(path.join(dir_file, file))
 
 
-# def fill_combobox_child(db, tbl_name, field_id, field_data):
-#     dict_combo = {}
-#     with db as cur:
-#         cur.execute(
-#             """SELECT child.child_id, person.last_name, person.first_name, person.patronymic FROM person
-#             INNER JOIN child ON person.person_id = child.person_id WHERE (((child.is_visible)=True))
-#             ORDER BY PERSON.last_name, PERSON.first_name, PERSON.patronymic;""")
-#
-#         # " SELECT %s, %s FROM %s WHERE is_visible ORDER BY %s;" % (field_id, field_data, tbl_name, field_id))
-#         [dict_combo.update({row[0]: ' '.join((row[1], row[2], row[3]))}) for row in cur.fetchall()]
-#         return dict_combo
-
-
+# Функция возвращает значения из таблиц базы для комбобокса.
 def fill_combobox(db, tbl_name, field_id, field_data):
     dict_combo = {}
     with db as cur:
@@ -55,7 +43,8 @@ def fill_combobox(db, tbl_name, field_id, field_data):
                 ON gender.gender_id = person.gender_id
                 WHERE (((child.is_visible)=True))
                 ORDER BY person.last_name, person.first_name, person.patronymic;""")
-            [dict_combo.update({row[0]: (' '.join((row[1], row[2], row[3])), row[4], row[5])}) for row in cur.fetchall()]
+            [dict_combo.update({row[0]: (' '.join((row[1], row[2], row[3])), row[4], row[5])}) for row in
+             cur.fetchall()]
         elif tbl_name == 'child_list':
             cur.execute(
                 """SELECT child.child_id, person.last_name, person.first_name, person.patronymic FROM person 
@@ -69,6 +58,7 @@ def fill_combobox(db, tbl_name, field_id, field_data):
         return dict_combo
 
 
+# Функция возвращает id или False
 def find_id(db, tbl_name, field_id, field_data, field_value):
     for k, v in fill_combobox(db, tbl_name, field_id, field_data).items():
         if v == field_value:
@@ -76,6 +66,7 @@ def find_id(db, tbl_name, field_id, field_data, field_value):
     return False
 
 
+# Функция проверяет есть ли такая запись в базе данных
 def check_if_exists(db, tbl_name, field_1: str, field_2: str, field_3: str, field_4: datetime):
     if tbl_name == 'person':
         query = (query_check_person % tbl_name)
@@ -92,6 +83,7 @@ def check_if_exists(db, tbl_name, field_1: str, field_2: str, field_3: str, fiel
             print('Ошибка в check_if_exists')
 
 
+# Функция возвращает id человека или False.
 def find_person(db, tbl_name, person_id):
     query = (query_find_id % tbl_name)
     with db as cur:
@@ -105,12 +97,14 @@ def find_person(db, tbl_name, person_id):
             print('Ошибка в find_person')
 
 
+# Формат текущей даты и времени для записи в базу данных
 def current_timestamp():
     timestamp = datetime.now().timestamp()
     date_time = datetime.fromtimestamp(timestamp)
     return date_time.strftime("%d.%m.%Y %H:%M")
 
 
+#  Форматирует написание ФИО с заглавной буквы
 def capitalize_double_surname(input_name):
     if ' ' in input_name and '-' in input_name:
         input_name = input_name.replace(' ', '')
@@ -126,6 +120,7 @@ def capitalize_double_surname(input_name):
     return separator.join(capitalized_parts)
 
 
+# Запись направления в базу данных
 def referral_save(db, referral_number, referral_date, referral_begin_date, referral_comment, child_last_name: str,
                   child_first_name: str, child_patronymic: str, child_male, child_date_of_birth, mode_get, building_get,
                   team_get, age_get, focus_get, benefit_get):
@@ -167,10 +162,6 @@ def referral_save(db, referral_number, referral_date, referral_begin_date, refer
         print('referral ID exist')
 
 
-# def validate_russian_names(input):
-#     return bool(re.search('[а-яА-Я -]', input))
-
-
 def check_russian_letters(input_str):
     import re
     return bool(re.search("[а-яА-Я -]", input_str))
@@ -180,42 +171,6 @@ def on_validate_input(new_text):
     return check_russian_letters(new_text)
 
 
-# def on_validate_input(new_text):
-#
-#     if check_russian_letters(new_text):
-#         # Разрешено ввести только цифры
-#         return check_russian_letters(new_text)
-#     else:
-#         # Недопустимый символ, отобразить ttk.Entry с красной рамкой
-#         entry_widget.config(style='Red.TEntry')
-#         return False
-
-
-# def parent_save(db, last_name: str, first_name: str, patronymic: str, date_of_birth, parent_male, citizenship,
-#                 document_type, document_series, document_number, document_date_of_issue, document_issued_by,
-#                 document_date_of_expire, address_id=None):
-#     last_name, first_name, patronymic = last_name.capitalize(), first_name.capitalize(), patronymic.capitalize()
-#     gender_id = find_id(db, gender, DB_DICT[gender][0], DB_DICT[gender][1], parent_male)
-#     citizenship_id = find_id(db, 'citizenship', 'citizenship_id', 'citizenship_short_name',
-#                              citizenship)
-#     document_type_id = find_id(db, 'document_type', 'document_type_id', 'document_type_name',
-#                                document_type)
-#     if not check_if_exists(db, document, document_series, document_number, document_date_of_issue, document_type_id):
-#         query = query_insert_into(document) % DB_DICT[document]
-#         with db as cur:
-#             cur.execute(query, (
-#                 document_series, document_number, document_issued_by, document_date_of_issue, document_date_of_expire,
-#                 document_type_id, current_timestamp()))
-#     document_id = check_if_exists(db, document, document_series, document_number, document_date_of_issue,
-#                                   document_type_id)
-#     if not check_if_exists(db, parents, last_name, first_name, patronymic, date_of_birth):
-#         query = query_insert_into(parents) % DB_DICT[parents]
-#         with db as cur:
-#             cur.execute(query,
-#                         (last_name, first_name, patronymic, date_of_birth, gender_id, citizenship_id, document_id,
-#                          address_id, current_timestamp()))
-
-
 def insert_into_table(db, table_name, fields, values):
     # Формирование SQL-запроса для вставки данных
     placeholders = ', '.join(['?'] * len(fields))
@@ -223,24 +178,6 @@ def insert_into_table(db, table_name, fields, values):
     # Подключение к базе данных
     with db as cur:
         cur.execute(query, values)
-
-
-def update_record(table_name, fields, values):
-    # Подключаемся к базе данных
-    conn = sqlite3.connect('mydatabase.db')
-    cursor = conn.cursor()
-
-    # Формируем SQL-запрос для обновления записей
-    sql = f"UPDATE {table_name} SET "
-    sql += ", ".join(f"{field} = ?" for field in fields)
-    sql += " WHERE condition_column = ?"  # Укажите условие для обновления записей
-
-    # Выполняем SQL-запрос
-    cursor.execute(sql, values + [condition_value])  # condition_value - значение для условия
-
-    # Сохраняем изменения и закрываем соединение
-    conn.commit()
-    conn.close()
 
 
 def save_access():
@@ -300,17 +237,7 @@ def validate_input_btn_ok(*args):
         btn_ok.config(state=tk.DISABLED, background='LightGray', fg='white')
 
 
-# def validate_combobox_event(event):
-#     if combobox.get() == '':
-#         label.config(foreground='red')
-#     else:
-#         label.config(foreground='black')
-# def check_if_all_data_entered(frame):
-#     for widget in frame.winfo_children():
-#         if not isinstance(widget, tkinter.Entry):
-#             messagebox.askyesnocancel(title="Внимание!", message="Не все данные введены. Хотите продолжить без записи?")
-#         if not isinstance(widget, tkinter.ttk.Combobox):
-#             messagebox.askyesnocancel(title="Внимание!", message="Не все данные введены. Хотите продолжить без записи?")
+#  Get key from dictionary via entering value
 def get_key(val, my_dict):
     if val:
         for key, value in my_dict.items():
@@ -318,17 +245,8 @@ def get_key(val, my_dict):
                 return key
         return "Значение не найдено"
 
-# def get_key(val, my_dict):
-#     if hasattr(val, '__len__') and len(val) > 1:
-#         val_to_check = val[0] if val else None
-#     else:
-#         val_to_check = val
-#         for key, value in my_dict.items():
-#             if val_to_check == value:
-#                 return key
-#         return "Значение не найдено"
 
-
+#  Find child in database table
 def find_child(frame, child_dict, row, column, cnf=None, width=25):
     selected_name = tk.StringVar()
     combobox_var = ttk.Combobox(frame, textvariable=selected_name, values=list(child_dict.values()), width=width)
@@ -425,16 +343,6 @@ def show_entries(win):
     return var_field_1, var_field_2
 
 
-# def go_to_next_entry(event, entry_list, this_index):
-#     next_index = (this_index + 1) % len(entry_list)
-#     entry_list[next_index].focus_set()
-#
-#
-# def next_entries(frame):
-#     entries = [child for child in frame.winfo_children() if isinstance(child, ttk.Entry)]
-#     for idx, entry in enumerate(entries):
-#         entry.bind('<Return>', lambda e, idx_=idx: go_to_next_entry(e, entries, idx_))
-
 def go_to_next_entry(event, entry_list, this_index):
     next_index = this_index + 1
     if next_index < len(entry_list):
@@ -454,11 +362,6 @@ def create_labels_in_grid(win, label_info_list):
         column = label_info.get('column', 0)
 
         ttk.Label(win, text=text).grid(row=row, column=column, cnf=CONF)
-
-
-
-# if __name__ == '__main__':
-#     insert_into_table(building, DB_DICT[building], ['aa', 'bb'])
 
 
 if __name__ == '__main__':

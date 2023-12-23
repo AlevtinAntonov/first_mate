@@ -1,7 +1,10 @@
-REFERRAL_SAVE = 'referral', 'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', \
-    'mode_id', 'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'
-CHECK_PERSON_CHILD = 'child', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
-CHECK_PARENT = 'parents', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
+
+# REFERRAL_SAVE = 'referral', 'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', \
+#     'mode_id', 'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'
+# CHECK_PERSON_CHILD = 'child', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
+# CHECK_PARENT = 'parents', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
+
+# variable - table name = string 'table name'
 referral, person, child, parents, building, age = 'referral', 'person', 'child', 'parents', 'building', 'age'
 focus, mode, benefit, team, gender = 'focus', 'mode', 'benefit', 'team', 'gender'
 document, address, address_type = 'document', 'address', 'address_type'
@@ -10,6 +13,7 @@ person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email
 region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
 person_address = 'person_address'
 
+# dictionary key: table name, vaulue : fields names
 DB_DICT = {
     'referral': (
         'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', 'mode_id',
@@ -45,9 +49,8 @@ DB_DICT = {
     'street_type': ('street_type_id', 'street_type_name'),
     'person_address': ('person_id', 'address_id'),
 }
-# registration_address = registration_address_entry.get()
-# residence_address = residence_address_entry.get()
-# fact_address
+
+# queries
 query_find_person = """ SELECT * FROM person WHERE (last_name = ? AND first_name = ? AND (patronymic = ? OR patronymic 
 IS NULL) AND date_of_birth = ?);"""
 query_check_person = """SELECT * FROM %s WHERE (last_name = ? AND first_name = ? AND (patronymic = ? OR patronymic 
@@ -100,7 +103,6 @@ WHERE
 """
 
 
-
 def query_insert_into(table_name):
     fields = ', '.join(('%s',) * (len(DB_DICT[table_name])))
     val = ', '.join(('?',) * (len(DB_DICT[table_name])))
@@ -114,20 +116,5 @@ def query_insert_into_table_return_id(table_name, fields_name):
     return f'INSERT INTO {table_name} ({fields}) VALUES ( {val}) RETURNING {name_id} ;'
 
 
-
-# tbl_name = 'child'
-# print(len(CHECK_PERSON_CHILD))
-# print(CHECK_PERSON_CHILD)
-# print(DB_DICT[child])
-# print(query_insert_into(child))
-# print(DB_DICT['team'])
 if __name__ == '__main__':
-    # print(query_insert_into(parents))
-    tbl_name = {'address_type_id': 1, 'zipcode': 'eee', 'region': '', 'region_type_id': 0, 'district': 'eee',
-                'town': 'eeee', 'town_type_id': 1, 'locality': '', 'locality_type_id': 0, 'street': 'fff',
-                'street_type_id': 1, 'house': '56', 'house_body': '1', 'house_liter': 'F', 'house_building': '',
-                'flat': '55', 'is_registration': True, 'is_fact': True, 'is_residence': False}
-
-    for v in tbl_name.values():
-        print(v, type(v))
-    print(tbl_name['house'])
+    pass

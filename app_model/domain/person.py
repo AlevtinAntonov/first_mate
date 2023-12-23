@@ -1,8 +1,5 @@
 from datetime import date
 
-# from app_model.db.db_connect import DB
-# from app_model.db.db_query import query_find_person
-
 
 class Person:
     def __init__(self, last_name: str = None, first_name: str = None, patronymic: str = None,
@@ -21,14 +18,3 @@ class Person:
         self.document_id = document_id
         self.sniils = sniils
         self.is_visible = is_visible
-
-    # def find_id(self, db, last_name, first_name, patronymic=None):
-    #     with db as cur:
-    #         try:
-    #             cur.execute(query_find_person(last_name, first_name, patronymic))
-    #             result = cur.fetchone()
-    #             if result:
-    #                 return result[0]
-    #             return False
-    #         except Exception:
-    #             print('Ошибка clss Parent в find_id!')
