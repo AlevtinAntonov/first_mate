@@ -1,1 +1,1 @@
-DB_PATH = './app_model/db/'
+DB_PATH = './app_model/db/db/'
