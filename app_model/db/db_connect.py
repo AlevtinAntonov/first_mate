@@ -3,7 +3,7 @@ import pathlib
 from pathlib import Path
 
 from app_model.db_path import DB_PATH
-from app_model.variables import DB_NAME, DB_DIR, DB_SUB_DIR
+from app_model.variables import DB_NAME
 
 
 class DB:

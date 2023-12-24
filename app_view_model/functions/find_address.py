@@ -1,14 +1,7 @@
 import tkinter as tk
 from app_model.db.db_connect import DB
-# from app_model.db.db_query import query_full_addresses
 from app_model.variables import CONF_D_W
 from app_view_model.functions.format_address import format_address
-
-# addresses_types = {
-#     1: ('is_registration', 'Адрес регистрации'),
-#     2: ('is_fact', 'Адрес фактический'),
-#     3: ('is_residence', 'Адрес рег. по м.преб.'),
-# }
 
 
 def find_full_addresses(db, person_id, query_full_addresses):
@@ -51,7 +44,6 @@ def print_addresses(dbase, frame, pers_id, row=42, row_step=2):
 #         with db as cur:
 #             cur.execute(query_full_addresses % (value[0],), (person_id,)).fetchone()
 #     return address_type
-
 
 
 if __name__ == '__main__':
