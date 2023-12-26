@@ -198,7 +198,7 @@ class ReferenceInfoEdit(Gui):
 
     def open_window_benefit(self):
         self.root.destroy()
-        EditBenefitWin()
+        EditBenefitWin('400', '400')
 
     def open_window_mode(self):
         self.root.destroy()
