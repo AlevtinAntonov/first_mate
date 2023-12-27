@@ -25,50 +25,88 @@ class ProjectPage(Gui):
         self.project_title = project_title
         self.label_1 = label_1
         self.label_2 = label_2
+        # self.add_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, ADD_PNG))
+        # self.update_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, EDIT_PNG))
+        # self.delete_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, DELETE_PNG))
+        # self.search_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, SEARCH_PNG))
+        # self.refresh_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, REFRESH_PNG))
+        # col_names = tuple(self.tree_columns)
+        # self.frame = ttk.Frame(self.root)
+        # self.frame.pack(fill=BOTH, expand=1)
+        self.tree = ttk.Treeview(self.root, columns=col_names, height=15, show='headings')
+
+        tk.Label(self.root, text=project_title, font=LARGE_FONT).pack(pady=5, padx=5)
+        tk.Button(self.root, text="Назад к справочникам", bg='blue', fg='white',
+                  command=lambda: self.return_to_start_page(), width=25, height=1).pack(padx=5, pady=15)
+
+    def create_widgets(self):
+        if self.tree_columns is None:
+            self.tree_columns = {'col_0': ['XXX', 0, 0], 'col_1': ['XXXXX', 250, 250],
+                            'col_2': ['XXXX', 250, 250]}
+        # self.tree_columns = tree_columns
         self.add_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, ADD_PNG))
         self.update_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, EDIT_PNG))
         self.delete_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, DELETE_PNG))
         self.search_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, SEARCH_PNG))
         self.refresh_img = tk.PhotoImage(file=path_to_file(ICO_DIRECTORY, REFRESH_PNG))
         col_names = tuple(self.tree_columns)
-        # self.frame = ttk.Frame(self.root)
-        # self.frame.pack(fill=BOTH, expand=1)
-        self.tree = ttk.Treeview(self, columns=col_names, height=15, show='headings')
-
-        tk.Label(self, text=project_title, font=LARGE_FONT).pack(pady=5, padx=5)
-        tk.Button(self, text="Назад к справочникам", bg='blue', fg='white',
-                  command=lambda: self.return_to_start_page(), width=25, height=1).pack(padx=5, pady=15)
-
-    def init_main(self):
-        toolbar = tk.Frame(self, bg='#d7d8e0', bd=2)
-        toolbar.pack(side=tk.TOP, fill=tk.X)
-
-        tk.Button(toolbar, text='Добавить', command=self.open_dialog, bg='#d7d8e0', bd=0, compound=tk.TOP,
+        frame = ttk.Frame(self.root)
+        frame.pack(fill=BOTH, expand=1)
+        tk.Button(frame, text='Добавить', command=self.open_dialog, bg='#d7d8e0', bd=0, compound=tk.TOP,
                   image=self.add_img).pack(side=tk.LEFT, padx=15)
 
-        tk.Button(toolbar, text='Редактировать', bg='#d7d8e0', bd=0, image=self.update_img, compound=tk.TOP,
+        tk.Button(frame, text='Редактировать', bg='#d7d8e0', bd=0, image=self.update_img, compound=tk.TOP,
                   command=self.open_update_dialog).pack(side=tk.LEFT, padx=15)
 
-        tk.Button(toolbar, text='Удалить', bg='#d7d8e0', bd=0, image=self.delete_img, compound=tk.TOP,
+        tk.Button(frame, text='Удалить', bg='#d7d8e0', bd=0, image=self.delete_img, compound=tk.TOP,
                   command=self.delete_records).pack(side=tk.LEFT, padx=15)
 
-        tk.Button(toolbar, text='Поиск', bg='#d7d8e0', bd=0, image=self.search_img, compound=tk.TOP,
+        tk.Button(frame, text='Поиск', bg='#d7d8e0', bd=0, image=self.search_img, compound=tk.TOP,
                   command=self.open_search_dialog).pack(side=tk.LEFT, padx=15)
 
-        tk.Button(toolbar, text='Обновить', bg='#d7d8e0', bd=0, image=self.refresh_img, compound=tk.TOP,
+        tk.Button(frame, text='Обновить', bg='#d7d8e0', bd=0, image=self.refresh_img, compound=tk.TOP,
                   command=self.view_records).pack(side=tk.LEFT, padx=15)
-
         for col, col_txt in self.tree_columns.items():
             self.tree.column(col, minwidth=col_txt[1], width=col_txt[2], anchor=tk.CENTER)
             self.tree.heading(col, text=col_txt[0])
 
         self.tree.pack(side=tk.LEFT)
 
-        scroll = tk.Scrollbar(self, command=self.tree.yview)
+        scroll = tk.Scrollbar(frame, command=self.tree.yview)
         scroll.pack(side=tk.LEFT, fill=tk.Y)
         self.tree.configure(yscrollcommand=scroll.set)
 
         self.tree.bind("<Double-1>", self.OnDoubleClick)
+    # def init_main(self):
+    #     toolbar = tk.Frame(self, bg='#d7d8e0', bd=2)
+    #     toolbar.pack(side=tk.TOP, fill=tk.X)
+    #
+    #     tk.Button(toolbar, text='Добавить', command=self.open_dialog, bg='#d7d8e0', bd=0, compound=tk.TOP,
+    #               image=self.add_img).pack(side=tk.LEFT, padx=15)
+    #
+    #     tk.Button(toolbar, text='Редактировать', bg='#d7d8e0', bd=0, image=self.update_img, compound=tk.TOP,
+    #               command=self.open_update_dialog).pack(side=tk.LEFT, padx=15)
+    #
+    #     tk.Button(toolbar, text='Удалить', bg='#d7d8e0', bd=0, image=self.delete_img, compound=tk.TOP,
+    #               command=self.delete_records).pack(side=tk.LEFT, padx=15)
+    #
+    #     tk.Button(toolbar, text='Поиск', bg='#d7d8e0', bd=0, image=self.search_img, compound=tk.TOP,
+    #               command=self.open_search_dialog).pack(side=tk.LEFT, padx=15)
+    #
+    #     tk.Button(toolbar, text='Обновить', bg='#d7d8e0', bd=0, image=self.refresh_img, compound=tk.TOP,
+    #               command=self.view_records).pack(side=tk.LEFT, padx=15)
+    #
+    #     for col, col_txt in self.tree_columns.items():
+    #         self.tree.column(col, minwidth=col_txt[1], width=col_txt[2], anchor=tk.CENTER)
+    #         self.tree.heading(col, text=col_txt[0])
+    #
+    #     self.tree.pack(side=tk.LEFT)
+    #
+    #     scroll = tk.Scrollbar(self, command=self.tree.yview)
+    #     scroll.pack(side=tk.LEFT, fill=tk.Y)
+    #     self.tree.configure(yscrollcommand=scroll.set)
+    #
+    #     self.tree.bind("<Double-1>", self.OnDoubleClick)
 
     def OnDoubleClick(self, event):
         self.tree.set(self.tree.selection()[0], '#1')

@@ -155,7 +155,7 @@ class ProjectAddNew(Gui):
 class EditBenefitWin(EditBenefit):
     def return_to_start_page(self):
         self.root.destroy()
-        ProjectAddNew()
+        ReferenceInfoEdit()
 
 
 class PrintApplicationWin(PrintAplication):
@@ -184,7 +184,7 @@ class ReferenceInfoEdit(Gui):
         tk.Button(self.root, text="Администрирование", command=self.open_window_admin, width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
-                  command=self.return_to_start_page,
+                  command=self.return_to_main_page,
                   width=25,
                   height=1).pack()
 
@@ -198,7 +198,7 @@ class ReferenceInfoEdit(Gui):
 
     def open_window_benefit(self):
         self.root.destroy()
-        EditBenefitWin('400', '400')
+        EditBenefitWin('430', '400')
 
     def open_window_mode(self):
         self.root.destroy()
@@ -208,10 +208,9 @@ class ReferenceInfoEdit(Gui):
         self.root.destroy()
         # EditAdmin()
 
-    def return_to_start_page(self):
+    def return_to_main_page(self):
         self.root.destroy()
         start_page()
-
 
 class PrintForms(Gui):
     def __init__(self, width='360', height='500'):
@@ -307,6 +306,12 @@ class NewChildCertificateWin(NewChild):
     def return_to_start_page(self):
         self.root.destroy()
         ProjectAddNew()
+
+
+class ReferenceInfoEditWin(ReferenceInfoEdit):
+    def return_to_start_page(self):
+        self.root.destroy()
+        ReferenceInfoEdit()
 
 
 class Gui_4(Gui):

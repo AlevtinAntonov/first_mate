@@ -1,10 +1,10 @@
 from app_view_model.reference_info.project_page import ProjectPage
+from app_view_model.reference_info.reference_page import ReferencePage
 
 
-class EditCitizenship(ProjectPage):
-    def __init__(self, width: str = '450', height: str = '450'):
-        super().__init__(width, height)
-
+class EditCitizenship(ReferencePage):
+    def __init__(self, width: str = '450', height: str = '450', add_img=None):
+        super().__init__(width, height, add_img)
         self.tree_columns = {'col_0': ['ИД №', 0, 0],
                              'col_1': ['Краткое наименование', 150, 150],
                              'col_2': ['Полное наименование', 350, 350]}
@@ -17,5 +17,8 @@ class EditCitizenship(ProjectPage):
         self.sort_col = 'citizenship_id'
         self.label_1 = "Краткое название"
         self.label_2 = 'Полное название'
-        self.init_main()
-        self.view_records()
+        # self.init_main()
+        # self.view_records()
+
+        def create_widgets(self):
+            super().create_widgets()
