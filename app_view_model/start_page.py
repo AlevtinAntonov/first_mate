@@ -198,7 +198,14 @@ class ReferenceInfoEdit(Gui):
 
     def open_window_benefit(self):
         self.root.destroy()
-        EditBenefitWin('430', '400')
+        data_dict = {
+            "ID": 50,
+            "First Name": 100,
+            "Last Name": 100
+        }
+        tree_view = EditBenefitWin('430', '400', data_dict)
+        tree_view.create_widgets()
+        tree_view.add_columns_with_widths(data_dict)
 
     def open_window_mode(self):
         self.root.destroy()
