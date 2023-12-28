@@ -1,9 +1,9 @@
 import tkinter as tk
 from datetime import date
+
 # import pathlib
 # from pathlib import Path
 MAIN_TITLE = "Помощник 3.23.12.01 "
-
 
 ICO_DIRECTORY = ''
 MAIN_ICO = "app_model/ico/mate.ico"
@@ -117,3 +117,9 @@ label_child_list = [
     # {'text': 'Адрес фактический', 'row': 44, 'column': 0},
     # {'text': 'Адрес рег. по месту пребывания', 'row': 46, 'column': 0},
 ]
+
+references_dict = {"focus": (['XXX', 50], ['Направленность кратко', 200], ['Полное наименование', 220]),
+                   "mode": (['XXX', 50], ['Режим кратко', 180], ['Полное наименование', 220]),
+                   "benefit": (['XXX', 50], ['Льгота кратко', 150], ['Полное наименование', 250]),
+                   "citizenship": (['XXX', 50], ['Гражданство кратко', 150], ['Полное наименование', 250]),
+                   }

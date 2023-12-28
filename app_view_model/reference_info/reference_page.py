@@ -11,23 +11,12 @@ class ReferencePage(Gui):
     def __init__(self, width: str, height: str, data_dict: dict = None):
         super().__init__(width, height)
         self.data_dict = data_dict
-        self.tree = ttk.Treeview(self)
+        self.create_widgets()
 
     def create_widgets(self):
-        # super().create_widgets()
+        self.show_buttons()
 
-
-        # Создание treeview
-        columns = list(self.data_dict.keys())
-        self.tree["columns"] = columns
-        for col in columns:
-            width = self.data_dict[col]
-            self.tree.column(col, width=width, anchor="center")
-            self.tree.heading(col, text=col, anchor="center")
-
-        self.tree.grid(row=5, column=0, columnspan=5)
-
-
+    def show_buttons(self):
         self.add_button = tk.Button(self.root, text="Добавить", command=self.add_data, width=80)
         self.add_button.grid(row=2, column=0)
 
@@ -68,38 +57,10 @@ class ReferencePage(Gui):
         self.refresh_button.config(image=refresh_img, compound="top")
         self.refresh_button.image = refresh_img  # сохраняем ссылку на изображение
 
-        # for col, col_txt in self.tree_columns.items():
-        #     self.tree.column(col, minwidth=col_txt[1], width=col_txt[2], anchor=tk.CENTER)
-        #     self.tree.heading(col, text=col_txt[0])
-        # #
-        # # self.tree.pack(side=tk.LEFT)
-        # self.tree = ttk.Treeview(self.root, columns=('short_name', 'full_name'), show="headings")
-        # # self.tree = ttk.Treeview(self.root, columns=('id', 'short_name', 'full_name'), show="headings")
-        # # self.tree.heading('id', text='ID')
-        # self.tree.heading('short_name', text='Short Name')
-        # self.tree.heading('full_name', text='Full Name')
-        # # self.tree.column('id', width=50)
-        # self.tree.column('short_name', width=180)
-        # self.tree.column('full_name', width=220)
-        # self.tree.grid(row=5, columnspan=5)
-        # scroll = tk.Scrollbar(self.root, command=self.tree.yview)
-        # scroll.pack(side=tk.LEFT, fill=tk.Y)
-        # self.tree.configure(yscrollcommand=scroll.set)
-        #
-        # self.tree.bind("<Double-1>", self.OnDoubleClick)
-        data = [
-            (1, "John", "Doe"),
-            (2, "Jane", "Smith"),
-            # Добавьте данные из вашего словаря здесь
-        ]
-
-        for entry in data:
-            self.tree.insert("", tk.END, values=entry)
-
         tk.Button(self.root, text="Назад к Справочникам", bg='DarkSlateGray', fg='white',
                   command=lambda: self.return_to_start_page(), width=25, height=1).grid(row=10, column=0, columnspan=2,
                                                                                         sticky='e')
-        self.root.pack(expand=True, fill="both")
+
     def add_data(self):
         # Логика добавления данных в таблицу benefit
         pass

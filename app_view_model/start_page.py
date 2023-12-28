@@ -3,7 +3,7 @@ from tkinter import messagebox, ttk
 
 from app_model.domain.address import Address
 from app_model.domain.referral import Referral
-from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO
+from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO, references_dict
 from app_view.gui_input_window import Gui
 from app_view.referral_labels import ReferralLabels, ReferralLabelsWin3
 from app_view_model.functions.functions import position_center
@@ -12,7 +12,8 @@ from app_view_model.new_child import NewChild
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
 from app_view_model.print_forms.print_application import PrintAplication
-from app_view_model.reference_info.edit_benefit import EditBenefit
+from app_view_model.reference_info.edit_reference import EditReference
+from app_view_model.reference_info.functions import get_sub_dict
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
 from app_view_model.reference_info.reference_organization import EditOrganization
 
@@ -152,7 +153,7 @@ class ProjectAddNew(Gui):
         start_page()
 
 
-class EditBenefitWin(EditBenefit):
+class EditReferenceWin(EditReference):
     def return_to_start_page(self):
         self.root.destroy()
         ReferenceInfoEdit()
@@ -194,22 +195,15 @@ class ReferenceInfoEdit(Gui):
 
     def open_window_citizenship(self):
         self.root.destroy()
-        EditCitizenship()
+        EditReferenceWin('430', '400', get_sub_dict("citizenship", references_dict))
 
     def open_window_benefit(self):
         self.root.destroy()
-        data_dict = {
-            "ID": 50,
-            "First Name": 100,
-            "Last Name": 100
-        }
-        tree_view = EditBenefitWin('430', '400', data_dict)
-        tree_view.create_widgets()
-        tree_view.add_columns_with_widths(data_dict)
+        EditReferenceWin('430', '400', get_sub_dict("benefit", references_dict))
 
     def open_window_mode(self):
         self.root.destroy()
-        # EditMode()
+        EditReferenceWin('430', '400', get_sub_dict("mode", references_dict))
 
     def open_window_admin(self):
         self.root.destroy()
@@ -218,6 +212,7 @@ class ReferenceInfoEdit(Gui):
     def return_to_main_page(self):
         self.root.destroy()
         start_page()
+
 
 class PrintForms(Gui):
     def __init__(self, width='360', height='500'):

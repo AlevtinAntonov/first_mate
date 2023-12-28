@@ -3,8 +3,8 @@ from app_view_model.reference_info.reference_page import ReferencePage
 
 
 class EditCitizenship(ReferencePage):
-    def __init__(self, width: str = '450', height: str = '450', add_img=None):
-        super().__init__(width, height, add_img)
+    def __init__(self, width: str = '450', height: str = '450'):
+        super().__init__(width, height)
         self.tree_columns = {'col_0': ['ИД №', 0, 0],
                              'col_1': ['Краткое наименование', 150, 150],
                              'col_2': ['Полное наименование', 350, 350]}
