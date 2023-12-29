@@ -195,15 +195,15 @@ class ReferenceInfoEdit(Gui):
 
     def open_window_citizenship(self):
         self.root.destroy()
-        EditReferenceWin('430', '400', get_sub_dict("citizenship", references_dict))
+        EditReferenceWin('500', '400', get_sub_dict("citizenship", references_dict), "citizenship")
 
     def open_window_benefit(self):
         self.root.destroy()
-        EditReferenceWin('430', '400', get_sub_dict("benefit", references_dict))
+        EditReferenceWin('500', '400', get_sub_dict("benefit", references_dict), "benefit")
 
     def open_window_mode(self):
         self.root.destroy()
-        EditReferenceWin('430', '400', get_sub_dict("mode", references_dict))
+        EditReferenceWin('500', '400', get_sub_dict("mode", references_dict), "mode")
 
     def open_window_admin(self):
         self.root.destroy()
