@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk, BOTH
 from PIL import Image, ImageTk
 
-from app_model.variables import LARGE_FONT, ICO_DIRECTORY, ADD_PNG, EDIT_PNG, DELETE_PNG, SEARCH_PNG, REFRESH_PNG
+from app_model.db.db_connect import db
+from app_model.variables import LARGE_FONT, ICO_DIRECTORY, ADD_PNG, EDIT_PNG, DELETE_PNG, SEARCH_PNG, REFRESH_PNG, \
+    CONF_0
 from app_view.gui_input_window import Gui
-from app_view_model.functions.functions import buttons_add_new, path_to_file
+from app_view_model.functions.functions import buttons_add_new, path_to_file, position_center
 
 
 class ReferencePage(Gui):
@@ -17,20 +19,24 @@ class ReferencePage(Gui):
         self.show_buttons()
 
     def show_buttons(self):
-        self.add_button = tk.Button(self.root, text="Добавить", command=self.add_data, width=80)
-        self.add_button.grid(row=2, column=0)
+        button_frame = tk.Frame(self.root, borderwidth=4, relief="groove")  # Создание фрейма с рамкой
+        button_frame.grid(row=2, column=0, columnspan=5,
+                          pady=10, padx=10)  # Добавление фрейма с кнопками в родительский контейнер
 
-        self.edit_button = tk.Button(self.root, text="Редактировать", command=self.edit_data, width=80)
-        self.edit_button.grid(row=2, column=1)
+        self.add_button = tk.Button(button_frame, text="Добавить", command=self.add_data, width=80)
+        self.add_button.grid(row=0, column=0, padx=5)
 
-        self.delete_button = tk.Button(self.root, text="Удалить", command=self.delete_data, width=80)
-        self.delete_button.grid(row=2, column=2)
+        self.edit_button = tk.Button(button_frame, text="Редактировать", command=self.edit_data, width=80)
+        self.edit_button.grid(row=0, column=1, padx=5)
 
-        self.search_button = tk.Button(self.root, text="Поиск", command=self.search_data, width=80)
-        self.search_button.grid(row=2, column=3)
+        self.delete_button = tk.Button(button_frame, text="Удалить", command=self.delete_data, width=80)
+        self.delete_button.grid(row=0, column=2, padx=5)
 
-        self.refresh_button = tk.Button(self.root, text="Обновить", command=self.refresh_data, width=80)
-        self.refresh_button.grid(row=2, column=4)
+        self.search_button = tk.Button(button_frame, text="Поиск", command=self.search_data, width=80)
+        self.search_button.grid(row=0, column=3, padx=5)
+
+        self.refresh_button = tk.Button(button_frame, text="Обновить", command=self.refresh_data, width=80)
+        self.refresh_button.grid(row=0, column=4, padx=5)
 
         add_img = Image.open(path_to_file(ICO_DIRECTORY, ADD_PNG))  # путь к изображению
         add_img = ImageTk.PhotoImage(add_img)
@@ -58,25 +64,25 @@ class ReferencePage(Gui):
         self.refresh_button.image = refresh_img  # сохраняем ссылку на изображение
 
         tk.Button(self.root, text="Назад к Справочникам", bg='DarkSlateGray', fg='white',
-                  command=lambda: self.return_to_start_page(), width=25, height=1).grid(row=10, column=0, columnspan=2,
-                                                                                        sticky='e')
+                  command=lambda: self.return_to_start_page(), width=25, height=1).grid(row=10, column=1, columnspan=3,
+                                                                                        sticky='we', pady=10)
 
     def add_data(self):
-        # Логика добавления данных в таблицу benefit
+        # Логика добавления данных в таблицу
         pass
 
     def edit_data(self):
-        # Логика редактирования данных в таблицу benefit
+        # Логика редактирования данных в таблицу
         pass
 
     def delete_data(self):
-        # Логика удаления данных из таблицы benefit
+        # Логика удаления данных из таблицы
         pass
 
     def search_data(self):
-        # Логика удаления данных из таблицы benefit
+        # Логика поиска данных в таблице
         pass
 
     def refresh_data(self):
-        # Логика удаления данных из таблицы benefit
+        # Логика обновления данных в таблице
         pass

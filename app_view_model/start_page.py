@@ -176,11 +176,11 @@ class ReferenceInfoEdit(Gui):
         tk.Label(self.root, text="Ввод справочников", font=LARGE_FONT).pack(pady=10, padx=10)
         tk.Button(self.root, text="Сведения об организации", command=self.open_window_organization, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Гражданство", command=self.open_window_citizenship, width=30,
+        tk.Button(self.root, text="Гражданство", command=lambda: self.open_window("citizenship"), width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Льготные категории", command=self.open_window_benefit,
+        tk.Button(self.root, text="Льготные категории", command=lambda: self.open_window("benefit"),
                   width=30, height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Режим пребывания", command=self.open_window_mode, width=30,
+        tk.Button(self.root, text="Режим пребывания", command=lambda: self.open_window("mode"), width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Администрирование", command=self.open_window_admin, width=30,
                   height=1).pack(padx=5, pady=5)
@@ -193,17 +193,9 @@ class ReferenceInfoEdit(Gui):
         self.root.destroy()
         EditOrganization()
 
-    def open_window_citizenship(self):
+    def open_window(self, dict_key):
         self.root.destroy()
-        EditReferenceWin('500', '400', get_sub_dict("citizenship", references_dict), "citizenship")
-
-    def open_window_benefit(self):
-        self.root.destroy()
-        EditReferenceWin('500', '400', get_sub_dict("benefit", references_dict), "benefit")
-
-    def open_window_mode(self):
-        self.root.destroy()
-        EditReferenceWin('500', '400', get_sub_dict("mode", references_dict), "mode")
+        EditReferenceWin('600', '400', get_sub_dict(dict_key, references_dict), dict_key)
 
     def open_window_admin(self):
         self.root.destroy()

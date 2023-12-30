@@ -330,9 +330,9 @@ def check_type_address(registration, fact, residence, fact_as_register, residenc
     return is_registration, is_fact, is_residence
 
 
-def button_cancel(win):
+def button_cancel(win, x=250, y=130):
     btn_cancel = ttk.Button(win, text='Закрыть', command=lambda: win.destroy())
-    btn_cancel.place(x=250, y=130)
+    btn_cancel.place(x=x, y=y)
 
 
 def show_entries(win):
