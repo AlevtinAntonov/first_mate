@@ -28,4 +28,9 @@ def get_edit_record(self, db, table_name):
         cur.execute(" SELECT * FROM %s WHERE (%s=?) " % (table_name, column_names[0]),
                     (self.tree.set(self.tree.selection()[0], '#1'),))
         row = cur.fetchone()
-        return row[1], row[2], row[0]
+        if table_name == 'age':
+            return row[0], row[1], row[2], row[3], row[4], row[5]
+        elif table_name == 'users':
+            return row[0], row[1], row[2], row[3], row[4], row[5], row[6]
+        return row[0], row[1], row[2]
+

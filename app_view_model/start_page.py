@@ -5,10 +5,11 @@ from app_model.domain.address import Address
 from app_model.domain.referral import Referral
 from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO, references_dict
 from app_view.gui_input_window import Gui
-from app_view.referral_labels import ReferralLabels, ReferralLabelsWin3
+from app_view.referral_labels import ReferralLabelsWin3, OrganizationLabels
 from app_view_model.functions.functions import position_center
 from app_view_model.new_address import AddressWin
 from app_view_model.new_child import NewChild
+from app_view_model.new_organization import NewOrganization
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
 from app_view_model.print_forms.print_application import PrintAplication
@@ -26,6 +27,10 @@ def start_page():
 
 def new_referral():
     NewReferralWin()
+
+
+def new_organization():
+    NewOrganizationWin()
 
 
 def new_parent():
@@ -60,18 +65,17 @@ class StartPage:
         self.button_3 = tk.Button(self.root, text="Приём нового воспитанника", command=self.add_new_child, width=30,
                                   height=1)
         self.button_3.pack(padx=5, pady=5)
-
         self.button_4 = tk.Button(self.root, text="Личные Дела Воспитанников", command=self.open_window_4, width=30,
                                   height=1)
         self.button_4.pack(padx=5, pady=5)
-
         self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_references, width=30, height=1)
         self.button_5.pack(padx=5, pady=5)
-
         self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_print_forms, width=30,
                                   height=1)
         self.button_6.pack(padx=5, pady=5)
-
+        self.button_7 = tk.Button(self.root, text="Сведения об организации", command=self.open_organization, width=30,
+                                  height=1)
+        self.button_7.pack(padx=5, pady=5)
         tk.Button(self.root, text="Выход", bg='DarkSlateGray', fg='white', command=lambda: self.root.destroy(),
                   width=20,
                   height=1).pack(padx=5, pady=15)
@@ -80,9 +84,13 @@ class StartPage:
         self.root.destroy()  # Close the Start Page
         gui = ProjectAddNew()
 
+    def open_organization(self):
+        self.root.destroy()  # Close the Start Page
+        window_4 = NewOrganizationWin()
+
     def open_window_4(self):
         self.root.destroy()  # Close the Start Page
-        window_4 = Gui_4('600', '600')
+        window_org = Gui_4('600', '600')
 
     def open_references(self):
         self.root.destroy()  # Close the Start Page
@@ -174,7 +182,7 @@ class ReferenceInfoEdit(Gui):
 
     def create_widgets(self):
         tk.Label(self.root, text="Ввод справочников", font=LARGE_FONT).pack(pady=10, padx=10)
-        tk.Button(self.root, text="Сведения об организации", command=self.open_window_organization, width=30,
+        tk.Button(self.root, text="Здания / площадки", command=lambda: self.open_window("building"), width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Гражданство", command=lambda: self.open_window("citizenship"), width=30,
                   height=1).pack(padx=5, pady=5)
@@ -182,16 +190,16 @@ class ReferenceInfoEdit(Gui):
                   width=30, height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Режим пребывания", command=lambda: self.open_window("mode"), width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Администрирование", command=self.open_window_admin, width=30,
+        tk.Button(self.root, text="Направленность обучения", command=lambda: self.open_window("focus"), width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Возрастная группа", command=lambda: self.open_window("age"), width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Администрирование", command=lambda: self.open_window("users"), width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
                   command=self.return_to_main_page,
                   width=25,
                   height=1).pack()
-
-    def open_window_organization(self):
-        self.root.destroy()
-        EditOrganization()
 
     def open_window(self, dict_key):
         self.root.destroy()
@@ -280,6 +288,12 @@ class NewReferralWin(NewReferral):
         ProjectAddNew()
 
 
+class NewOrganizationWin(NewOrganization):
+    def return_to_start_page(self):
+        self.root.destroy()
+        start_page()
+
+
 class NewParentWin(NewParent):
     def return_to_start_page(self):
         self.root.destroy()
@@ -306,6 +320,22 @@ class ReferenceInfoEditWin(ReferenceInfoEdit):
     def return_to_start_page(self):
         self.root.destroy()
         ReferenceInfoEdit()
+
+
+# class OrganizationWin(Gui):
+#     def __init__(self, width, height):
+#         super().__init__(width, height)
+#         self.width = width
+#         self.height = height
+#         self.root.geometry('x'.join((self.width, self.height)))
+#         self.labels = OrganizationLabels(self.root)
+#
+#     def edit_and_return(self):
+#         pass
+#
+#     def return_to_start_page(self):
+#         self.root.destroy()
+#         start_page()
 
 
 class Gui_4(Gui):

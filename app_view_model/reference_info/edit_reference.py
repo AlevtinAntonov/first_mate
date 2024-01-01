@@ -13,6 +13,11 @@ class EditReference(ReferencePage):
         super().__init__(width, height)
         self.table_name = table_name
         self.data_dict = data_dict
+        self.max_columns = 3
+        if self.table_name == 'age':
+            self.max_columns = 6  # Максимальное количество столбцов, которые можно использовать в запросе
+        elif self.table_name == 'users':
+            self.max_columns = 7
         self.show_tree(self.data_dict)
         self.view_records()
 
@@ -50,8 +55,10 @@ class EditReference(ReferencePage):
 
     def open_toplevel_window(self, window_title, lambda_function):
         top = tk.Toplevel()
-
-        top.geometry('500x170')
+        if self.table_name == 'users':
+            top.geometry('500x340')
+        else:
+            top.geometry('500x170')
         position_center(top, 500, 170)
         top.title(window_title)
         top.iconbitmap(MAIN_ICO)
@@ -61,29 +68,81 @@ class EditReference(ReferencePage):
         if lambda_function.__name__ == 'save_data' or lambda_function.__name__ == 'update_data':
             tk.Label(top, text=self.data_dict['column_1'][0]).place(x=50, y=30)
             tk.Label(top, text=self.data_dict['column_2'][0]).place(x=50, y=60)
-
             var_column_1 = ttk.Entry(top, width=45)
             var_column_1.place(x=200, y=30)
-
             var_column_2 = ttk.Entry(top, width=45)
             var_column_2.place(x=200, y=60)
 
+            if self.table_name == 'age':
+                tk.Label(top, text=self.data_dict['column_3'][0]).place(x=50, y=90)
+                tk.Label(top, text=self.data_dict['column_4'][0]).place(x=200, y=90)
+                tk.Label(top, text=self.data_dict['column_5'][0]).place(x=350, y=90)
+                var_column_0 = ttk.Entry(top)
+                var_column_3 = ttk.Entry(top, width=5)
+                var_column_3.place(x=150, y=90)
+                var_column_4 = ttk.Entry(top, width=5)
+                var_column_4.place(x=300, y=90)
+                var_column_5 = ttk.Entry(top, width=5)
+                var_column_5.place(x=450, y=90)
+            elif self.table_name == 'users':
+                var_column_0 = ttk.Entry(top)
+                tk.Label(top, text=self.data_dict['column_3'][0]).place(x=50, y=90)
+                tk.Label(top, text=self.data_dict['column_4'][0]).place(x=50, y=120)
+                tk.Label(top, text=self.data_dict['column_5'][0]).place(x=50, y=150)
+                tk.Label(top, text=self.data_dict['column_6'][0]).place(x=50, y=180)
+                var_column_3 = ttk.Entry(top, width=45)
+                var_column_3.place(x=200, y=90)
+                var_column_4 = ttk.Entry(top, width=45)
+                var_column_4.place(x=200, y=120)
+                var_column_5 = ttk.Entry(top, width=45)
+                var_column_5.place(x=200, y=150)
+                var_column_6 = ttk.Entry(top, width=45)
+                var_column_6.place(x=200, y=180)
+
             btn_ok = ttk.Button(top, text='Сохранить')
-            btn_ok.place(x=150, y=130)
-            if lambda_function.__name__ == 'save_data':
+            if self.table_name == 'users':
+                btn_ok.place(x=150, y=300)
+            else:
+                btn_ok.place(x=150, y=130)
+            if lambda_function.__name__ == 'save_data' and self.max_columns == 3:
                 btn_ok.bind('<Button-1>',
                             lambda event: (self.save_data(var_column_1.get(), var_column_2.get()), top.destroy()))
+            elif lambda_function.__name__ == 'save_data' and self.max_columns == 6:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.save_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                          var_column_4.get(), var_column_5.get()), top.destroy()))
+            elif lambda_function.__name__ == 'save_data' and self.max_columns == 7:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.save_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                          var_column_4.get(), var_column_5.get(), var_column_6.get()),
+                                           top.destroy()))
 
-            if lambda_function.__name__ == 'update_data':
+            if lambda_function.__name__ == 'update_data' and self.max_columns == 3:
                 var_column_0 = ttk.Entry(top)
                 btn_ok.bind('<Button-1>',
                             lambda event: (
                                 self.update_data(var_column_1.get(), var_column_2.get(), var_column_0.get()),
                                 top.destroy()))
-                column_1, column_2, column_0 = get_edit_record(self, db, self.table_name)
-                var_column_0.insert(0, column_0)
-                var_column_1.insert(0, column_1)
-                var_column_2.insert(0, column_2)
+                values = get_edit_record(self, db, self.table_name)[:self.max_columns]
+                for i in range(len(values)):
+                    vars()[f'var_column_{i}'].insert(0, values[i])
+            elif lambda_function.__name__ == 'update_data' and self.max_columns == 6:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.update_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                            var_column_4.get(), var_column_5.get(), var_column_0.get()),
+                                           top.destroy()))
+                values = get_edit_record(self, db, self.table_name)[:self.max_columns]
+                for i in range(len(values)):
+                    vars()[f'var_column_{i}'].insert(0, values[i])
+            elif lambda_function.__name__ == 'update_data' and self.max_columns == 7:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.update_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                            var_column_4.get(), var_column_5.get(), var_column_6.get(),
+                                                            var_column_0.get()),
+                                           top.destroy()))
+                values = get_edit_record(self, db, self.table_name)[:self.max_columns]
+                for i in range(len(values)):
+                    vars()[f'var_column_{i}'].insert(0, values[i])
         if lambda_function.__name__ == 'looking_for':
             label_search = tk.Label(top, text='Поиск')
             label_search.place(x=50, y=45)
@@ -96,7 +155,10 @@ class EditReference(ReferencePage):
             entry_search.bind('<Return>', lambda event: (self.looking_for(entry_search.get()), top.destroy()))
             btn_search.bind('<Button-1>', lambda event: top.destroy(), add='+')
 
-        button_cancel(top)
+        if self.table_name == 'users':
+            button_cancel(top, 250, 300)
+        else:
+            button_cancel(top)
         next_entries(top)
         top.grab_set()
         top.focus_set()
@@ -104,11 +166,14 @@ class EditReference(ReferencePage):
     def add_data(self):
         self.open_toplevel_window('Добавить', self.save_data)
 
-    def save_data(self, var_column_1, var_column_2):
+    def save_data(self, *args):
         with db as cur:
-            column_names = get_column_names(cur, self.table_name)
-            query = " INSERT INTO %s(%s, %s) VALUES ( ?, ?); " % (self.table_name, column_names[1], column_names[2])
-            cur.execute(query, (var_column_1, var_column_2))
+            column_names = get_column_names(cur, self.table_name)[:self.max_columns]
+            placeholders = ', '.join(['?' for _ in range(len(args))])  # Генерация плейсхолдеров для значений
+            # Генерация строки с названиями столбцов, начиная с column_names[1]
+            columns_string = ', '.join([column_names[i] for i in range(1, len(args) + 1)])
+            query = f"INSERT INTO {self.table_name} ({columns_string}) VALUES ({placeholders});"
+            cur.execute(query, args)  # Передача значений как параметров запроса
             cur.execute(" SELECT * FROM %s " % self.table_name)
             [self.tree.delete(i) for i in self.tree.get_children()]
             [self.tree.insert('', 'end', values=row) for row in cur.fetchall()]
@@ -125,12 +190,13 @@ class EditReference(ReferencePage):
     def edit_data(self):
         self.open_toplevel_window('Редактировать', self.update_data)
 
-    def update_data(self, var_column_1, var_column_2, var_column_0):
+    def update_data(self, *args):
         with db as cur:
-            column_names = get_column_names(cur, self.table_name)
-            query = " UPDATE %s SET %s=?, %s=? WHERE (%s=?); " % (
-                self.table_name, column_names[1], column_names[2], column_names[0])
-            cur.execute(query, (var_column_1, var_column_2, var_column_0))
+            # Получение только первых self.max_columns названий столбцов
+            column_names = get_column_names(cur, self.table_name)[:self.max_columns]
+            set_clause = ', '.join([f"{column}=?" for column in column_names[1:]])  # Формирование части запроса SET
+            query = f"UPDATE {self.table_name} SET {set_clause} WHERE ({column_names[0]}=?);"  # Формирование полного запроса
+            cur.execute(query, args)  # Передача значений как параметров запроса
         self.view_records()
 
     def search_data(self):

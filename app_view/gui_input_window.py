@@ -1,6 +1,9 @@
+import ctypes
+import win32api
 import tkinter as tk
-from tkinter import messagebox
-
+from tkinter import messagebox, ttk
+import keyboard
+import pyperclip
 from app_model.variables import MAIN_TITLE, MAIN_ICO
 from app_view_model.functions.functions import position_center
 from app_view_model.interfaces.input_window import InputWindow
@@ -18,14 +21,25 @@ class Gui(InputWindow):
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         position_center(self.root, self.width, self.height)
         self.create_widgets()
+        self.bind_keyboard_shortcuts()
 
     def create_widgets(self):
-        self.save_button = tk.Button(self.root, text="Save",
-                                     command=lambda: print(self.labels.entry_referral_number.get()))
-        self.save_button.grid(row=9, column=0)
+        pass
 
-        self.cancel_button = tk.Button(self.root, text="Cancel", command=self.return_to_start_page)
-        self.cancel_button.grid(row=9, column=1)
+    def bind_keyboard_shortcuts(self):
+        keyboard.add_hotkey('ctrl+c', self.copy_text)
+        keyboard.add_hotkey('ctrl+v', self.paste_text)
+
+    def copy_text(self):
+        widget = self.root.focus_get()
+        if isinstance(widget, ttk.Entry):
+            selected_text = widget.selection_get()
+            pyperclip.copy(selected_text)
+
+    def paste_text(self):
+        widget = self.root.focus_get()
+        if isinstance(widget, ttk.Entry):
+            widget.insert('insert', pyperclip.paste())
 
     def on_close(self):
         result = messagebox.askokcancel("Завершение работы", "Вы действительно хотите выйти?")

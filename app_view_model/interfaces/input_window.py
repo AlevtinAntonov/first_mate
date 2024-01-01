@@ -8,7 +8,13 @@ class InputWindow:
     def create_widgets(self):
         pass
 
+    def initialize_shortcuts(self):
+        pass
+
     def save_and_return(self):
+        pass
+
+    def edit_and_return(self):
         pass
 
     def return_to_start_page(self):

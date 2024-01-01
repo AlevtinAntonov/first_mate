@@ -1,4 +1,3 @@
-from app_view_model.reference_info.project_page import ProjectPage
 from app_view_model.reference_info.reference_page import ReferencePage
 
 

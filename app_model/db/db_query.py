@@ -1,4 +1,3 @@
-
 # REFERRAL_SAVE = 'referral', 'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', \
 #     'mode_id', 'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'
 # CHECK_PERSON_CHILD = 'child', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
@@ -11,7 +10,7 @@ document, address, address_type = 'document', 'address', 'address_type'
 citizenship, document_type, status = 'citizenship', 'document_type', 'status'
 person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email'
 region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
-person_address = 'person_address'
+person_address, organization = 'person_address', 'organization'
 
 # dictionary key: table name, vaulue : fields names
 DB_DICT = {
@@ -48,6 +47,10 @@ DB_DICT = {
     'locality_type': ('locality_type_id', 'locality_type_name'),
     'street_type': ('street_type_id', 'street_type_name'),
     'person_address': ('person_id', 'address_id'),
+    'organization': (
+        'full_name', 'short_name', 'legal_address', 'post_address', 'phone', 'email', 'okpo', 'ogrn', 'okogu', 'inn',
+        'kpp', 'position_name', 'boss_last_name', 'boss_first_name', 'boss_patronymic', 'beneficiary', 'bank_name',
+        'bic', 'cor_account', 'account'),
 }
 
 # queries
@@ -116,5 +119,15 @@ def query_insert_into_table_return_id(table_name, fields_name):
     return f'INSERT INTO {table_name} ({fields}) VALUES ( {val}) RETURNING {name_id} ;'
 
 
+def get_total_table_records(db, table_name):
+    query = f"SELECT count(*) FROM {table_name}"
+    with db as cur:
+        cur.execute(query)
+        result = cur.fetchone()
+        return result[0] if result else 0
+
+
 if __name__ == '__main__':
-    pass
+    # pass
+    query_insert = query_insert_into(organization) % DB_DICT[organization]
+    print(query_insert)
