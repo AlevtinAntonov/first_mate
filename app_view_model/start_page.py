@@ -129,8 +129,8 @@ class ProjectAddNew(Gui):
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Компенсация родит.платы", command=self.open_window, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Сведения о семье", command=self.open_window, width=30,
-                  height=1).pack(padx=5, pady=5)
+        # tk.Button(self.root, text="Сведения о семье", command=self.open_window, width=30,
+        #           height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
                   command=self.return_to_start_page,
                   width=25,
@@ -184,7 +184,11 @@ class ReferenceInfoEdit(Gui):
         tk.Label(self.root, text="Ввод справочников", font=LARGE_FONT).pack(pady=10, padx=10)
         tk.Button(self.root, text="Здания / площадки", command=lambda: self.open_window("building"), width=30,
                   height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Группа", command=lambda: self.open_window("team"), width=30,
+                  height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Гражданство", command=lambda: self.open_window("citizenship"), width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Тип документа", command=lambda: self.open_window("document_type"), width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Льготные категории", command=lambda: self.open_window("benefit"),
                   width=30, height=1).pack(padx=5, pady=5)
@@ -192,7 +196,7 @@ class ReferenceInfoEdit(Gui):
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Направленность обучения", command=lambda: self.open_window("focus"), width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Возрастная группа", command=lambda: self.open_window("age"), width=30,
+        tk.Button(self.root, text="Возрастная категория", command=lambda: self.open_window("age"), width=30,
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Администрирование", command=lambda: self.open_window("users"), width=30,
                   height=1).pack(padx=5, pady=5)

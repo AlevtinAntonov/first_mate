@@ -15,7 +15,7 @@ from app_view_model.new_address import AddressWin
 
 
 class NewChild(Gui):
-    def __init__(self, width: str = '650', height: str = '600', child: Child = None, comment: str = None):
+    def __init__(self, width: str = '650', height: str = '400', child: Child = None, comment: str = None):
         super().__init__(width, height)
         self.child = child
         self.height = height

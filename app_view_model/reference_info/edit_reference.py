@@ -18,6 +18,8 @@ class EditReference(ReferencePage):
             self.max_columns = 6  # Максимальное количество столбцов, которые можно использовать в запросе
         elif self.table_name == 'users':
             self.max_columns = 7
+        elif self.table_name == 'team':
+            self.max_columns = 5
         self.show_tree(self.data_dict)
         self.view_records()
 
@@ -84,6 +86,14 @@ class EditReference(ReferencePage):
                 var_column_4.place(x=300, y=90)
                 var_column_5 = ttk.Entry(top, width=5)
                 var_column_5.place(x=450, y=90)
+            elif self.table_name == 'team':
+                tk.Label(top, text=self.data_dict['column_3'][0]).place(x=50, y=90)
+                tk.Label(top, text=self.data_dict['column_4'][0]).place(x=300, y=90)
+                var_column_0 = ttk.Entry(top)
+                var_column_3 = ttk.Entry(top, width=5)
+                var_column_3.place(x=200, y=90)
+                var_column_4 = ttk.Entry(top, width=5)
+                var_column_4.place(x=400, y=90)
             elif self.table_name == 'users':
                 var_column_0 = ttk.Entry(top)
                 tk.Label(top, text=self.data_dict['column_3'][0]).place(x=50, y=90)
@@ -111,6 +121,10 @@ class EditReference(ReferencePage):
                 btn_ok.bind('<Button-1>',
                             lambda event: (self.save_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
                                                           var_column_4.get(), var_column_5.get()), top.destroy()))
+            elif lambda_function.__name__ == 'save_data' and self.max_columns == 5:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.save_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                          var_column_4.get()), top.destroy()))
             elif lambda_function.__name__ == 'save_data' and self.max_columns == 7:
                 btn_ok.bind('<Button-1>',
                             lambda event: (self.save_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
@@ -130,6 +144,14 @@ class EditReference(ReferencePage):
                 btn_ok.bind('<Button-1>',
                             lambda event: (self.update_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
                                                             var_column_4.get(), var_column_5.get(), var_column_0.get()),
+                                           top.destroy()))
+                values = get_edit_record(self, db, self.table_name)[:self.max_columns]
+                for i in range(len(values)):
+                    vars()[f'var_column_{i}'].insert(0, values[i])
+            elif lambda_function.__name__ == 'update_data' and self.max_columns == 5:
+                btn_ok.bind('<Button-1>',
+                            lambda event: (self.update_data(var_column_1.get(), var_column_2.get(), var_column_3.get(),
+                                                            var_column_4.get(), var_column_0.get()),
                                            top.destroy()))
                 values = get_edit_record(self, db, self.table_name)[:self.max_columns]
                 for i in range(len(values)):

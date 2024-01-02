@@ -16,7 +16,7 @@ class NewOrganization(Gui):
         self.width = width
         self.root.geometry('x'.join((self.width, self.height)))
         self.labels = OrganizationLabels(self.root)
-        self.populate_with_last_organization_data()  # Call the method to populate with the last organization data
+        # self.populate_with_last_organization_data()  # Call the method to populate with the last organization data
         self.current_record_index = 0  # Store the index of the current record
         self.total_records = get_total_table_records(db, organization)  # Count the total number of records
         self.populate_with_organization_data(self.current_record_index)  # Populate with the current organization data
