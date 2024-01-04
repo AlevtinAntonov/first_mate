@@ -58,6 +58,11 @@ class NewChild(Gui):
         # tk.Button(frame, text="Добавить адрес", bg='LimeGreen', fg='white',
         #           command=lambda: self.create_address_window(), width=25, height=1).grid(row=48, column=1)
 
+        print_test = f'{self.child_id=} {citizenship_id.get()=} {document_type_id.get()=}'
+
+        btn_test = tk.Button(frame, text='Test', command=lambda: print(print_test))
+        btn_test.grid(row=41, column=0)
+
         buttons_add_new(self, frame, 40)
         btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
         btn_ok.grid(row=40, column=3, cnf=CONF)
@@ -91,12 +96,12 @@ class NewChild(Gui):
                            search_text.lower() in person_info[0].lower()]
         self.child_select["values"] = matching_values
 
-    def create_address_window(self):
-        if isinstance(self.child_id, int):
-            with db as cur:
-                cur.execute(query_child_person_id, (self.child_id,))
-                self.person_id = cur.fetchone()[0]
-            AddressWin(self.person_id)
+    # def create_address_window(self):
+    #     if isinstance(self.child_id, int):
+    #         with db as cur:
+    #             cur.execute(query_child_person_id, (self.child_id,))
+    #             self.person_id = cur.fetchone()[0]
+    #         AddressWin(self.person_id)
     # def create_address_window(self):
     #     self.person_id = check_if_exists(db, person, self.last_name.get(), self.first_name.get(), self.patronymic.get(),
     #                                      self.date_of_birth.get())

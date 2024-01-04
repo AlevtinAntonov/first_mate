@@ -29,8 +29,8 @@ CURRENT_YEAR = date.today().year
 CURRENT_MONTH = date.today().month
 CURRENT_DAY = date.today().day
 DEFAULT_REFERRAL_NUMBER = "-23-к"
-DEFAULT_CONTRACT_BEGIN_DATE = '01.09.2023'
-DEFAULT_YEAR = 2023
+DEFAULT_CONTRACT_BEGIN_DATE = '01.09.2024'
+DEFAULT_YEAR = 2024
 DEFAULT_MONTH = 9
 DEFAULT_DAY = 1
 DEFAULT_BORN_YEAR = 2015
@@ -143,6 +143,23 @@ references_dict = {
                    ['Здание ID', 100])),
 }
 
-label_placements = [90, 120, 150, 180]
-entry_placements = [200, 200, 200, 200]
-entry_ids = ['var_column_3', 'var_column_4', 'var_column_5', 'var_column_6']
+label_compensation = [
+    {'text': 'ФИО заявителя', 'row': 6, 'column': 0},
+    {'text': 'Номер заявления', 'row': 7, 'column': 0},
+    {'text': 'Дата подачи заявления', 'row': 8, 'column': 0},
+    {'text': 'Основание компенсации', 'row': 10, 'column': 0},
+    {'text': 'Дата начала компенсации', 'row': 12, 'column': 0},
+    {'text': 'Дата окончания компенсации', 'row': 14, 'column': 0},
+    {'text': 'Наименование документа 1', 'row': 16, 'column': 0},
+    {'text': 'Реквизиты документа 1', 'row': 18, 'column': 0},
+    {'text': 'Наименование документа 2', 'row': 20, 'column': 0},
+    {'text': 'Реквизиты документа 2', 'row': 22, 'column': 0},
+    {'text': 'Наименование документа 3', 'row': 24, 'column': 0},
+    {'text': 'Реквизиты документа 3', 'row': 26, 'column': 0},
+    {'text': 'Наименование документа 4', 'row': 28, 'column': 0},
+    {'text': 'Реквизиты документа 4', 'row': 30, 'column': 0},
+    {'text': 'Наименование документа 5', 'row': 32, 'column': 0},
+    {'text': 'Реквизиты документа 5', 'row': 34, 'column': 0},
+    {'text': 'Наименование документа 6', 'row': 36, 'column': 0},
+    {'text': 'Реквизиты документа 6', 'row': 38, 'column': 0},
+]

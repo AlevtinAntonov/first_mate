@@ -4,20 +4,20 @@ from tkinter import ttk
 from app_model.variables import CONF_D_W
 
 
-def person_select_combo(db, window_frame, row, column):
+def person_select_combo(db, window_frame, row, column, person=""):
     # Создание Combobox для выбора персоны
     combo = ttk.Combobox(window_frame, width=45)
     combo.grid(row=row, column=column, columnspan=3, cnf=CONF_D_W)
-    combo['values'] = get_person_names(db)
+    combo['values'] = get_person_names(db, person)
 
     def update_info(event):
         person_name = combo.get()
-        print(f'{person_name=}')
+        # print(f'{person_name=}')
         try:
             with db as cur:
                 if len(person_name.split()) == 5 and person_name.split()[3] == 'д.р.:':
                     last_name, first_name, patronymic, _txt, date_of_birth = person_name.split()
-                    print(last_name, first_name, patronymic, date_of_birth)
+                    # print(last_name, first_name, patronymic, date_of_birth)
                     cur.execute(
                         "SELECT person_id FROM person "
                         "WHERE (last_name = ? AND first_name = ? AND patronymic = ? AND date_of_birth = ? "
@@ -27,7 +27,7 @@ def person_select_combo(db, window_frame, row, column):
                     if person:
                         person_id_var.set(person[0])
                 else:
-                    print(len(person_name.split()), person_name[3])
+                    # print(len(person_name.split()), person_name[3])
                     print(f'Error len(person_name.split()) not equal 4 and person_name.split()[3] != д.р.:')
 
         except Exception as e:
@@ -51,13 +51,28 @@ def person_select_combo(db, window_frame, row, column):
 
     # Привязка функции update_combo_options к событию ввода текста в combobox
     combo.bind("<KeyRelease>", update_combo_options)
+    # print(f'person_select_combo {person_id_var=}')
     return person_id_var
 
 
-def get_person_names(db):
+def get_person_names(db, person):
+    match person:
+        case 'parents':
+            query = """ SELECT last_name, first_name, patronymic, date_of_birth
+                        FROM person p
+                        JOIN parents pa ON p.person_id = pa.person_id
+                        ORDER BY last_name, first_name, patronymic"""
+        case 'children':
+            query = """ SELECT last_name, first_name, patronymic, date_of_birth
+                        FROM person p
+                        JOIN child c ON p.person_id = c.person_id
+                        ORDER BY last_name, first_name, patronymic"""
+        case _:
+            query = """SELECT last_name, first_name, patronymic, date_of_birth FROM person ORDER BY last_name, 
+                    first_name, patronymic"""
+
     with db as cur:
-        cur.execute("SELECT last_name, first_name, patronymic, date_of_birth "
-                    "FROM person ORDER BY last_name, first_name, patronymic")
+        cur.execute(query)
         persons = [(person[0],
                     person[1] if person[1] else '-',
                     person[2] if person[2] else '-',

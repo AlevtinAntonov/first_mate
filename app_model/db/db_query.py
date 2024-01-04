@@ -10,7 +10,8 @@ document, address, address_type = 'document', 'address', 'address_type'
 citizenship, document_type, status = 'citizenship', 'document_type', 'status'
 person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email'
 region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
-person_address, organization = 'person_address', 'organization'
+person_address, organization, compensation = 'person_address', 'organization', 'compensation'
+compensation_statement, compensation_add_document = 'compensation_statement', 'compensation_add_document'
 
 # dictionary key: table name, vaulue : fields names
 DB_DICT = {
@@ -47,12 +48,17 @@ DB_DICT = {
     'locality_type': ('locality_type_id', 'locality_type_name'),
     'street_type': ('street_type_id', 'street_type_name'),
     'person_address': ('person_id', 'address_id'),
+    'compensation': ('compensation_id', 'compensation_short_basis'),
     'organization': (
         'full_name', 'short_name', 'legal_address', 'post_address', 'phone', 'email', 'okpo', 'ogrn', 'okogu', 'inn',
         'kpp', 'position_name', 'boss_last_name', 'boss_first_name', 'boss_patronymic', 'beneficiary', 'bank_name',
         'bic', 'cor_account', 'account'),
+    'compensation_statement': ('compensation_statement_number', 'compensation_statement_date',
+                               'compensation_statement_start_date', 'compensation_statement_end_date',
+                               'compensation_id', 'child_id', 'person_id', 'movement_id', 'parental_fee_id'),
+    'compensation_add_document': ('ADD_DOCUMENT_NAME', 'ADD_DOCUMENT_DATA', 'COMPENSATION_STATEMENT_ID'),
 }
-
+# compensation_statement_number, compensation_statement_date, compensation_statement_start_date, compensation_statement_end_date, compensation_id, child_id, person_id, movement_id, parental_fee_id
 # queries
 query_find_person = """ SELECT * FROM person WHERE (last_name = ? AND first_name = ? AND (patronymic = ? OR patronymic 
 IS NULL) AND date_of_birth = ?);"""
@@ -105,6 +111,22 @@ WHERE
     AND a.%s  = True;
 """
 
+query_find_parental_fee_id = """
+SELECT pf.parental_fee_id
+FROM parental_fee pf
+JOIN child c ON pf.team_id = c.team_id
+WHERE c.is_visible = True
+AND c.child_id = ?;
+
+"""
+
+query_find_last_movement_id = """
+SELECT MAX(movement_id)
+FROM movement 
+WHERE child_id = ? 
+AND IS_VISIBLE = True;
+"""
+
 
 def query_insert_into(table_name):
     fields = ', '.join(('%s',) * (len(DB_DICT[table_name])))
@@ -129,5 +151,5 @@ def get_total_table_records(db, table_name):
 
 if __name__ == '__main__':
     # pass
-    query_insert = query_insert_into(organization) % DB_DICT[organization]
-    print(query_insert)
+    query = query_insert_into(compensation_add_document) % DB_DICT[compensation_add_document]
+    print(query)
