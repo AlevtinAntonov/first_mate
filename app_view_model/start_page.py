@@ -14,7 +14,7 @@ from app_view_model.new_child import NewChild
 from app_view_model.new_organization import NewOrganization
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
-from app_view_model.print_forms.print_application import PrintAplication
+from app_view_model.print_forms.print_application import PrintApplication
 from app_view_model.reference_info.edit_reference import EditReference
 from app_view_model.reference_info.functions import get_sub_dict
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
@@ -187,7 +187,7 @@ class EditReferenceWin(EditReference):
         ReferenceInfoEdit()
 
 
-class PrintApplicationWin(PrintAplication):
+class PrintApplicationWin(PrintApplication):
     def return_to_start_page(self):
         self.root.destroy()
         PrintForms()

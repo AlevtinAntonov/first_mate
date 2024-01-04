@@ -46,6 +46,17 @@ class Gui(InputWindow):
         if result:
             self.root.destroy()
 
+    def display_info(self, *args):
+        selected_name = self.referral_select.get()
+        for key, value in self.data.items():
+            if value[0] == selected_name:
+                self.child_full_name_label.config(text=f"ФИО ребенка: {value[3]} {value[4]} {value[5]}")
+                self.date_of_birth_label.config(text=f"Дата рождения: {value[6].strftime("%d.%m.%Y")}")
+                self.team_plan_label.config(text=f"Группа план: {value[2]}")
+                self.referral_id = key
+                self.child_id = value[7]
+                self.team_id = value[8]
+
 
 if __name__ == '__main__':
     pass
