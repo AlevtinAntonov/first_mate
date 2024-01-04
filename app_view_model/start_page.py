@@ -75,9 +75,9 @@ class StartPage:
         self.button_3 = tk.Button(self.root, text="Приём нового воспитанника", command=self.add_new_child, width=30,
                                   height=1)
         self.button_3.pack(padx=5, pady=5)
-        self.button_4 = tk.Button(self.root, text="Личные Дела Воспитанников", command=self.open_window_4, width=30,
-                                  height=1)
-        self.button_4.pack(padx=5, pady=5)
+        # self.button_4 = tk.Button(self.root, text="Личные Дела Воспитанников", command=self.open_window_4, width=30,
+        #                           height=1)
+        # self.button_4.pack(padx=5, pady=5)
         self.button_5 = tk.Button(self.root, text="Ввод справочников", command=self.open_references, width=30, height=1)
         self.button_5.pack(padx=5, pady=5)
         self.button_6 = tk.Button(self.root, text="Печать документов", command=self.open_print_forms, width=30,
