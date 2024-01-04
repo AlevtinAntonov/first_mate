@@ -57,7 +57,7 @@ class NewParent(Gui):
         citizenship_id, document_type_id, document_series, document_number, document_issued_by, document_date_of_issue = (
             document_entries(
                 frame, (18, 1)))
-        document_date_of_expire = select_date(frame, 2050, 1, 1, 26, 1, CONF_D_W)
+        document_date_of_expire = select_date(frame, 2100, 1, 1, 26, 1, CONF_D_W)
 
         phone_number = ttk.Entry(frame)
         phone_number.grid(row=30, column=1, cnf=CONF_D_W)
@@ -65,11 +65,6 @@ class NewParent(Gui):
         email_name.grid(row=32, column=1, cnf=CONF_D_W)
         sniils = ttk.Entry(frame)
         sniils.grid(row=34, column=1, cnf=CONF_D_W)
-        # comment = ttk.Entry(frame, width=50)
-        # comment.grid(row=24, column=1, cnf=CONF_D_W, columnspan=3)
-
-        # tk.Button(frame, text="Добавить адрес", bg='LimeGreen', fg='white',
-        #           command=lambda: self.create_address_window(), width=25, height=1).grid(row=48, column=1)
 
         buttons_add_new(self, frame, 40)
 

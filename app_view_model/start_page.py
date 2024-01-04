@@ -6,6 +6,7 @@ from app_model.domain.address import Address
 from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO, references_dict
 from app_view.gui_input_window import Gui
 from app_view.referral_labels import ReferralLabelsWin3, OrganizationLabels
+from app_view_model.new_agreement import NewAgreement
 from app_view_model.new_compensation import NewCompensation
 from app_view_model.functions.functions import position_center
 from app_view_model.new_address import AddressWin
@@ -45,8 +46,10 @@ def child_birth_certificate():
 def parental_fee_compensation():
     ParentalFeeCompensation()
 
+
 def new_agreement():
     ChildNewAgreement()
+
 
 def new_address():
     NewAddressWin()
@@ -134,9 +137,9 @@ class ProjectAddNew(Gui):
                   height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Ввод адреса", command=self.open_window_address, width=30,
                   height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Компенсация родит.платы", command=self.open_compensation, width=30,
-                  height=1).pack(padx=5, pady=5)
         tk.Button(self.root, text="Реквизиты договора/ прием в сад", command=self.open_agreement, width=30,
+                  height=1).pack(padx=5, pady=5)
+        tk.Button(self.root, text="Компенсация родит.платы", command=self.open_compensation, width=30,
                   height=1).pack(padx=5, pady=5)
         # tk.Button(self.root, text="Сведения о семье", command=self.open_window, width=30,
         #           height=1).pack(padx=5, pady=5)
@@ -168,8 +171,6 @@ class ProjectAddNew(Gui):
     def open_agreement(self):
         self.root.destroy()
         new_agreement()
-
-
 
     def open_window(self):
         self.root.destroy()
@@ -343,6 +344,7 @@ class ParentalFeeCompensation(NewCompensation):
     def return_to_start_page(self):
         self.root.destroy()
         ProjectAddNew()
+
 
 class ChildNewAgreement(NewAgreement):
     def return_to_start_page(self):

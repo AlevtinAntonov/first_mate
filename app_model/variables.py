@@ -1,9 +1,7 @@
 import tkinter as tk
 from datetime import date
 
-# import pathlib
-# from pathlib import Path
-MAIN_TITLE = "Помощник 3.23.12.01 "
+MAIN_TITLE = "Помощник 3.24.01.01 "
 
 ICO_DIRECTORY = ''
 MAIN_ICO = "app_model/ico/mate.ico"
@@ -20,7 +18,9 @@ DB_NAME = 'DB_PROD.FDB'
 ORGANIZATION_SHORT_NAME = "ГБДОУ дс № ХХ"
 
 LARGE_FONT = ("Verdana", 12)
+FONT = ("Verdana", 10)
 CONF = {'padx': 5, 'pady': 2, 'sticky': 'W'}
+CONF_EW = {'padx': 5, 'pady': 2, 'sticky': 'nsew'}
 CONF_DATA = {'bg': 'white', 'relief': tk.GROOVE}
 CONF_D_W = {'padx': 5, 'pady': 2, 'sticky': 'W'}
 CONF_GRID_WIDTH = {'padx': 5, 'pady': 2, 'sticky': 'ew', 'columnspan': 2}
@@ -28,7 +28,7 @@ CONF_0 = {'padx': 0, 'pady': 0}
 CURRENT_YEAR = date.today().year
 CURRENT_MONTH = date.today().month
 CURRENT_DAY = date.today().day
-DEFAULT_REFERRAL_NUMBER = "-23-к"
+DEFAULT_REFERRAL_NUMBER = "-24-к"
 DEFAULT_CONTRACT_BEGIN_DATE = '01.09.2024'
 DEFAULT_YEAR = 2024
 DEFAULT_MONTH = 9
@@ -162,4 +162,19 @@ label_compensation = [
     {'text': 'Реквизиты документа 5', 'row': 34, 'column': 0},
     {'text': 'Наименование документа 6', 'row': 36, 'column': 0},
     {'text': 'Реквизиты документа 6', 'row': 38, 'column': 0},
+]
+
+label_agreement = [
+    # {'text': 'Номер направления', 'row': 6, 'column': 0},
+    {'text': 'ФИО родителя в договоре', 'row': 14, 'column': 0},
+    {'text': 'Номер заявления о приеме', 'row': 16, 'column': 0},
+    {'text': 'Дата заявления о приеме', 'row': 18, 'column': 0},
+    {'text': 'Плановая дата прихода в группу', 'row': 20, 'column': 0},
+    {'text': 'Номер договора', 'row': 22, 'column': 0},
+    {'text': 'Дата договора', 'row': 24, 'column': 0},
+    {'text': 'Дата начала договора', 'row': 26, 'column': 0},
+    {'text': 'Приказ о зачислении №', 'row': 28, 'column': 0},
+    {'text': 'Приказ о зачислении дата', 'row': 30, 'column': 0},
+    {'text': 'Приказ об отчислении №', 'row': 32, 'column': 0},
+    {'text': 'Приказ об отчислении дата', 'row': 34, 'column': 0},
 ]

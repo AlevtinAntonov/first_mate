@@ -10,7 +10,8 @@ from app_model.variables import LARGE_FONT, label_referral_list, DEFAULT_REFERRA
     DEFAULT_DAY, CONF
 from app_view.gui_input_window import Gui
 from app_view_model.functions.functions import create_labels_in_grid, select_date, \
-    select_from_db, referral_save, save_access, next_entries, buttons_add_new, on_validate_input
+    select_from_db, save_access, next_entries, buttons_add_new, on_validate_input
+from app_view_model.functions.referral_create import referral_save
 
 
 class NewReferral(Gui):
@@ -75,7 +76,7 @@ class NewReferral(Gui):
                                                  age_id.get(),
                                                  focus_id.get(),
                                                  benefit_id.get()
-                                                 ), save_access()))
+                                                 )))
 
         next_entries(frame)
 

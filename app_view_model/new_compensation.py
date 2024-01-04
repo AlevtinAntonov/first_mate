@@ -14,13 +14,12 @@ from app_view_model.functions.person_select_combo import person_select_combo
 
 
 class NewCompensation(Gui):
-    def __init__(self, width: str = '650', height: str = '600', child: Child = None, comment: str = None):
+    def __init__(self, width: str = '650', height: str = '600', child: Child = None):
         super().__init__(width, height)
         self.child = child
         self.height = height
         self.width = width
         self.root.geometry('x'.join((self.width, self.height)))
-        self.comment = comment
 
     def create_widgets(self):
         frame = ttk.Frame(self.root)

@@ -12,6 +12,7 @@ person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email
 region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
 person_address, organization, compensation = 'person_address', 'organization', 'compensation'
 compensation_statement, compensation_add_document = 'compensation_statement', 'compensation_add_document'
+movement = 'movement'
 
 # dictionary key: table name, vaulue : fields names
 DB_DICT = {
@@ -56,7 +57,11 @@ DB_DICT = {
     'compensation_statement': ('compensation_statement_number', 'compensation_statement_date',
                                'compensation_statement_start_date', 'compensation_statement_end_date',
                                'compensation_id', 'child_id', 'person_id', 'movement_id', 'parental_fee_id'),
-    'compensation_add_document': ('ADD_DOCUMENT_NAME', 'ADD_DOCUMENT_DATA', 'COMPENSATION_STATEMENT_ID'),
+    'compensation_add_document': ('add_document_name', 'add_document_data', 'compensation_statement_id'),
+    'movement': ('statement_number', 'statement_date', 'date_of_joining_team', 'contract_number', 'contarct_date',
+                 'contract_begin_date', 'order_of_admission_number', 'order_of_admission_date',
+                 'date_of_add', 'child_id', 'referral_id',
+                 'team_id', 'person_id'),
 }
 # compensation_statement_number, compensation_statement_date, compensation_statement_start_date, compensation_statement_end_date, compensation_id, child_id, person_id, movement_id, parental_fee_id
 # queries

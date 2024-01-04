@@ -55,14 +55,6 @@ class NewChild(Gui):
         sniils = ttk.Entry(frame)
         sniils.grid(row=30, column=1, cnf=CONF_D_W)
 
-        # tk.Button(frame, text="Добавить адрес", bg='LimeGreen', fg='white',
-        #           command=lambda: self.create_address_window(), width=25, height=1).grid(row=48, column=1)
-
-        print_test = f'{self.child_id=} {citizenship_id.get()=} {document_type_id.get()=}'
-
-        btn_test = tk.Button(frame, text='Test', command=lambda: print(print_test))
-        btn_test.grid(row=41, column=0)
-
         buttons_add_new(self, frame, 40)
         btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
         btn_ok.grid(row=40, column=3, cnf=CONF)
@@ -108,6 +100,7 @@ class NewChild(Gui):
     #     print(f'{self.person_id=}')
     #     if self.person_id:
     #         AddressWin(self.person_id)
+
 
 if __name__ == '__main__':
     pass
