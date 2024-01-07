@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 
 from petrovich.main import Petrovich
 from petrovich.enums import Case, Gender
@@ -67,3 +68,36 @@ def decline_organization(original_string, genitive, keyword='учреждени�
         words_list.append(word)
         parts[0] = ' '.join(words_list)
     return ''.join((parts[0], parts[1]))
+
+
+def decline_position(position, case):
+    decline_dict = {
+        'заведующий': {
+            'родительный': 'заведующего',
+            'дательный': 'заведующему',
+            'винительный': 'заведующего'
+        },
+        'директор': {
+            'родительный': 'директора',
+            'дательный': 'директору',
+            'винительный': 'директора'
+        }
+    }
+
+    if position in decline_dict:
+        if case in decline_dict[position]:
+            return decline_dict[position][case]
+        else:
+            return "Данный падеж не поддерживается"
+    else:
+        return "Данная должность не поддерживается"
+
+
+if __name__ == '__main__':
+    print(decline_position('заведующий','родительный'))
+    start_date = datetime(datetime.now().year, 8, 31)
+    updated_date = start_date + timedelta(days=365 * 3)
+
+    print(updated_date.strftime('%d.%m.%Y'))
+    # agreement_end_date = agreement_start_date + timedelta(days=365 * row_child[19]) - timedelta(
+    #         days=1)

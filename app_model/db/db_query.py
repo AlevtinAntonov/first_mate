@@ -63,6 +63,7 @@ DB_DICT = {
                  'date_of_add', 'child_id', 'referral_id',
                  'team_id', 'person_id'),
 }
+
 # compensation_statement_number, compensation_statement_date, compensation_statement_start_date, compensation_statement_end_date, compensation_id, child_id, person_id, movement_id, parental_fee_id
 # queries
 query_find_person = """ SELECT * FROM person WHERE (last_name = ? AND first_name = ? AND (patronymic = ? OR patronymic 

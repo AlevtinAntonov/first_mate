@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from docxtpl import DocxTemplate
 
 from app_model.db.db_connect import db
@@ -9,23 +10,25 @@ from app_view_model.print_forms.functions.print_functions import declension_full
 
 def print_application(child_id, referral_id, person_id):
     with db as cur:
+        current_year = datetime.now().year
+
         row_child = cur.execute(query_child, (referral_id,)).fetchone()
         child_full_name = ' '.join((row_child[0], row_child[1], row_child[2])) if row_child else ''
         child_full_name_accusative = declension_full_name(child_full_name,
                                                           'винительный', row_child[9]) if child_full_name else ''
         child_full_name_genitive = declension_full_name(child_full_name,
                                                         'родительный', row_child[9]) if child_full_name else ''
-        child_birth_date = row_child[3].strftime('%d.%m.%Y')
-        birth_certificate_series = row_child[4] or ''
-        birth_certificate_number = row_child[5] or ''
-        birth_certificate_issued_by = row_child[6] or ''
-        birth_certificate_issued_date = row_child[7].strftime('%d.%m.%Y')
-        child_place_of_birth = row_child[8] or ''
-        focus_name = row_child[10]
-        reg_number = row_child[11]
-        reg_date = row_child[12].strftime('%d.%m.%Y')
-        start_date = row_child[13].strftime('%d.%m.%Y')
-        child_type = 'сына' if row_child[9] == 'мужской' else 'дочь'
+        child_birth_date = row_child[3].strftime('%d.%m.%Y') if row_child else ''
+        birth_certificate_series = row_child[4] if row_child else ''
+        birth_certificate_number = row_child[5] if row_child else ''
+        birth_certificate_issued_by = row_child[6] if row_child else ''
+        birth_certificate_issued_date = row_child[7].strftime('%d.%m.%Y') if row_child else ''
+        child_place_of_birth = row_child[8] if row_child else ''
+        focus_name = row_child[10] if row_child else ''
+        reg_number = row_child[11] if row_child else ''
+        reg_date = row_child[12].strftime('%d.%m.%Y') if row_child else ''
+        start_date = row_child[13].strftime('%d.%m.%Y') if row_child else ''
+        child_type = 'сына' if row_child and row_child[9] == 'мужской' else 'дочь'
 
         row_org = cur.execute(query_organization, (referral_id,)).fetchone()
         organization_full_name = row_org[0] if row_org else ''
@@ -64,6 +67,7 @@ def print_application(child_id, referral_id, person_id):
         address_reg_full = format_address(row_parent_address_reg) if row_parent_address_reg else ''
 
         context = {
+            'current_year': current_year,
             'child_full_name_accusative': child_full_name_accusative,
             'child_full_name_genitive': child_full_name_genitive,
             'child_birth_date': child_birth_date,
@@ -96,7 +100,7 @@ def print_application(child_id, referral_id, person_id):
         current_dir = os.path.dirname(__file__)
         template_path = os.path.join(current_dir, '../templates/template_application.docx')
         output_path = os.path.join(current_dir,
-                                   f'../output_docx/Заявление_прием_№_{reg_number}_{row_child[0]}_{row_child[1]}.docx')
+                                   f'../output_docx/Заявление_прием_№_{reg_number}_{child_full_name}.docx')
 
         doc_application = DocxTemplate(template_path)
         doc_application.render(context)

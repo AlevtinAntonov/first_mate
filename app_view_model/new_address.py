@@ -5,7 +5,7 @@ from app_model.db.db_connect import db
 from app_model.db.db_query import address_type, DB_DICT, region_type, town_type, locality_type, street_type, \
     query_full_addresses
 from app_model.domain.address import Address
-from app_model.variables import MAIN_ICO, label_address_list, CONF, CONF_D_W
+from app_model.variables import MAIN_ICO, label_address_list, CONF, CONF_D_W, LARGE_FONT
 from app_view.gui_input_window import Gui
 from app_view_model.functions.address_create import address_create
 from app_view_model.functions.find_address import find_full_addresses
@@ -26,6 +26,8 @@ class AddressWin(Gui):
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
+
+        tk.Label(frame, text="Адрес", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W, columnspan=4, sticky="nsew")
 
         # address = Address()
 
@@ -211,191 +213,6 @@ class AddressWin(Gui):
                                                                                        fact, residence,
                                                                                        self.same_fact_as_register_var.get(),
                                                                                        self.same_residence_as_fact_var.get())
-
-    # def create_widgets(self):
-    #     frame = ttk.Frame(self.root)
-    #     frame.pack(fill=BOTH, expand=1)
-    #     # address = Address()
-    #
-    #     def update_address_info(event):
-    #         type_var = address.address_type_id.get()
-    #         addresses_from_db_dict = find_full_addresses(db, person_select.get(), query_full_addresses)
-    #         match type_var:
-    #             case 'регистрации по месту жительства':
-    #                 dict_key = 1
-    #             case 'фактического проживания':
-    #                 dict_key = 2
-    #             case 'регистрации по месту пребывания':
-    #                 dict_key = 3
-    #
-    #         # if addresses_from_db_dict[dict_key][2]:
-    #         #     address_exists = True
-    #
-    #         if person_select.get():
-    #             zipcode_var.set(addresses_from_db_dict[dict_key][2][0])
-    #             region_var.set(addresses_from_db_dict[dict_key][2][1])
-    #             region_type_id_var.set(addresses_from_db_dict[dict_key][2][2])
-    #             district_var.set(addresses_from_db_dict[dict_key][2][3])
-    #             town_var.set(addresses_from_db_dict[dict_key][2][4])
-    #             town_type_id_var.set(addresses_from_db_dict[dict_key][2][5])
-    #             locality_var.set(addresses_from_db_dict[dict_key][2][6])
-    #             locality_type_id_var.set(addresses_from_db_dict[dict_key][2][7])
-    #             street_var.set(addresses_from_db_dict[dict_key][2][8])
-    #             street_type_id_var.set(addresses_from_db_dict[dict_key][2][9])
-    #             house_var.set(addresses_from_db_dict[dict_key][2][10])
-    #             house_body_var.set(addresses_from_db_dict[dict_key][2][11])
-    #             house_liter_var.set(addresses_from_db_dict[dict_key][2][12])
-    #             house_building_var.set(addresses_from_db_dict[dict_key][2][13])
-    #             flat_var.set(addresses_from_db_dict[dict_key][2][14])
-    #         else:
-    #             zipcode_var.set('')
-    #             region_var.set('')
-    #             region_type_id_var.set('')
-    #             district_var.set('')
-    #             town_var.set('')
-    #             town_type_id_var.set('')
-    #             locality_var.set('')
-    #             locality_type_id_var.set('')
-    #             street_var.set('')
-    #             street_type_id_var.set('')
-    #             house_var.set('')
-    #             house_body_var.set('')
-    #             house_liter_var.set('')
-    #             house_building_var.set('')
-    #             flat_var.set('')
-    #
-    #     self.address_type_id_var = tk.StringVar()
-    #     child_select_label = ttk.Label(frame, text='Выберите ФИО*', foreground='red')
-    #     child_select_label.grid(row=2, column=0, cnf=CONF_D_W)
-    #
-    #     zipcode_var = tk.StringVar()
-    #     region_var = tk.StringVar()
-    #     region_type_id_var = tk.StringVar()
-    #     district_var = tk.StringVar()
-    #     town_var = tk.StringVar()
-    #     town_type_id_var = tk.StringVar()
-    #     locality_var = tk.StringVar()
-    #     locality_type_id_var = tk.StringVar()
-    #     street_var = tk.StringVar()
-    #     street_type_id_var = tk.StringVar()
-    #     house_var = tk.StringVar()
-    #     house_body_var = tk.StringVar()
-    #     house_liter_var = tk.StringVar()
-    #     house_building_var = tk.StringVar()
-    #     flat_var = tk.StringVar()
-    #     address_exists: bool = False
-    #
-    #     person_select = person_select_combo(db, frame, 2, 1)
-    #
-    #     create_labels_in_grid(frame, label_address_list)
-    #
-    #     self.same_fact_as_register_var = tk.BooleanVar()
-    #     self.same_fact_as_register_var.set(False)
-    #     self.same_residence_as_fact_var = tk.BooleanVar()
-    #     self.same_residence_as_fact_var.set(False)
-    #     same_fact_as_register_checkbox = tk.Checkbutton(frame,
-    #                                                     text='Фактический адрес совпадает с регистрацией',
-    #                                                     variable=self.same_fact_as_register_var,
-    #                                                     onvalue=True, offvalue=False)
-    #     same_fact_as_register_checkbox.grid(row=28, column=0, cnf=CONF, columnspan=3)
-    #     same_residence_as_fact_checkbox = tk.Checkbutton(frame,
-    #                                                      text='Фактический адрес совпадает с рег. по месту пребывания',
-    #                                                      variable=self.same_residence_as_fact_var, onvalue=True,
-    #                                                      offvalue=False)
-    #
-    #     same_residence_as_fact_checkbox.grid(row=30, column=0, cnf=CONF, columnspan=3)
-    #
-    #     value_from_db = [v for v in fill_combobox(db, 'address_type', 'address_type_id',
-    #                                               'address_type_name').values()]
-    #     address.address_type_id = ttk.Combobox(frame, values=value_from_db, state='readonly', width=45)
-    #     address.address_type_id.grid(row=4, column=1, columnspan=3, cnf=CONF_D_W)
-    #
-    #     address.zipcode = ttk.Entry(frame, textvariable=zipcode_var)
-    #     address.zipcode.grid(row=6, column=2, cnf=CONF_D_W)
-    #     address.region = ttk.Entry(frame, textvariable=region_var)
-    #     address.region.grid(row=8, column=2, cnf=CONF_D_W)
-    #     address.region_type = select_from_db(frame, db, 'region_type', 'region_type_id',
-    #                                          'region_type_name', 8, 1,
-    #                                          CONF_D_W, width=10)
-    #     address.district = ttk.Entry(frame, textvariable=district_var)
-    #     address.district.grid(row=10, column=2, cnf=CONF_D_W)
-    #     address.town = ttk.Entry(frame, textvariable=town_var)
-    #     address.town.grid(row=12, column=2, cnf=CONF_D_W)
-    #     address.town_type = select_from_db(frame, db, 'town_type', 'town_type_id', 'town_type_name', 12,
-    #                                        1,
-    #                                        CONF_D_W, width=10)
-    #     address.locality = ttk.Entry(frame, textvariable=locality_var)
-    #     address.locality.grid(row=14, column=2, cnf=CONF_D_W)
-    #     address.locality_type = select_from_db(frame, db, 'locality_type', 'locality_type_id',
-    #                                            'locality_type_name', 14,
-    #                                            1,
-    #                                            CONF_D_W, width=10)
-    #     address.street = ttk.Entry(frame, textvariable=street_var)
-    #     address.street.grid(row=16, column=2, cnf=CONF_D_W)
-    #     address.street_type = select_from_db(frame, db, 'street_type', 'street_type_id',
-    #                                          'street_type_name', 16,
-    #                                          1,
-    #                                          CONF_D_W,
-    #                                          width=10)
-    #     address.house = ttk.Entry(frame, textvariable=house_var)
-    #     address.house.grid(row=18, column=2, cnf=CONF_D_W)
-    #     address.house_body = ttk.Entry(frame, textvariable=house_body_var)
-    #     address.house_body.grid(row=20, column=2, cnf=CONF_D_W)
-    #     address.house_liter = ttk.Entry(frame, textvariable=house_liter_var)
-    #     address.house_liter.grid(row=22, column=2, cnf=CONF_D_W)
-    #     address.house_building = ttk.Entry(frame, textvariable=house_building_var)
-    #     address.house_building.grid(row=24, column=2, cnf=CONF_D_W)
-    #     address.flat = ttk.Entry(frame, textvariable=flat_var)
-    #     address.flat.grid(row=26, column=2, cnf=CONF_D_W)
-    #
-    #     address.address_type_id.bind("<<ComboboxSelected>>", update_address_info)
-    #
-    #     buttons_add_new(self, frame, 40)
-    #     btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
-    #     btn_ok.grid(row=40, column=3, cnf=CONF)
-    #
-    #     btn_ok.bind('<Button-1>',
-    #                 lambda event: (take_type_address(), address_create(db, person_select.get(), address.address_type_id,
-    #                                                                    address.zipcode.get(),
-    #                                                                    address.region.get(), address.region_type_id,
-    #                                                                    address.district.get(),
-    #                                                                    address.town.get(), address.town_type_id,
-    #                                                                    address.locality.get(),
-    #                                                                    address.locality_type_id, address.street.get(),
-    #                                                                    address.street_type_id,
-    #                                                                    address.house.get(), address.house_body.get(),
-    #                                                                    address.house_liter.get(),
-    #                                                                    address.house_building.get(), address.flat.get(),
-    #                                                                    address.is_registration, address.is_fact,
-    #                                                                    address.is_residence)))
-    #     next_entries(frame)
-    #
-    #     def take_type_address():
-    #         address.address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1],
-    #                                           address.address_type_id.get())
-    #         address.region_type_id = find_id(db, region_type, DB_DICT[region_type][0], DB_DICT[region_type][1],
-    #                                          address.region_type.get())
-    #         address.town_type_id = find_id(db, town_type, DB_DICT[town_type][0], DB_DICT[town_type][1],
-    #                                        address.town_type.get())
-    #         address.locality_type_id = find_id(db, locality_type, DB_DICT[locality_type][0], DB_DICT[locality_type][1],
-    #                                            address.locality_type.get())
-    #         address.street_type_id = find_id(db, street_type, DB_DICT[street_type][0], DB_DICT[street_type][1],
-    #                                          address.street_type.get())
-    #         match address.address_type_id:
-    #             case 1:
-    #                 registration, fact, residence = True, False, False
-    #             case 2:
-    #                 registration, fact, residence = False, True, False
-    #             case 3:
-    #                 registration, fact, residence = False, False, True
-    #             case _:
-    #                 residence, registration, fact = False, False, False
-    #
-    #         address.is_registration, address.is_fact, address.is_residence = check_type_address(
-    #             registration, fact,
-    #             residence,
-    #             self.same_fact_as_register_var.get(),
-    #             self.same_residence_as_fact_var.get())
 
 
 if __name__ == '__main__':

@@ -1,11 +1,10 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox
 
 from app_model.domain.address import Address
-# from app_model.domain.referral import Referral
 from app_model.variables import LARGE_FONT, MAIN_TITLE, MAIN_ICO, references_dict
 from app_view.gui_input_window import Gui
-from app_view.referral_labels import ReferralLabelsWin3, OrganizationLabels
+from app_view.referral_labels import ReferralLabelsWin3
 from app_view_model.new_agreement import NewAgreement
 from app_view_model.new_compensation import NewCompensation
 from app_view_model.functions.functions import position_center
@@ -14,11 +13,12 @@ from app_view_model.new_child import NewChild
 from app_view_model.new_organization import NewOrganization
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
-from app_view_model.print_forms.print_application import PrintApplication
+from app_view_model.print_forms.print_agreement import PrintFormsAgreement
+from app_view_model.print_forms.print_application import PrintFormsApplication
+from app_view_model.print_forms.print_forms import PrintFormsBase
 from app_view_model.reference_info.edit_reference import EditReference
 from app_view_model.reference_info.functions import get_sub_dict
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
-from app_view_model.reference_info.reference_organization import EditOrganization
 
 
 def start_page():
@@ -92,27 +92,27 @@ class StartPage:
 
     def add_new_child(self):
         self.root.destroy()  # Close the Start Page
-        gui = ProjectAddNew()
+        ProjectAddNew()
 
     def open_organization(self):
         self.root.destroy()  # Close the Start Page
-        window_4 = NewOrganizationWin()
+        NewOrganizationWin()
 
     def open_window_4(self):
         self.root.destroy()  # Close the Start Page
-        window_org = Gui_4('600', '600')
+        Gui_4('600', '600')
 
     def open_references(self):
         self.root.destroy()  # Close the Start Page
-        window_5 = ReferenceInfoEdit('360', '500')
+        ReferenceInfoEdit('360', '500')
 
     def open_print_forms(self):
         self.root.destroy()  # Close the Start Page
-        window_5 = PrintForms('360', '500')
+        PrintForms('360', '500')
 
     def open_window_6(self):
         self.root.destroy()  # Close the Start Page
-        window_6 = Gui_4('700', '700')
+        Gui_4('700', '700')
 
     def on_close(self):
         result = messagebox.askokcancel("Завершение работы", "Вы действительно хотите выйти?")
@@ -187,12 +187,6 @@ class EditReferenceWin(EditReference):
         ReferenceInfoEdit()
 
 
-class PrintApplicationWin(PrintApplication):
-    def return_to_start_page(self):
-        self.root.destroy()
-        PrintForms()
-
-
 class ReferenceInfoEdit(Gui):
     def __init__(self, width='360', height='500'):
         super().__init__(width, height)
@@ -229,13 +223,27 @@ class ReferenceInfoEdit(Gui):
         self.root.destroy()
         EditReferenceWin('600', '400', get_sub_dict(dict_key, references_dict), dict_key)
 
-    def open_window_admin(self):
-        self.root.destroy()
-        # EditAdmin()
-
     def return_to_main_page(self):
         self.root.destroy()
         start_page()
+
+
+class PrintFormsWin(PrintFormsBase):
+    def return_to_start_page(self):
+        self.root.destroy()
+        PrintForms()
+
+
+class PrintFormsApplicationWin(PrintFormsApplication):
+    def return_to_start_page(self):
+        self.root.destroy()
+        PrintForms()
+
+
+class PrintFormsAgreementWin(PrintFormsAgreement):
+    def return_to_start_page(self):
+        self.root.destroy()
+        PrintForms()
 
 
 class PrintForms(Gui):
@@ -271,35 +279,35 @@ class PrintForms(Gui):
 
     def open_window_all_docs(self):
         self.root.destroy()
-        # EditCitizenship()
+        PrintFormsWin('all')
 
     def open_window_application(self):
         self.root.destroy()
-        PrintApplicationWin()
+        PrintFormsApplicationWin()
 
     def open_window_agreement(self):
         self.root.destroy()
-        # EditMode()
+        PrintFormsAgreementWin()
 
     def open_window_consent(self):
         self.root.destroy()
-        # EditAdmin()
+        PrintFormsWin('consent')
 
     def open_window_compensation(self):
         self.root.destroy()
-        # EditAdmin()
+        PrintFormsWin('compensation')
 
     def open_window_receipt(self):
         self.root.destroy()
-        # EditAdmin()
+        PrintFormsWin('compensation_receipt')
 
     def open_window_add_agreement(self):
         self.root.destroy()
-        # EditAdmin()
+        PrintFormsWin('add_agreement')
 
     def open_window_export(self):
         self.root.destroy()
-        # EditAdmin()
+        PrintFormsWin('export')
 
     def return_to_start_page(self):
         self.root.destroy()
