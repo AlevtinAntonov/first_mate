@@ -42,7 +42,7 @@ DB_DICT = {
                  'document_date_of_expire', 'document_type_id', 'date_of_add', 'document_assembly_record'),
     'address': ('address_type_id', 'zipcode', 'region', 'region_type_id', 'district', 'town', 'town_type_id',
                 'locality', 'locality_type_id', 'street', 'street_type_id', 'house', 'house_body', 'house_liter',
-                'house_building', 'flat', 'is_registration', 'is_fact', 'is_residence'),
+                'house_building', 'flat', 'is_registration', 'is_fact', 'is_residence', 'town_district'),
     'address_type': ('address_type_id', 'address_type_name'),
     'region_type': ('region_type_id', 'region_type_name'),
     'town_type': ('town_type_id', 'town_type_name'),

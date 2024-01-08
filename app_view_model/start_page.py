@@ -13,9 +13,7 @@ from app_view_model.new_child import NewChild
 from app_view_model.new_organization import NewOrganization
 from app_view_model.new_parent import NewParent
 from app_view_model.new_referral import NewReferral
-from app_view_model.print_forms.print_agreement import PrintFormsAgreement
-from app_view_model.print_forms.print_application import PrintFormsApplication
-from app_view_model.print_forms.print_forms import PrintFormsBase
+from app_view_model.print_forms.print_forms import PrintAllForms
 from app_view_model.reference_info.edit_reference import EditReference
 from app_view_model.reference_info.functions import get_sub_dict
 from app_view_model.reference_info.reference_citizenship import EditCitizenship
@@ -100,7 +98,7 @@ class StartPage:
 
     def open_window_4(self):
         self.root.destroy()  # Close the Start Page
-        Gui_4('600', '600')
+        Gui4('600', '600')
 
     def open_references(self):
         self.root.destroy()  # Close the Start Page
@@ -108,16 +106,22 @@ class StartPage:
 
     def open_print_forms(self):
         self.root.destroy()  # Close the Start Page
-        PrintForms('360', '500')
+        PrintAllFormsWin()
 
     def open_window_6(self):
         self.root.destroy()  # Close the Start Page
-        Gui_4('700', '700')
+        Gui4('700', '700')
 
     def on_close(self):
         result = messagebox.askokcancel("Завершение работы", "Вы действительно хотите выйти?")
         if result:
             self.root.destroy()
+
+
+class PrintAllFormsWin(PrintAllForms):
+    def return_to_start_page(self):
+        self.root.destroy()
+        start_page()
 
 
 class ProjectAddNew(Gui):
@@ -228,92 +232,6 @@ class ReferenceInfoEdit(Gui):
         start_page()
 
 
-class PrintFormsWin(PrintFormsBase):
-    def return_to_start_page(self):
-        self.root.destroy()
-        PrintForms()
-
-
-class PrintFormsApplicationWin(PrintFormsApplication):
-    def return_to_start_page(self):
-        self.root.destroy()
-        PrintForms()
-
-
-class PrintFormsAgreementWin(PrintFormsAgreement):
-    def return_to_start_page(self):
-        self.root.destroy()
-        PrintForms()
-
-
-class PrintForms(Gui):
-    def __init__(self, width='360', height='500'):
-        super().__init__(width, height)
-        self.width = width
-        self.height = height
-        self.root.geometry('x'.join((self.width, self.height)))
-
-    def create_widgets(self):
-        tk.Label(self.root, text="Печать документов", font=LARGE_FONT).pack(pady=10, padx=10)
-        tk.Button(self.root, text="Пакет документов при приеме", command=self.open_window_all_docs, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Заявление на зачисление", command=self.open_window_application,
-                  width=30, height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Договор об образовании", command=self.open_window_agreement, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Согласие на обработку данных", command=self.open_window_consent, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Заявление на компенсацию РП", command=self.open_window_compensation, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Расписка о приеме заявления на КРП", command=self.open_window_receipt, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Доп.соглашение к договору", command=self.open_window_add_agreement,
-                  width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Экспорт данных в АИСУ ПараГраф", command=self.open_window_export, width=30,
-                  height=1).pack(padx=5, pady=5)
-        tk.Button(self.root, text="Назад в Главное меню", bg='DarkSlateGray', fg='white',
-                  command=self.return_to_start_page,
-                  width=25,
-                  height=1).pack()
-
-    def open_window_all_docs(self):
-        self.root.destroy()
-        PrintFormsWin('all')
-
-    def open_window_application(self):
-        self.root.destroy()
-        PrintFormsApplicationWin()
-
-    def open_window_agreement(self):
-        self.root.destroy()
-        PrintFormsAgreementWin()
-
-    def open_window_consent(self):
-        self.root.destroy()
-        PrintFormsWin('consent')
-
-    def open_window_compensation(self):
-        self.root.destroy()
-        PrintFormsWin('compensation')
-
-    def open_window_receipt(self):
-        self.root.destroy()
-        PrintFormsWin('compensation_receipt')
-
-    def open_window_add_agreement(self):
-        self.root.destroy()
-        PrintFormsWin('add_agreement')
-
-    def open_window_export(self):
-        self.root.destroy()
-        PrintFormsWin('export')
-
-    def return_to_start_page(self):
-        self.root.destroy()
-        start_page()
-
-
 class NewReferralWin(NewReferral):
     def return_to_start_page(self):
         self.root.destroy()
@@ -366,23 +284,7 @@ class ReferenceInfoEditWin(ReferenceInfoEdit):
         ReferenceInfoEdit()
 
 
-# class OrganizationWin(Gui):
-#     def __init__(self, width, height):
-#         super().__init__(width, height)
-#         self.width = width
-#         self.height = height
-#         self.root.geometry('x'.join((self.width, self.height)))
-#         self.labels = OrganizationLabels(self.root)
-#
-#     def edit_and_return(self):
-#         pass
-#
-#     def return_to_start_page(self):
-#         self.root.destroy()
-#         start_page()
-
-
-class Gui_4(Gui):
+class Gui4(Gui):
     def __init__(self, width, height):
         super().__init__(width, height)
         self.width = width

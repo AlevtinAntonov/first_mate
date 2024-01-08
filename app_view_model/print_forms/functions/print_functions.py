@@ -70,6 +70,20 @@ def decline_organization(original_string, genitive, keyword='учреждени�
     return ''.join((parts[0], parts[1]))
 
 
+def decline_region(region, case):
+    if case == 'родительный':
+        if region.endswith('ий'):
+            region = region[:-2] + 'ого'
+        elif region.endswith('ый'):
+            region = region[:-2] + 'ого'
+    elif case == 'дательный':
+        if region.endswith('ий'):
+            region = region[:-2] + 'ому'
+        elif region.endswith('ый'):
+            region = region[:-2] + 'ому'
+    return region
+
+
 def decline_position(position, case):
     decline_dict = {
         'заведующий': {
@@ -94,7 +108,7 @@ def decline_position(position, case):
 
 
 if __name__ == '__main__':
-    print(decline_position('заведующий','родительный'))
+    print(decline_position('заведующий', 'родительный'))
     start_date = datetime(datetime.now().year, 8, 31)
     updated_date = start_date + timedelta(days=365 * 3)
 

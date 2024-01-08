@@ -93,13 +93,6 @@ class NewParent(Gui):
                                                                                sniils.get(),
                                                                                )))
         next_entries(frame)
-        # pers_id = check_if_exists(db, person, self.last_name.get(), self.first_name.get(), self.patronymic.get(),
-        #                           self.date_of_birth.get())
-        # print(f'{pers_id=}')
-        # if pers_id:
-        #     print_addresses(db, frame, pers_id)
-        # else:
-        #     print_addresses(db, frame, pers_id)
 
     def validate_input_btn_ok(*args):
         all_entries_filled = all(entry.get() for entry in entry_list)

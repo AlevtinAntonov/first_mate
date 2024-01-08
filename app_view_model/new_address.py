@@ -5,7 +5,7 @@ from app_model.db.db_connect import db
 from app_model.db.db_query import address_type, DB_DICT, region_type, town_type, locality_type, street_type, \
     query_full_addresses
 from app_model.domain.address import Address
-from app_model.variables import MAIN_ICO, label_address_list, CONF, CONF_D_W, LARGE_FONT
+from app_model.variables import MAIN_ICO, label_address_list, CONF, CONF_D_W, LARGE_FONT, town_districts
 from app_view.gui_input_window import Gui
 from app_view_model.functions.address_create import address_create
 from app_view_model.functions.find_address import find_full_addresses
@@ -15,7 +15,7 @@ from app_view_model.functions.person_select_combo import person_select_combo
 
 
 class AddressWin(Gui):
-    def __init__(self, width: str = '650', height: str = '450'):
+    def __init__(self, width: str = '650', height: str = '500'):
         # окно для ввода адреса
         super().__init__(width, height)
         self.width = width
@@ -115,13 +115,13 @@ class AddressWin(Gui):
                                                         text='Фактический адрес совпадает с регистрацией',
                                                         variable=self.same_fact_as_register_var,
                                                         onvalue=True, offvalue=False)
-        same_fact_as_register_checkbox.grid(row=28, column=0, cnf=CONF, columnspan=3)
+        same_fact_as_register_checkbox.grid(row=30, column=0, cnf=CONF, columnspan=3)
         same_residence_as_fact_checkbox = tk.Checkbutton(frame,
                                                          text='Фактический адрес совпадает с рег. по месту пребывания',
                                                          variable=self.same_residence_as_fact_var, onvalue=True,
                                                          offvalue=False)
 
-        same_residence_as_fact_checkbox.grid(row=30, column=0, cnf=CONF, columnspan=3)
+        same_residence_as_fact_checkbox.grid(row=32, column=0, cnf=CONF, columnspan=3)
 
         value_from_db = [v for v in fill_combobox(db, 'address_type', 'address_type_id',
                                                   'address_type_name').values()]
@@ -165,6 +165,8 @@ class AddressWin(Gui):
         self.house_building.grid(row=24, column=2, cnf=CONF_D_W)
         self.flat = ttk.Entry(frame, textvariable=flat_var)
         self.flat.grid(row=26, column=2, cnf=CONF_D_W)
+        self.town_district = ttk.Combobox(frame, values=list(town_districts.keys()))
+        self.town_district.grid(row=28, column=2, cnf=CONF_D_W)
 
         self.address_type_id.bind("<<ComboboxSelected>>", update_address_info)
 
@@ -185,7 +187,7 @@ class AddressWin(Gui):
                                                                        self.house_liter.get(),
                                                                        self.house_building.get(), self.flat.get(),
                                                                        self.is_registration, self.is_fact,
-                                                                       self.is_residence)))
+                                                                       self.is_residence, self.town_district.get())))
         next_entries(frame)
 
         def take_type_address():

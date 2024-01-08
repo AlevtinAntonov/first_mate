@@ -57,6 +57,18 @@ class Gui(InputWindow):
                 self.child_id = value[7]
                 self.team_id = value[8]
 
+    def update_referral_options(self, event):
+        typed_text = self.referral_select.get()
+
+        if typed_text == "":
+            filtered_values = [value[0] for value in
+                               self.data.values()]  # Показать все варианты, если нет введенного текста
+        else:
+            filtered_values = [value[0] for value in self.data.values() if
+                               typed_text.lower() in str(value).lower()]  # Фильтрация вариантов по введенному тексту
+
+        self.referral_select["values"] = filtered_values
+
 
 if __name__ == '__main__':
     pass

@@ -8,7 +8,7 @@ from app_view_model.functions.functions import find_id, save_access
 def address_create(db, person_id, address_type_id, zipcode, region, region_type_id, district, town, town_type_id,
                    locality,
                    locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,
-                   is_registration, is_fact, is_residence):
+                   is_registration, is_fact, is_residence, town_district):
     # address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1], address_type_id)
     # region_type_id = find_id(db, region_type, DB_DICT[region_type][0], DB_DICT[region_type][1], region_type_id)
     # town_type_id = find_id(db, town_type, DB_DICT[town_type][0], DB_DICT[town_type][1], town_type_id)
@@ -22,7 +22,7 @@ def address_create(db, person_id, address_type_id, zipcode, region, region_type_
             cur.execute(query_add_address,
                         (address_type_id, zipcode, region, region_type_id, district, town, town_type_id, locality,
                          locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,
-                         is_registration, is_fact, is_residence))
+                         is_registration, is_fact, is_residence, town_district))
             # address_id from table ADDRESS
             address_id = cur.fetchone()[0]
 

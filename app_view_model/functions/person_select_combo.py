@@ -37,9 +37,9 @@ def person_select_combo(db, window_frame, row, column, person=""):
         typed_text = combo.get()
 
         if typed_text == "":
-            filtered_values = get_person_names(db)  # Показать все варианты, если нет введенного текста
+            filtered_values = get_person_names(db, person)  # Показать все варианты, если нет введенного текста
         else:
-            filtered_values = [value for value in get_person_names(db) if
+            filtered_values = [value for value in get_person_names(db, person) if
                                typed_text.lower() in str(value).lower()]  # Фильтрация вариантов по введенному тексту
 
         combo['values'] = filtered_values
