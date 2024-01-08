@@ -190,6 +190,7 @@ label_compensation = [
 label_agreement = [
     # {'text': 'Номер направления', 'row': 6, 'column': 0},
     {'text': 'ФИО родителя в договоре', 'row': 14, 'column': 0},
+    {'text': 'Группа план', 'row': 15, 'column': 0},
     {'text': 'Номер заявления о приеме', 'row': 16, 'column': 0},
     {'text': 'Дата заявления о приеме', 'row': 18, 'column': 0},
     {'text': 'Плановая дата прихода в группу', 'row': 20, 'column': 0},

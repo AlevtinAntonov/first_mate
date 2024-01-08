@@ -39,7 +39,8 @@ DB_DICT = {
     'status': ('status_id', 'status_name'),
     'document_type': ('document_type_id', 'document_type_name'),
     'document': ('document_series', 'document_number', 'document_issued_by', 'document_date_of_issue',
-                 'document_date_of_expire', 'document_type_id', 'date_of_add', 'document_assembly_record'),
+                 'document_date_of_expire', 'document_type_id', "place_of_birth", 'date_of_add',
+                 'document_assembly_record'),
     'address': ('address_type_id', 'zipcode', 'region', 'region_type_id', 'district', 'town', 'town_type_id',
                 'locality', 'locality_type_id', 'street', 'street_type_id', 'house', 'house_body', 'house_liter',
                 'house_building', 'flat', 'is_registration', 'is_fact', 'is_residence', 'town_district'),
@@ -117,14 +118,14 @@ WHERE
     AND a.%s  = True;
 """
 
-query_find_parental_fee_id = """
-SELECT pf.parental_fee_id
-FROM parental_fee pf
-JOIN child c ON pf.team_id = c.team_id
-WHERE c.is_visible = True
-AND c.child_id = ?;
-
-"""
+# query_find_parental_fee_id = """
+# SELECT pf.parental_fee_id
+# FROM parental_fee pf
+# JOIN child c ON pf.team_id = c.team_id
+# WHERE c.is_visible = True
+# AND c.child_id = ?;
+#
+# """
 
 query_find_last_movement_id = """
 SELECT MAX(movement_id)

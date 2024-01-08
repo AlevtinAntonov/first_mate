@@ -52,10 +52,10 @@ class Gui(InputWindow):
             if value[0] == selected_name:
                 self.child_full_name_label.config(text=f"ФИО ребенка: {value[3]} {value[4]} {value[5]}")
                 self.date_of_birth_label.config(text=f"Дата рождения: {value[6].strftime("%d.%m.%Y")}")
-                self.team_plan_label.config(text=f"Группа план: {value[2]}")
+                self.team_plan_label.config(text=f"Группа по направлению: {value[2]}")
                 self.referral_id = key
                 self.child_id = value[7]
-                self.team_id = value[8]
+                self.refferal_team_id = value[2]
 
     def update_referral_options(self, event):
         typed_text = self.referral_select.get()

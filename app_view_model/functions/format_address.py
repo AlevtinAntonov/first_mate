@@ -7,10 +7,10 @@ dict_address = {
 }
 
 
-# Add values from 5 last elements of list to empty dictionary
+# Add values from 5 last elements of list to empty dictionary without last element(later added)
 def assign_values(dictionary, lst):
     keys = list(dictionary.keys())
-    values = lst[-5:]
+    values = lst[-6:-1]
     for i in range(5):
         dictionary[keys[i]] = values[i] if values[i] != '' and values[i] is not None else None
     return dictionary
@@ -57,6 +57,7 @@ def format_address(list_input):
 
 
 if __name__ == '__main__':
+
     address_list = (
         '197375', 'Санкт-Петербург', None, '', 'Санкт-Петербург', 'г.', '', None, 'Вербная', 'ул.', '20/3', '', 'А', '',
         '300')

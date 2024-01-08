@@ -98,7 +98,7 @@ def decline_position(position, case):
         }
     }
 
-    if position in decline_dict:
+    if position.lower() in decline_dict:
         if case in decline_dict[position]:
             return decline_dict[position][case]
         else:

@@ -2,8 +2,9 @@ from datetime import date
 from tkinter import messagebox
 
 from app_model.db.db_query import query_insert_into_table_return_id, compensation_statement, DB_DICT, \
-    query_find_parental_fee_id, query_find_last_movement_id, query_insert_into, compensation_add_document, compensation
+    query_find_last_movement_id, query_insert_into, compensation_add_document, compensation
 from app_view_model.functions.functions import save_access, find_id
+from app_view_model.print_forms.functions.db_queries import query_find_parental_fee_id
 
 
 def compensation_create(db, child_id, person_select, number_application_compensation,

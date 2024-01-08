@@ -11,9 +11,9 @@ from app_view_model.print_forms.functions.print_functions import declension_full
     decline_position, decline_region
 
 
-def print_all_forms(child_id, referral_id, person_id, result: dict):
-    print(child_id, referral_id, person_id, result)
+def print_all_forms(child_id, referral_id, person_id, result: dict, document_man):
     with db as cur:
+
         current_year = datetime.now().year
         applicant_registration_country = child_registration_country = 'Российская Федерация'
 
@@ -70,6 +70,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
         position_name_capital = position_name.capitalize() if position_name else ''
         position_name_genitive = decline_position(position_name, 'родительный')
         position_name_dative = decline_position(position_name, 'дательный')
+        position_name_capital_dative = decline_position(position_name, 'дательный').capitalize()
         director_full_name = ' '.join((row_org[12], row_org[13], row_org[14])) if row_org else ''
         director_full_name_genitive = declension_full_name(director_full_name, 'родительный',
                                                            row_org[21]) if director_full_name else ''
@@ -110,6 +111,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
 
         ending_naming = 'ая' if row_parent and parent_gender == 'женский' else 'ый'
         ending_resident = 'ая' if row_parent and parent_gender == 'женский' else 'ий'
+        ending_consent = 'ей' if row_parent and parent_gender == 'женский' else 'его'
         parent_short_name = ' '.join((row_parent[11], row_parent[0])) if row_parent else ''
         father = 'X' if row_parent and row_parent[14] == 'отец' else ''
         mother = 'X' if row_parent and row_parent[14] == 'мать' else ''
@@ -143,7 +145,8 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
         child_registration_house_building = ''.join(
             (child_registration_house_body, child_registration_house_liter, child_registration_house_build))
         child_registration_flat = row_child_address_reg[14] if row_child_address_reg else ''
-        child_registration_town_district = row_child_address_reg[15] if row_child_address_reg[15] else ''
+        child_registration_town_district = row_child_address_reg[15] if (
+                row_child_address_reg and len(row_child_address_reg) > 15 and row_child_address_reg[15]) else '-'
 
         row_child_address_fact = cur.execute(
             query_address % ("CHILD", "CHILD.PERSON_ID", "CHILD.CHILD_ID", "ADDRESS.IS_FACT"),
@@ -159,25 +162,27 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
         child_fact_house_building = ''.join(
             (child_fact_house_body, child_fact_house_liter, child_fact_house_build))
         child_fact_flat = row_child_address_fact[14] if row_child_address_reg else ''
-        child_fact_town_district = row_child_address_fact[15] if row_child_address_fact[15] else ''
+        child_fact_town_district = row_child_address_fact[15] if (
+                row_child_address_fact and len(row_child_address_fact) > 15 and row_child_address_fact[15]) else '-'
 
         row_parent_address_reg = cur.execute(
             query_address % ("PERSON", "PERSON.PERSON_ID", "PERSON.PERSON_ID", "ADDRESS.IS_REGISTRATION"),
             (person_id,)).fetchone()
         parent_reg_full_address = format_address(row_parent_address_reg) if row_parent_address_reg else ''
-        applicant_registration_index = row_parent_address_reg[0] if row_parent_address_reg else ''
-        applicant_registration_region = row_parent_address_reg[1] if row_parent_address_reg else ''
-        applicant_registration_district = row_parent_address_reg[3] if row_parent_address_reg else ''
-        applicant_registration_town = row_parent_address_reg[4] if row_parent_address_reg else ''
-        applicant_registration_street = row_parent_address_reg[8] if row_parent_address_reg else ''
-        applicant_registration_house = row_parent_address_reg[10] if row_parent_address_reg else ''
+        applicant_registration_index = row_parent_address_reg[0] if row_parent_address_reg else '-'
+        applicant_registration_region = row_parent_address_reg[1] if row_parent_address_reg else '-'
+        applicant_registration_district = row_parent_address_reg[3] if row_parent_address_reg else '-'
+        applicant_registration_town = row_parent_address_reg[4] if row_parent_address_reg else '-'
+        applicant_registration_street = row_parent_address_reg[8] if row_parent_address_reg else '-'
+        applicant_registration_house = row_parent_address_reg[10] if row_parent_address_reg else '-'
         applicant_registration_house_body = row_parent_address_reg[11] if row_parent_address_reg else ''
         applicant_registration_house_liter = row_parent_address_reg[12] if row_parent_address_reg else ''
         applicant_registration_house_build = row_parent_address_reg[13] if row_parent_address_reg else ''
         applicant_registration_house_building = ''.join(
             (applicant_registration_house_body, applicant_registration_house_liter, applicant_registration_house_build))
-        applicant_registration_flat = row_parent_address_reg[14] if row_parent_address_reg else ''
-        applicant_registration_town_district = row_parent_address_reg[15] if row_parent_address_reg[15] else ''
+        applicant_registration_flat = row_parent_address_reg[14] if row_parent_address_reg else '-'
+        applicant_registration_town_district = row_parent_address_reg[15] if (
+                row_parent_address_reg and len(row_parent_address_reg) > 15 and row_parent_address_reg[15]) else '-'
 
         row_parent_address_fact = cur.execute(
             query_address % ("PERSON", "PERSON.PERSON_ID", "PERSON.PERSON_ID", "ADDRESS.IS_FACT"),
@@ -219,7 +224,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
         document_details_5 = doc_datas[4][1] if len(doc_datas) > 4 else ''
         document_details_6 = doc_datas[5][1] if len(doc_datas) > 5 else ''
 
-        # user_short_name =
+        user_short_name = document_man
         context = {
             # 'add_agr_start_date': add_agr_start_date,
             # 'add_agreement_date': add_agreement_date,
@@ -299,6 +304,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
             'ending_naming': ending_naming,
             'ending_naming_child': ending_naming_child,
             'ending_resident': ending_resident,
+            'ending_consent': ending_consent,
             'father': father,
             'focus_name': focus_name,
             'inn_number': inn_number,
@@ -338,6 +344,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
             'phone_number': phone_number,
             'position_name': position_name,
             'position_name_capital': position_name_capital,
+            'position_name_capital_dative': position_name_capital_dative,
             'position_name_dative': position_name_dative,
             'position_name_genitive': position_name_genitive,
             'program_name': program_name,
@@ -357,26 +364,19 @@ def print_all_forms(child_id, referral_id, person_id, result: dict):
             'year_compensation': year_compensation,
         }
 
-        current_dir = os.path.dirname(__file__)
+        current_dir = os.path.abspath(os.path.dirname(__file__))
         for action, values in result.items():
             if values[0] == 1:
-                template_path = os.path.join(current_dir, values[2])
-                output_path = os.path.join(current_dir,
-                                           f'../../output_docx/{child_last_name}_{child_first_name}_{agreement_number}'
-                                           f'_{values[3]}.docx')
+                template_path = os.path.abspath(os.path.join(current_dir, values[2]))
+                output_path = os.path.abspath(os.path.join(current_dir,
+                                                           f'../../../output_docx/{child_last_name}_{child_first_name}_'
+                                                           f'{agreement_number}_{values[3]}.docx'))
                 doc_application = DocxTemplate(template_path)
                 doc_application.render(context)
                 doc_application.save(output_path)
-
-                print(f"Выполняется {action}")
                 if values[1] == 1:
                     os.startfile(output_path)
-                    print(f"Открывается для просмотра {values[2]}")
 
-        # current_dir = os.path.dirname(__file__)
-        # template_path = os.path.join(current_dir, '../templates/template_application.docx')
-        # output_path = os.path.join(current_dir,
-        #                            f'../output_docx/Заявление_прием_№_{reg_number}_{child_full_name}.docx')
-        # doc_application = DocxTemplate(template_path)
-        # doc_application.render(context)
-        # doc_application.save(output_path)
+
+if __name__ == '__main__':
+    pass

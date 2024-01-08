@@ -4,7 +4,8 @@ from tkinter import ttk, BOTH
 from app_model.db.db_connect import db
 from app_model.variables import LARGE_FONT, CONF_D_W, CONF
 from app_view.gui_input_window import Gui
-from app_view_model.functions.functions import buttons_add_new, next_entries, select_from_db, fill_combobox
+from app_view_model.functions.functions import buttons_add_new, next_entries, select_from_db, fill_combobox, \
+    fill_combobox_users
 from app_view_model.functions.person_select_combo import person_select_combo
 from app_view_model.functions.referral_select import referral_select
 from app_view_model.print_forms.functions.print_all_forms import print_all_forms
@@ -26,10 +27,9 @@ class PrintAllForms(Gui):
         self.person_select = person_select_combo(db, frame, 10, 1, 'parents')
 
         tk.Label(frame, text='Документовед: ').grid(row=11, column=0, cnf=CONF)
-        self.data = fill_combobox(db, 'users', None, None)
         self.user_select = ttk.Combobox(frame, width=30)
-        self.user_select["values"] = [person_info for person_info in self.data.values()]
         self.user_select.grid(row=11, column=1, columnspan=1, cnf=CONF)
+        fill_combobox_users(db, self.user_select)
 
         tk.Label(frame, text="Отметьте какие документы нужно сформировать").grid(row=12, column=0, cnf=CONF_D_W,
                                                                                  columnspan=4,
@@ -69,19 +69,20 @@ class PrintAllForms(Gui):
                                                                  self.referral_id,
                                                                  self.person_select.get(),
                                                                  self.execute_actions(),
+                                                                 self.user_select.get()
                                                                  )))
         next_entries(frame)
 
     def execute_actions(self):
         actions = {
-            "Заявление на прием": (self.var1, 1, '../../templates/template_application.docx', 'Заявление_на_прием'),
-            "Договор об образовании": (self.var2, 2, '../../templates/template_agreement.docx', 'Договор'),
-            "Согласие на обработку перс.данных": (self.var3, 3, '../../templates/template_consent.docx', 'Согласие_ОПД'),
-            "Заявление на компенсацию": (self.var4, 4, '../../templates/template_compensation.docx', 'Компенсация'),
+            "Заявление на прием": (self.var1, 1, '../../../templates/template_application.docx', 'Заявление_на_прием'),
+            "Договор об образовании": (self.var2, 2, '../../../templates/template_agreement.docx', 'Договор'),
+            "Согласие на обработку перс.данных": (self.var3, 3, '../../../templates/template_consent.docx', 'Согласие_ОПД'),
+            "Заявление на компенсацию": (self.var4, 4, '../../../templates/template_compensation.docx', 'Компенсация'),
             "Расписка о приеме компенсации": (
-                self.var5, 5, '../../templates/template_compensation_receipt.docx', 'Компенсация_расписка'),
+                self.var5, 5, '../../../templates/template_compensation_receipt.docx', 'Компенсация_расписка'),
             "Доп. соглашение о род.плате": (
-                self.var6, 6, '../../templates/template_add_agreement.docx', 'Доп_согл_о_род_плате'),
+                self.var6, 6, '../../../templates/template_add_agreement.docx', 'Доп_согл_о_род_плате'),
         }
 
         results_for_print = {}

@@ -6,11 +6,11 @@ from app_view_model.functions.functions import save_access, find_id, current_tim
 
 def movement_create(db, statement_number, statement_date, date_of_joining_team, contract_number, contarct_date,
                     contract_begin_date, order_of_admission_number, order_of_admission_date,
-                    child_id, referral_id, team_id, person_id):
+                    child_id, referral_id, team_id_value, person_id):
     try:
         order_of_admission_number = order_of_admission_number or '0'
         order_of_admission_date = '01.01.2000' if order_of_admission_number == '0' else order_of_admission_date
-
+        team_id = find_id(db, 'team', 'team_id', 'team_name', team_id_value)
         with db as cur:
             query_check_contract_number = """SELECT 1 FROM movement WHERE contract_number = ? AND is_visible = True"""
             exists = cur.execute(query_check_contract_number, (contract_number,)).fetchone()

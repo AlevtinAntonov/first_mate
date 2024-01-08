@@ -31,6 +31,14 @@ def path_to_file(dir_file, file):
     return path.abspath(path.join(dir_file, file))
 
 
+def fill_combobox_users(db, combobox):
+    with db as cur:
+        cur.execute("SELECT LAST_NAME, INITIALS FROM USERS")
+        data = cur.fetchall()
+        values = [f"{initials}{last_name}" for last_name, initials in data]  # объединение фамилии с инициалами
+        combobox['values'] = values
+
+
 # Функция возвращает значения из таблиц базы для комбобокса.
 def fill_combobox(db, tbl_name, field_id, field_data):
     dict_combo = {}
@@ -51,12 +59,6 @@ def fill_combobox(db, tbl_name, field_id, field_data):
                 INNER JOIN child ON person.person_id = child.person_id WHERE (((child.is_visible)=True))
                 ORDER BY PERSON.last_name, PERSON.first_name, PERSON.patronymic;""")
             [dict_combo.update({row[0]: ' '.join((row[1], row[2], row[3]))}) for row in cur.fetchall()]
-        elif tbl_name == 'users':
-            cur.execute(
-                """SELECT users.user_id, users.last_name, users.initials FROM users 
-                WHERE (((users.is_visible)=True))
-                ORDER BY users.last_name;""")
-            [dict_combo.update({row[0]: ' '.join((row[1], row[2]))}) for row in cur.fetchall()]
         else:
             cur.execute(
                 " SELECT %s, %s FROM %s WHERE is_visible ORDER BY %s;" % (field_id, field_data, tbl_name, field_id))

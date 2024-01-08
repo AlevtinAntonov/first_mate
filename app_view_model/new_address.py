@@ -192,7 +192,7 @@ class AddressWin(Gui):
 
         def take_type_address():
             self.address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1],
-                                           self.address_type_id.get())
+                                           self.address_type_id.get() or self.address_type_id)
             self.region_type_id = find_id(db, region_type, DB_DICT[region_type][0], DB_DICT[region_type][1],
                                           self.region_type.get())
             self.town_type_id = find_id(db, town_type, DB_DICT[town_type][0], DB_DICT[town_type][1],

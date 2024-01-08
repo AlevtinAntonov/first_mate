@@ -21,7 +21,7 @@ def child_db_cert_create(db, child_id: int, citizenship_id, sniils: str, documen
             # Add document of child to table DOCUMENT and return document_id for table PERSON
             query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
             cur.execute(query_add_doc, (document_series, document_number, document_issued_by, document_date_of_issue,
-                                        document_date_of_expire, document_type_id, current_timestamp(),
+                                        document_date_of_expire, document_type_id, place_of_birth, current_timestamp(),
                                         document_assembly_record))
             # document_id from table DOCUMENT
             document_id = cur.fetchone()[0]
