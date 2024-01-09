@@ -12,7 +12,7 @@ from app_view_model.print_forms.functions.print_functions import declension_full
 
 
 def print_all_forms(child_id, referral_id, person_id, result: dict, document_man):
-    with db as cur:
+    with (db as cur):
 
         current_year = datetime.now().year
         applicant_registration_country = child_registration_country = 'Российская Федерация'
@@ -133,70 +133,100 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
             query_address % ("CHILD", "CHILD.PERSON_ID", "CHILD.CHILD_ID", "ADDRESS.IS_REGISTRATION"),
             (child_id,)).fetchone()
         child_reg_full_address = format_address(row_child_address_reg) if row_child_address_reg else ''
-        child_registration_index = row_child_address_reg[0] if row_child_address_reg else ''
-        child_registration_region = row_child_address_reg[1] if row_child_address_reg else ''
-        child_registration_district = row_child_address_reg[3] if row_child_address_reg else ''
-        child_registration_town = row_child_address_reg[4] if row_child_address_reg else ''
-        child_registration_street = row_child_address_reg[8] if row_child_address_reg else ''
-        child_registration_house = row_child_address_reg[10] if row_child_address_reg else ''
+        child_registration_index = row_child_address_reg[0] if row_child_address_reg and row_child_address_reg[
+            0] != "" else '-'
+        child_registration_region = row_child_address_reg[1] if row_child_address_reg and row_child_address_reg[
+            1] != "" else '-'
+        child_registration_district = row_child_address_reg[3] if row_child_address_reg and row_child_address_reg[
+            3] != "" else '-'
+        child_registration_town = row_child_address_reg[4] if row_child_address_reg and row_child_address_reg[
+            4] != "" else '-'
+        child_registration_street = row_child_address_reg[8] if row_child_address_reg and row_child_address_reg[
+            8] != "" else '-'
+        child_registration_house = row_child_address_reg[10] if row_child_address_reg and row_child_address_reg[
+            10] != "" else '-'
         child_registration_house_body = row_child_address_reg[11] if row_child_address_reg else ''
         child_registration_house_liter = row_child_address_reg[12] if row_child_address_reg else ''
         child_registration_house_build = row_child_address_reg[13] if row_child_address_reg else ''
         child_registration_house_building = ''.join(
             (child_registration_house_body, child_registration_house_liter, child_registration_house_build))
-        child_registration_flat = row_child_address_reg[14] if row_child_address_reg else ''
+        child_registration_house_building = child_registration_house_building if child_registration_house_building != "" else '-'
+        child_registration_flat = row_child_address_reg[14] if row_child_address_reg and row_child_address_reg[
+            14] != "" else '-'
         child_registration_town_district = row_child_address_reg[15] if (
-                row_child_address_reg and len(row_child_address_reg) > 15 and row_child_address_reg[15]) else '-'
+                row_child_address_reg and len(row_child_address_reg) > 15 and row_child_address_reg[15] and
+                row_child_address_reg[0] != "") else '-'
 
         row_child_address_fact = cur.execute(
             query_address % ("CHILD", "CHILD.PERSON_ID", "CHILD.CHILD_ID", "ADDRESS.IS_FACT"),
             (child_id,)).fetchone()
         child_fact_full_address = format_address(
             row_child_address_fact) if row_child_address_fact else child_reg_full_address
-        child_fact_town = row_child_address_fact[4] if row_child_address_fact else ''
-        child_fact_street = row_child_address_fact[8] if row_child_address_fact else ''
-        child_fact_house = row_child_address_fact[10] if row_child_address_fact else ''
+        child_fact_town = row_child_address_fact[4] if row_child_address_fact and row_child_address_fact[
+            4] != "" else '-'
+        child_fact_street = row_child_address_fact[8] if row_child_address_fact and row_child_address_fact[
+            8] != "" else '-'
+        child_fact_house = row_child_address_fact[10] if row_child_address_fact and row_child_address_fact[
+            10] != "" else '-'
         child_fact_house_body = row_child_address_fact[11] if row_child_address_fact else ''
         child_fact_house_liter = row_child_address_fact[12] if row_child_address_fact else ''
         child_fact_house_build = row_child_address_fact[13] if row_child_address_fact else ''
         child_fact_house_building = ''.join(
             (child_fact_house_body, child_fact_house_liter, child_fact_house_build))
-        child_fact_flat = row_child_address_fact[14] if row_child_address_reg else ''
+        child_fact_house_building = child_fact_house_building if child_fact_house_building != "" else '-'
+        child_fact_flat = row_child_address_fact[14] if row_child_address_reg and row_child_address_fact[
+            14] != "" else '-'
         child_fact_town_district = row_child_address_fact[15] if (
-                row_child_address_fact and len(row_child_address_fact) > 15 and row_child_address_fact[15]) else '-'
+                row_child_address_fact and len(row_child_address_fact) > 15 and row_child_address_fact[15] and
+                row_child_address_fact[15] != "") else '-'
 
         row_parent_address_reg = cur.execute(
             query_address % ("PERSON", "PERSON.PERSON_ID", "PERSON.PERSON_ID", "ADDRESS.IS_REGISTRATION"),
             (person_id,)).fetchone()
         parent_reg_full_address = format_address(row_parent_address_reg) if row_parent_address_reg else ''
-        applicant_registration_index = row_parent_address_reg[0] if row_parent_address_reg else '-'
-        applicant_registration_region = row_parent_address_reg[1] if row_parent_address_reg else '-'
-        applicant_registration_district = row_parent_address_reg[3] if row_parent_address_reg else '-'
-        applicant_registration_town = row_parent_address_reg[4] if row_parent_address_reg else '-'
-        applicant_registration_street = row_parent_address_reg[8] if row_parent_address_reg else '-'
-        applicant_registration_house = row_parent_address_reg[10] if row_parent_address_reg else '-'
+        applicant_registration_index = row_parent_address_reg[0] if row_parent_address_reg and \
+                                                                    row_parent_address_reg[0] != "" else '-'
+        applicant_registration_region = row_parent_address_reg[1] if row_parent_address_reg and \
+                                                                     row_parent_address_reg[1] != "" else '-'
+        applicant_registration_district = row_parent_address_reg[3] if row_parent_address_reg and \
+                                                                       row_parent_address_reg[3] != "" else '-'
+        applicant_registration_town = row_parent_address_reg[4] if row_parent_address_reg and \
+                                                                   row_parent_address_reg[4] != "" else '-'
+        applicant_registration_street = row_parent_address_reg[8] if row_parent_address_reg and \
+                                                                     row_parent_address_reg[8] != "" else '-'
+        applicant_registration_house = row_parent_address_reg[10] if row_parent_address_reg and \
+                                                                     row_parent_address_reg[10] != "" else '-'
         applicant_registration_house_body = row_parent_address_reg[11] if row_parent_address_reg else ''
         applicant_registration_house_liter = row_parent_address_reg[12] if row_parent_address_reg else ''
         applicant_registration_house_build = row_parent_address_reg[13] if row_parent_address_reg else ''
         applicant_registration_house_building = ''.join(
             (applicant_registration_house_body, applicant_registration_house_liter, applicant_registration_house_build))
-        applicant_registration_flat = row_parent_address_reg[14] if row_parent_address_reg else '-'
+        applicant_registration_house_building = applicant_registration_house_building if applicant_registration_house_building != "" else '-'
+        applicant_registration_flat = row_parent_address_reg[14] if row_parent_address_reg and \
+                                                                    row_parent_address_reg[14] != "" else '-'
         applicant_registration_town_district = row_parent_address_reg[15] if (
-                row_parent_address_reg and len(row_parent_address_reg) > 15 and row_parent_address_reg[15]) else '-'
+                row_parent_address_reg and len(row_parent_address_reg) > 15 and row_parent_address_reg[15] and
+                row_parent_address_reg[15] != "") else '-'
 
         row_parent_address_fact = cur.execute(
             query_address % ("PERSON", "PERSON.PERSON_ID", "PERSON.PERSON_ID", "ADDRESS.IS_FACT"),
             (person_id,)).fetchone()
-        applicant_fact_town = row_parent_address_fact[4] if row_parent_address_fact else ''
-        applicant_fact_street = row_parent_address_fact[8] if row_parent_address_fact else ''
-        applicant_fact_house = row_parent_address_fact[10] if row_parent_address_fact else ''
+        applicant_fact_town = row_parent_address_fact[4] if row_parent_address_fact and row_parent_address_fact[
+            4] != "" else '-'
+        applicant_fact_street = row_parent_address_fact[8] if row_parent_address_fact and row_parent_address_fact[
+            8] != "" else '-'
+        applicant_fact_house = row_parent_address_fact[10] if row_parent_address_fact and row_parent_address_fact[
+            10] != "" else '-'
         applicant_fact_house_body = row_parent_address_fact[11] if row_parent_address_fact else ''
         applicant_fact_house_liter = row_parent_address_fact[12] if row_parent_address_fact else ''
         applicant_fact_house_build = row_parent_address_fact[13] if row_parent_address_fact else ''
         applicant_fact_house_building = ''.join(
             (applicant_fact_house_body, applicant_fact_house_liter, applicant_fact_house_build))
-        applicant_fact_flat = row_parent_address_fact[14] if row_parent_address_fact else ''
-        applicant_fact_town_district = row_parent_address_fact[15] if row_parent_address_fact[15] else ''
+        applicant_fact_house_building = applicant_fact_house_building if applicant_fact_house_building != "" else '-'
+        applicant_fact_flat = row_parent_address_fact[14] if row_parent_address_fact and row_parent_address_fact[
+            14] != "" else '-'
+        applicant_fact_town_district = row_parent_address_fact[15] if row_parent_address_fact[15] and \
+                                                                      row_parent_address_fact[15] != "" else '-'
 
         row_compensation = cur.execute(query_compensation, (person_id,)).fetchone()
         order_number_compensation = row_compensation[0] if row_compensation else ''
@@ -207,22 +237,34 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
         row_compensation_add_docs = cur.execute(query_add_docs, (person_id,)).fetchall()
         doc_datas = []
         for i in range(1, 7):
-            doc_datas.append((row_compensation_add_docs[0], row_compensation_add_docs[1])) if len(
-                row_compensation_add_docs) > i else (" ", " ")
+            doc_datas.append(row_compensation_add_docs) if len(
+                row_compensation_add_docs) > i else (" ")
+        # Initialize variables with default values
+        document_1 = " "
+        document_details_1 = " "
+        document_2 = " "
+        document_details_2 = " "
+        document_3 = " "
+        document_details_3 = " "
+        document_4 = " "
+        document_details_4 = " "
+        document_5 = " "
+        document_details_5 = " "
+        document_6 = " "
+        document_details_6 = " "
 
-        document_1 = doc_datas[0][0] if len(doc_datas) > 0 else ''
-        document_2 = doc_datas[1][0] if len(doc_datas) > 1 else ''
-        document_3 = doc_datas[2][0] if len(doc_datas) > 2 else ''
-        document_4 = doc_datas[3][0] if len(doc_datas) > 3 else ''
-        document_5 = doc_datas[4][0] if len(doc_datas) > 4 else ''
-        document_6 = doc_datas[5][0] if len(doc_datas) > 5 else ''
-
-        document_details_1 = doc_datas[0][1] if len(doc_datas) > 0 else ''
-        document_details_2 = doc_datas[1][1] if len(doc_datas) > 1 else ''
-        document_details_3 = doc_datas[2][1] if len(doc_datas) > 2 else ''
-        document_details_4 = doc_datas[3][1] if len(doc_datas) > 3 else ''
-        document_details_5 = doc_datas[4][1] if len(doc_datas) > 4 else ''
-        document_details_6 = doc_datas[5][1] if len(doc_datas) > 5 else ''
+        if len(row_compensation_add_docs) > 0:
+            document_1, document_details_1 = row_compensation_add_docs[0]
+        if len(row_compensation_add_docs) > 1:
+            document_2, document_details_2 = row_compensation_add_docs[1]
+        if len(row_compensation_add_docs) > 2:
+            document_3, document_details_3 = row_compensation_add_docs[2]
+        if len(row_compensation_add_docs) > 3:
+            document_4, document_details_4 = row_compensation_add_docs[3]
+        if len(row_compensation_add_docs) > 4:
+            document_5, document_details_5 = row_compensation_add_docs[4]
+        if len(row_compensation_add_docs) > 5:
+            document_6, document_details_6 = row_compensation_add_docs[5]
 
         user_short_name = document_man
         context = {
