@@ -76,7 +76,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
                                                            row_org[21]) if director_full_name else ''
         organization_full_name_genitive = decline_organization(organization_full_name,
                                                                'родительный') if organization_full_name else ''
-        ending_acting = 'ий' if row_org else ''
+
         organization_short_name = row_org[1] if row_org else ''
         organization_full_reg_address = row_org[2] if row_org else ''
         organization_phone = row_org[4] if row_org else ''
@@ -107,6 +107,8 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
 
         phone_number = row_parent[9] if row_parent else ''
         parent_email = row_parent[10] if row_parent else ''
+        ending_acting_male = 'его' if row_org else ''
+        ending_acting = 'ий' if row_org else ''
         ending_female = 'а' if row_parent and parent_gender == 'женский' else ''
 
         ending_naming = 'ая' if row_parent and parent_gender == 'женский' else 'ый'
@@ -255,16 +257,22 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
 
         if len(row_compensation_add_docs) > 0:
             document_1, document_details_1 = row_compensation_add_docs[0]
+            document_1 += ' (копия)'
         if len(row_compensation_add_docs) > 1:
             document_2, document_details_2 = row_compensation_add_docs[1]
+            document_2 += ' (копия)'
         if len(row_compensation_add_docs) > 2:
             document_3, document_details_3 = row_compensation_add_docs[2]
+            document_3 += ' (копия)'
         if len(row_compensation_add_docs) > 3:
             document_4, document_details_4 = row_compensation_add_docs[3]
+            document_4 += ' (копия)'
         if len(row_compensation_add_docs) > 4:
             document_5, document_details_5 = row_compensation_add_docs[4]
+            document_5 += ' (копия)'
         if len(row_compensation_add_docs) > 5:
             document_6, document_details_6 = row_compensation_add_docs[5]
+            document_6 += ' (копия)'
 
         user_short_name = document_man
         context = {
@@ -341,6 +349,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
             'document_details_4': document_details_4,
             'document_details_5': document_details_5,
             'document_details_6': document_details_6,
+            'ending_acting_male': ending_acting_male,
             'ending_acting': ending_acting,
             'ending_female': ending_female,
             'ending_naming': ending_naming,
