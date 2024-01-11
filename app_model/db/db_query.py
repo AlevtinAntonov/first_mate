@@ -1,8 +1,3 @@
-# REFERRAL_SAVE = 'referral', 'referral_number', 'referral_date', 'referral_begin_date', 'referral_comment', 'child_id', \
-#     'mode_id', 'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'
-# CHECK_PERSON_CHILD = 'child', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
-# CHECK_PARENT = 'parents', 'last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'
-
 # variable - table name = string 'table name'
 referral, person, child, parents, building, age = 'referral', 'person', 'child', 'parents', 'building', 'age'
 focus, mode, benefit, team, gender = 'focus', 'mode', 'benefit', 'team', 'gender'
@@ -117,15 +112,6 @@ WHERE
     AND pa.is_visible = True
     AND a.%s  = True;
 """
-
-# query_find_parental_fee_id = """
-# SELECT pf.parental_fee_id
-# FROM parental_fee pf
-# JOIN child c ON pf.team_id = c.team_id
-# WHERE c.is_visible = True
-# AND c.child_id = ?;
-#
-# """
 
 query_find_last_movement_id = """
 SELECT MAX(movement_id)

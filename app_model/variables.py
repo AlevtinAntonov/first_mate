@@ -202,3 +202,8 @@ label_agreement = [
     {'text': 'Приказ об отчислении №', 'row': 32, 'column': 0},
     {'text': 'Приказ об отчислении дата', 'row': 34, 'column': 0},
 ]
+
+fields_names = {
+            'persons': (("Фамилия", 'last_name', None), ("Имя", 'first_name', 0), ("Отчество", 'patronymic', 0),
+                        ("Дата рождения", 'date_of_birth', 'DateEntry'), ("Отдел", 'department', 'Combobox')),
+        }
