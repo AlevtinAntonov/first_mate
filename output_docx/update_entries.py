@@ -1,92 +1,91 @@
+import sqlite3
 import tkinter as tk
 from tkinter import ttk
-import sqlite3
-
-def check_and_display_data():
-    # Подключение к базе данных
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-
-    # Запрос данных из базы данных
-    cursor.execute("SELECT * FROM your_table")
-    data = cursor.fetchall()
-
-    # Отображение данных в ttk.Entry
-    for index, entry_data in enumerate(data):
-        entry_values[index].delete(0, tk.END)  # Очистка содержимого ttk.Entry
-        entry_values[index].insert(0, entry_data)  # Вставка данных из базы данных в ttk.Entry
-
-    conn.close()
-
-def update_database(event):
-    # Обновление данных в базе данных при изменении ttk.Entry
-    # Напишите здесь код для обновления базы данных
-
-root = tk.Tk()
-
-# Создание ttk.Entry
-entry_values = []
-for i in range(5):  # Пример: 5 ttk.Entry
-    entry = ttk.Entry(root)
-    entry_values.append(entry)
-    entry_values[i].grid(row=i, column=0)
-
-# Проверка и отображение данных при запуске приложения
-check_and_display_data()
-
-# Связывание события <<Modified>> с функцией обновления базы данных
-for entry in entry_values:
-    entry.bind("<<Modified>>", update_database)
-
-root.mainloop()
+from tkinter import simpledialog
 
 
-import tkinter as tk
-from tkinter import ttk
-import sqlite3
+class UserDataApp:
+    def __init__(self):
+        self.conn = sqlite3.connect('test_db.db')
+        self.cursor = self.conn.cursor()
+        self.root = tk.Tk()
+        self.root.title("Пользователи")
+        self.combobox = ttk.Combobox(self.root)
+        self.combobox.grid(row=0, column=0, columnspan=2)
+        self.refresh_combobox_data()
+        self.combobox.bind('<<ComboboxSelected>>', self.on_combobox_select)
+        self.fields_names = {
+            'persons': (("Фамилия", 'last_name'), ("Имя", 'first_name'), ("Отчество", 'patronymic'),
+                        ("Дата рождения", 'date_of_birth'), ("Отдел", 'department')),
+        }
+        self.labels = []
+        self.create_labels()
+        self.root.mainloop()
 
-def check_and_display_data():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+    def refresh_combobox_data(self):
+        self.cursor.execute("SELECT id, last_name, first_name, patronymic FROM persons")
+        rows = self.cursor.fetchall()
+        user_data = ["{} {} {} - {}".format(row[1], row[2], row[3], row[0]) for row in rows]
+        self.combobox['values'] = user_data
 
-    cursor.execute("SELECT * FROM your_table")
-    data = cursor.fetchall()
+    def update_user_data(self, user_id, field, new_value):
+        self.cursor.execute(f'UPDATE persons SET {field} = ? WHERE id = ?', (new_value, user_id))
+        self.conn.commit()
 
-    for index, entry_data in enumerate(data):
-        entry_values[index].delete(0, tk.END)
-        entry_values[index].insert(0, entry_data)
+    def on_combobox_select(self, event):
+        combo_selection = self.combobox.get().split(' - ')
+        if len(combo_selection) < 2:
+            return
+        user_id = combo_selection[-1]
+        self.cursor.execute("SELECT * FROM persons WHERE id = ?", (user_id,))
+        user = self.cursor.fetchone()
+        if user:
+            for i, label in enumerate(self.labels):
+                label.config(text=f"{user[i + 1]}")
 
-    # Проверка значения в Combobox
-    combobox_value = combobox.get()
-    if combobox_value:  # Проверяем, что значение выбрано
-        if (combobox_value, ) in data:  # Проверяем наличие значения в базе данных
-            print(f"{combobox_value} найдено в базе данных")
+    def create_labels(self):
+        for i, field in enumerate(self.fields_names['persons']):
+            tk.Label(self.root, text=field[0]).grid(row=i * 2 + 2, column=0, sticky='W')
+            label = ttk.Label(self.root, text="-", background="white", width=20)
+            label.grid(row=i * 2 + 2, column=1, sticky='W')
+
+            # Use default argument for lambda function to capture the current value of i
+            label.bind("<Double-1>",
+                       lambda event, idx=i, field=field[1], label=label: self.on_label_double_click(event, idx, field,
+                                                                                                    label))
+
+            self.labels.append(label)
+
+    def on_label_double_click(self, event, idx, field, label):
+        user_id = self.combobox.get().split(' - ')[-1]
+        if field == 'department':
+            top = tk.Toplevel(self.root)
+            top.title("Выбор отдела")
+
+            new_department = tk.StringVar()
+            new_department.set(label.cget("text"))
+
+            combobox = ttk.Combobox(top, textvariable=new_department, values=["Первый", "Второй", "Третий"])
+            combobox.pack(pady=10)
+
+            button = ttk.Button(top, text="Сохранить",
+                                command=lambda: self.save_department(user_id, new_department.get(), top))
+            button.pack()
         else:
-            print(f"{combobox_value} не найдено в базе данных")
+            new_value = simpledialog.askstring("Редактирование", f"Введите новое значение",
+                                               initialvalue=label.cget("text"))
+            if new_value:
+                label.config(text=new_value)
+                self.update_user_data(user_id, field, new_value)
+                self.refresh_combobox_data()
+                self.on_combobox_select(None)
 
-    conn.close()
+    def save_department(self, user_id, new_department, top):
+        self.update_user_data(user_id, 'department', new_department)
+        top.destroy()
+        self.refresh_combobox_data()
+        self.on_combobox_select(None)
 
-def update_database(event):
-    # Обновление данных в базе данных при изменении ttk.Entry
-    # Реализация обновления базы данных
 
-root = tk.Tk()
-
-entry_values = []
-for i in range(5):
-    entry = ttk.Entry(root)
-    entry_values.append(entry)
-    entry_values[i].grid(row=i, column=0)
-
-# Добавление ttk.Combobox
-options = ["Option 1", "Option 2", "Option 3"]  # Пример значений для Combobox
-combobox = ttk.Combobox(root, values=options)
-combobox.grid(row=6, column=0)
-
-check_and_display_data()
-
-# Связывание события <<Modified>> с функцией обновления базы данных
-for entry in entry_values:
-    entry.bind("<<Modified>>", update_database)
-
-root.mainloop()
+if __name__ == "__main__":
+    UserDataApp()
