@@ -59,6 +59,7 @@ class NewPersonalDatas(Gui):
         tab_control = ttk.Notebook(self.root)
         tab_control.pack(expand=True, fill="both")
 
+        tab_birth_certificate = ttk.Frame(tab_control)
         tab_referral = ttk.Frame(tab_control)
         tab_personal_datas = ttk.Frame(tab_control)
         tab_compensation = ttk.Frame(tab_control)
@@ -78,6 +79,7 @@ class NewPersonalDatas(Gui):
         # frame_contract_data.grid(row=0, column=1, sticky="nsew")
         frame_contract_data.pack(side="left", expand=True)
 
+        tab_control.add(tab_birth_certificate, text='Св-во о рождении')
         tab_control.add(tab_personal_datas, text='Личное дело')
         tab_control.add(tab_compensation, text='Компенсация')
         tab_control.add(tab_family, text='Семья')
