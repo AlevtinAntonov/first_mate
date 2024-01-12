@@ -5,61 +5,57 @@ from tkinter import simpledialog
 
 from tkcalendar import DateEntry
 
+from app_model.db.db_connect import db
+from app_model.variables import fields_names
+
 
 class UpdateDataApp:
-    def __init__(self, tab):
+    def __init__(self, tab, child_id):
         # self.conn = sqlite3.connect('test_db.db')
         # self.cursor = self.conn.cursor()
         # self.root = tk.Tk()
         # self.root.title("Пользователи")
+        self.child_id = child_id
         self.tab = tab
-        self.combobox = ttk.Combobox(self.tab, width=30)
-        self.combobox.grid(row=0, column=0, columnspan=2)
-        self.refresh_combobox_data('persons')
-        self.combobox.bind('<<ComboboxSelected>>', lambda event: self.on_combobox_select(None, 'persons'))
+        # self.combobox = ttk.Combobox(self.tab, width=30)
+        # self.combobox.grid(row=0, column=0, columnspan=2)
+        # self.refresh_combobox_data('persons')
+        # self.combobox.bind('<<ComboboxSelected>>', lambda event: self.on_combobox_select(None, 'persons'))
         self.key_name = 'person'
-        self.fields_names = {
-            'person': (("Фамилия1", 'last_name', None, 'persons'),
-                        ("Имя", 'first_name', 0, 'persons'),
-                        ("Отчество", 'patronymic', 0, 'persons'),
-                        ("Дата рождения", 'date_of_birth', 'DateEntry', 'persons'),
-                        ("Отдел", 'department', 'Combobox', 'persons')),
-            'child': (("Фамилия", 'last_name', None, 'persons'),
-                      ("Имя", 'first_name', 0, 'persons'),
-                      ("Отчество", 'patronymic', 0, 'persons'),
-                      ("Дата рождения", 'date_of_birth', 'DateEntry', 'persons'),
-                      ("Отдел", 'department', 'Combobox', 'persons')),
-        }
+        self.fields_names = fields_names
 
         self.labels = []
         self.create_labels()
-        self.root.mainloop()
+        # self.root.mainloop()
 
     def refresh_combobox_data(self, table_name):
-        self.cursor.execute(f"SELECT id, last_name, first_name, patronymic FROM {table_name}")
-        rows = self.cursor.fetchall()
-        user_data = ["{} {} {} - {}".format(row[1], row[2], row[3], row[0]) for row in rows]
-        self.combobox['values'] = user_data
+        with db as cur:
+            cur.execute(f"SELECT id, last_name, first_name, patronymic FROM {table_name}")
+            rows = cur.fetchall()
+            user_data = ["{} {} {} - {}".format(row[1], row[2], row[3], row[0]) for row in rows]
+            self.combobox['values'] = user_data
 
     def update_user_data(self, table_name, user_id, field, new_value):
-        self.cursor.execute(f'UPDATE {table_name} SET {field} = ? WHERE id = ?', (new_value, user_id))
-        self.conn.commit()
+        with db as cur:
+            cur.execute(f'UPDATE {table_name} SET {field} = ? WHERE id = ?', (new_value, user_id))
 
     def on_combobox_select(self, event, table_name):
-        combo_selection = self.combobox.get().split(' - ')
-        if len(combo_selection) < 2:
-            return
-        user_id = combo_selection[-1]
-        self.cursor.execute(f"SELECT * FROM {table_name} WHERE id = ?", (user_id,))
-        user = self.cursor.fetchone()
-        if user:
-            for i, label in enumerate(self.labels):
-                label.config(text=f"{user[i + 1]}")
+        # combo_selection = self.combobox.get().split(' - ')
+        # if len(combo_selection) < 2:
+        #     return
+        # user_id = combo_selection[-1]
+        user_id = self.child_id
+        with db as cur:
+            cur.execute(f"SELECT * FROM {table_name} WHERE id = ?", (user_id,))
+            user = cur.fetchone()
+            if user:
+                for i, label in enumerate(self.labels):
+                    label.config(text=f"{user[i + 1]}")
 
     def create_labels(self):
         for i, field in enumerate(self.fields_names[self.key_name]):
-            tk.Label(self.root, text=field[0]).grid(row=i * 2 + 2, column=0, sticky='W')
-            label = ttk.Label(self.root, text="-", background="white", width=20)
+            tk.Label(self.tab, text=field[0]).grid(row=i * 2 + 2, column=0, sticky='W')
+            label = ttk.Label(self.tab, text="-", background="white", width=20)
             label.grid(row=i * 2 + 2, column=1, sticky='W')
 
             # Use default argument for lambda function to capture the current value of i
@@ -73,8 +69,8 @@ class UpdateDataApp:
     def on_label_double_click(self, event, idx, table_name, field, field_type, label):
         user_id = self.combobox.get().split(' - ')[-1]
         if field_type == 'Combobox':
-            top = tk.Toplevel(self.root)
-            top.title("Выбор отдела")
+            top = tk.Toplevel(self.tab)
+            top.title("Выбор из справочника")
 
             new_department = tk.StringVar()
             new_department.set(label.cget("text"))
@@ -88,13 +84,14 @@ class UpdateDataApp:
         elif field_type == 'DateEntry':
             # Окно для изменения даты
             top = tk.Toplevel(self.root)
-            top.title("Дата рождения")
+            top.title("Редактирование даты")
 
             new_date = DateEntry(top, width=12, background='dark', foreground='white', borderwidth=2)
-            user_data = self.cursor.execute(f"SELECT {field} FROM {table_name} WHERE id = ?", (user_id,)).fetchone()
-            default_date = user_data[0] if user_data else ''
-            new_date.set_date(default_date)
-            new_date.pack(pady=10)
+            with db as cur:
+                user_data = cur.execute(f"SELECT {field} FROM {table_name} WHERE id = ?", (user_id,)).fetchone()
+                default_date = user_data[0] if user_data else ''
+                new_date.set_date(default_date)
+                new_date.pack(pady=10)
 
             button = ttk.Button(top, text="Сохранить",
                                 command=lambda: self.save_date_of_birth(table_name, user_id, field, new_date.get(), top))
@@ -122,4 +119,4 @@ class UpdateDataApp:
 
 
 if __name__ == "__main__":
-    UserDataApp()
+    UpdateDataApp()

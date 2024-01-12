@@ -11,10 +11,11 @@ from app_view_model.functions.tab_compensation import show_compensation_labels
 from app_view_model.functions.tab_family import show_family_labels
 from app_view_model.functions.tab_personal_datas import show_child_datas
 from app_view_model.functions.tab_referral import show_referral
+from app_view_model.functions.update_datas import UpdateDataApp
 
 
 class NewPersonalDatas(Gui):
-    def __init__(self, width: str = '1400', height: str = '600'):
+    def __init__(self, width: str = '800', height: str = '600'):
         super().__init__(width, height)
         self.height = height
         self.width = width
@@ -50,6 +51,7 @@ class NewPersonalDatas(Gui):
         # self.child_select.grid(row=2, column=1, columnspan=2, sticky=tk.W)
         self.child_id = self.child_select.bind("<<ComboboxSelected>>", self.display_info)
         self.child_select.bind("<KeyRelease>", self.update_combobox_values)
+        print(f'{self.child_id=} {self.child_select=}')
 
 
 
@@ -99,7 +101,7 @@ class NewPersonalDatas(Gui):
         label_address.grid(row=0, column=0, columnspan=2)
         show_address_datas(frame_address)
 
-
+        UpdateDataApp(tab_birth_certificate, self.child_id)
 
         show_referral(tab_referral)
         show_compensation_labels(tab_compensation)
