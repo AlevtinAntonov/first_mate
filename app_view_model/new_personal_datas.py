@@ -1,13 +1,16 @@
 import tkinter as tk
 from datetime import date
 from tkinter import ttk, simpledialog
+from tkinter.simpledialog import Dialog
 
 from tkcalendar import DateEntry
 
 from app_model.db.db_connect import db
-from app_model.db.db_query import query_read_birth_certificate
+from app_model.db.db_query import query_read_birth_certificate, DB_DICT
 from app_model.variables import LARGE_FONT, CONF, fields_names
 from app_view.gui_input_window import Gui
+from app_view_model.functions.functions import position_center, select_from_db, fill_combobox, current_timestamp, \
+    find_id
 from app_view_model.functions.tab_address_datas import show_address_datas
 from app_view_model.functions.tab_agreement_datas import show_agreement_datas
 from app_view_model.functions.tab_compensation import show_compensation_labels
@@ -17,7 +20,7 @@ from app_view_model.functions.tab_referral import show_referral
 
 
 class NewPersonalDatas(Gui):
-    def __init__(self, width: str = '850', height: str = '600'):
+    def __init__(self, width: str = '800', height: str = '600'):
         super().__init__(width, height)
         self.height = height
         self.width = width
@@ -49,11 +52,11 @@ class NewPersonalDatas(Gui):
 
         # Создание вкладок
         style = ttk.Style()
-        style.configure('TNotebook.Tab', font=("Verdana", 11))
+        style.configure('TNotebook.Tab', font=("Verdana", 11), padding=[5, 5])
         tab_control = ttk.Notebook(self.root)
         tab_control.pack(expand=True, fill="both")
 
-        tab_birth_certificate = ttk.Frame(tab_control)
+        self.tab_birth_certificate = ttk.Frame(tab_control)
         tab_referral = ttk.Frame(tab_control)
         tab_personal_datas = ttk.Frame(tab_control)
         tab_compensation = ttk.Frame(tab_control)
@@ -61,18 +64,16 @@ class NewPersonalDatas(Gui):
 
         # Создание рамок внутри вкладки "Личное дело"
         frame_birth_certificate = ttk.Frame(tab_personal_datas)
-        # frame_birth_certificate.grid(row=0, column=0, sticky="nsew")
         frame_birth_certificate.pack(side="left", expand=True)
 
         frame_address = ttk.Frame(tab_personal_datas)
-        # frame_address.grid(row=0, column=2, columnspan=2, sticky="nsew")
         frame_address.pack(side="left", expand=True)
 
         frame_contract_data = ttk.Frame(tab_personal_datas)
         # frame_contract_data.grid(row=0, column=1, sticky="nsew")
         frame_contract_data.pack(side="left", expand=True)
 
-        tab_control.add(tab_birth_certificate, text='Св-во о рождении')
+        tab_control.add(self.tab_birth_certificate, text='Св-во о рождении')
         tab_control.add(tab_personal_datas, text='Личное дело')
         tab_control.add(tab_compensation, text='Компенсация')
         tab_control.add(tab_family, text='Семья')
@@ -93,7 +94,8 @@ class NewPersonalDatas(Gui):
 
         # вкладка tab_birth_certificate
         self.labels = []
-        self.create_labels(tab_birth_certificate, fields_names, 'birth_certificate')
+        self.key_name = 'birth_certificate'
+        self.create_labels(self.tab_birth_certificate)
 
         show_referral(tab_referral)
         show_compensation_labels(tab_compensation)
@@ -115,107 +117,123 @@ class NewPersonalDatas(Gui):
             user_data = ["{} {} {} - {}".format(row[1], row[2], row[3], row[0]) for row in rows]
             self.combobox['values'] = user_data
 
-    def update_user_data(self, table_name, user_id, field, new_value):
+    def update_user_data(self, table_name, child_id, field, new_value):
         with db as cur:
-            cur.execute(f'UPDATE {table_name} SET {field} = ? WHERE id = ?', (new_value, user_id))
+
+            cur.execute(f'SELECT person.person_id, gender.gender_id, document.document_id FROM CHILD '
+                        f'JOIN PERSON ON CHILD.PERSON_ID = PERSON.PERSON_ID '
+                        f'JOIN DOCUMENT ON PERSON.DOCUMENT_ID = DOCUMENT.DOCUMENT_ID '
+                        f'JOIN GENDER ON PERSON.GENDER_ID = GENDER.GENDER_ID '
+                        f'WHERE CHILD.CHILD_ID = ?;', (child_id,))
+            modify_date = f", date_of_modify = '{current_timestamp()}'"
+            if table_name == 'person':
+                data_id = cur.fetchone()[0]
+            elif table_name == 'gender':
+                data_id = cur.fetchone()[1]
+                modify_date = ''
+            elif table_name == 'document':
+                data_id = cur.fetchone()[2]
+            print(f'UPDATE {table_name} SET {field} = ? {modify_date} WHERE {table_name}_id = ?', (new_value, data_id))
+            cur.execute(f'UPDATE {table_name} SET {field} = ? {modify_date} WHERE {table_name}_id = ?',
+                        (new_value, data_id))
 
     def on_combobox_select(self, event, table_name):
         combo_selection = self.combobox.get().split(' - ')
         if len(combo_selection) < 2:
             return
-        user_id = combo_selection[-1]
+        self.child_id = combo_selection[-1]
         with db as cur:
-            cur.execute(query_read_birth_certificate, (user_id,))
-            user = cur.fetchone()
-            if user:
+            cur.execute(query_read_birth_certificate, (self.child_id,))
+            child_selected = cur.fetchone()
+            if child_selected:
                 for i, label in enumerate(self.labels):
-                    if user[i] and isinstance(user[i], date):
-                        label.config(text=f"{user[i].strftime("%d.%m.%Y")}")
-                    elif user[i] and len(user[i]) > 100:
-                        label.config(text=f"{user[i][:95]}\n{user[i][95:]}")
+                    if child_selected[i] and isinstance(child_selected[i], date):
+                        label.config(text=f"{child_selected[i].strftime("%d.%m.%Y")}")
+                    elif child_selected[i] and 85 < len(child_selected[i]) < 171:
+                        label.config(
+                            text=f"{child_selected[i][:85]}\n{child_selected[i][85:170]}\n{child_selected[i][170:255]}")
+                    elif child_selected[i] and 85 < len(child_selected[i]) < 171:
+                        label.config(text=f"{child_selected[i][:85]}\n{child_selected[i][85:]}")
 
                     else:
-                        label.config(text=f"{user[i]}")
+                        label.config(text=f"{child_selected[i]}")
 
-    def create_labels(self, tab, fields_name, key_name):
-        for i, field in enumerate(fields_name[key_name]):
-            tk.Label(tab, text=field[0]).grid(row=i * 2 + 2, column=0, sticky='W')
-            label = ttk.Label(tab, text="-", background="white", width=100)
-            label.grid(row=i * 2 + 2, column=1, sticky='W')
+    def create_labels(self, tab):
+        for i, field in enumerate(fields_names[self.key_name]):
+            tk.Label(tab, text=field[0]).grid(row=i * 2 + 2, column=0, sticky='W', padx=20)
+            label = ttk.Label(tab, text="-", background="white", width=86)
+            label.grid(row=i * 2 + 2, column=1, sticky='W', padx=10)
 
             # Use default argument for lambda function to capture the current value of i
             label.bind("<Double-1>",
-                       lambda event, idx=i, table_name=field[3], field=field[1], field_type=field[2],
-                              label=label: self.on_label_double_click(event, idx, table_name, field, field_type,
-                                                                      label))
+                       lambda event, idx=i, table_name=field[3], table_dict=field[4], field=field[1],
+                              field_type=field[2], label=label: self.on_label_double_click(event, idx, table_name,
+                                                                                           table_dict, field,
+                                                                                           field_type, label))
 
             self.labels.append(label)
 
-    def on_label_double_click(self, event, idx, table_name, field, field_type, label):
-        # user_id = self.combobox.get().split(' - ')[-1]
-        user_id = 31
+    def on_label_double_click(self, event, idx, table_name, table_dict, field, field_type, label):
+        user_id = self.combobox.get().split(' - ')[-1]
         if field_type == 'Combobox':
-            top = tk.Toplevel(self.tab)
+            top = tk.Toplevel(self.tab_birth_certificate)
             top.title("Выбор из справочника")
+            top.geometry('300x100')
+            position_center(top, 250, 100)
+            top.grab_set()
 
-            new_department = tk.StringVar()
-            new_department.set(label.cget("text"))
+            new_data = tk.StringVar()
+            new_data.set(label.cget("text"))
+            value_from_db = [v for v in
+                             fill_combobox(db, table_dict, DB_DICT[table_dict][0], DB_DICT[table_dict][1]).values()]
 
-            combobox = ttk.Combobox(top, textvariable=new_department, values=["Первый", "Второй", "Третий"])
+            combobox = ttk.Combobox(top, textvariable=new_data, values=value_from_db, width=30)
             combobox.pack(pady=10)
 
             button = ttk.Button(top, text="Сохранить",
-                                command=lambda: self.save_department(table_name, user_id, field, new_department.get(),
-                                                                     top))
+                                command=lambda: self.save_data_from_top(table_name, user_id, field,
+                                                                        find_id(db, table_dict, DB_DICT[table_dict][0],
+                                                                                DB_DICT[table_dict][1], new_data.get()),
+                                                                        top))
             button.pack()
         elif field_type == 'DateEntry':
             # Окно для изменения даты
-            top = tk.Toplevel(self.tab)
+            top = tk.Toplevel(self.tab_birth_certificate)
             top.title("Редактирование даты")
+            top.geometry('300x100')
+            position_center(top, 300, 100)
+            top.grab_set()
 
-            new_date = DateEntry(top, width=12, background='dark', foreground='white', borderwidth=2)
+            new_date = DateEntry(top, foreground='black', normalforeground='black', selectforeground='red',
+                                 background='white', selectmode='day', locale='ru_RU', date_pattern='dd.mm.YYYY')
             with db as cur:
-                user_data = cur.execute(f"SELECT {field} FROM {table_name} WHERE id = ?", (user_id,)).fetchone()
-                default_date = user_data[0] if user_data else ''
+                user_data = cur.execute(f'SELECT {table_name}.{field} FROM CHILD '
+                                        f'JOIN PERSON ON CHILD.PERSON_ID = PERSON.PERSON_ID '
+                                        f'JOIN DOCUMENT ON PERSON.DOCUMENT_ID = DOCUMENT.DOCUMENT_ID '
+                                        f'WHERE CHILD.CHILD_ID = ?;', (user_id,)).fetchone()
+                default_date = user_data[0].strftime("%d.%m.%Y") if user_data else ''
                 new_date.set_date(default_date)
                 new_date.pack(pady=10)
 
             button = ttk.Button(top, text="Сохранить",
-                                command=lambda: self.save_date_of_birth(table_name, user_id, field, new_date.get(),
-                                                                        top))
+                                command=lambda: self.save_data_from_top(table_name, user_id, field, new_date.get(),
+                                                                         top))
             button.pack()
+
         else:
-            new_value = simpledialog.askstring("Редактирование", f"Введите новое значение",
+            new_value = simpledialog.askstring("Редактирование",
+                                               f"{' ' * 40}Введите новое значение{' ' * 40}",
                                                initialvalue=label.cget("text"))
             if new_value:
                 label.config(text=new_value)
                 self.update_user_data(table_name, user_id, field, new_value)
-                self.refresh_combobox_data(table_name)
-                self.on_combobox_select(None, table_name)
+                print(table_name)
+                self.refresh_combobox_data('child')
+                self.on_combobox_select(None, 'child')
 
-    def save_department(self, table_name, user_id, field, new_department, top):
-        self.update_user_data(table_name, user_id, field, new_department)
+    def save_data_from_top(self, table_name, user_id, field, new_data, top):
+        self.update_user_data(table_name, user_id, field, new_data)
         top.destroy()
-        self.refresh_combobox_data(table_name)
-        self.on_combobox_select(None, table_name)
+        self.refresh_combobox_data('child')
+        self.on_combobox_select(None, 'child')
 
-    def save_date_of_birth(self, table_name, user_id, field, new_date, top):
-        self.update_user_data(table_name, user_id, field, new_date)
-        top.destroy()
-        self.refresh_combobox_data(table_name)
-        self.on_combobox_select(None, table_name)
-
-    # def display_info(self, *args):
-    #     selected_name = self.child_select.get()
-    #     for person, person_info in self.data.items():
-    #         if person_info[0] == selected_name:
-    #             self.date_of_birth.config(text="Дата рождения: " + person_info[1].strftime("%d.%m.%Y"))
-    #             self.gender_label.config(text="Пол: " + person_info[2])
-    #             self.child_id = person
-    #             return self.child_id
-    #
-    # def update_combobox_values(self, event=None):
-    #     search_text = self.child_select.get()
-    #     matching_values = [person_info[0] for person_info in self.data.values() if
-    #                        search_text.lower() in person_info[0].lower()]
-    #     self.child_select["values"] = matching_values
