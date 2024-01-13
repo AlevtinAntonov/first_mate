@@ -145,6 +145,45 @@ FROM CHILD
 WHERE CHILD.CHILD_ID = ?;
 """
 
+
+query_read_address = """
+SELECT 
+    address_type.address_type_name,
+    address.zipcode,
+    region_type.region_type_name,
+    address.region,
+    address.district,
+    town_type.town_type_name,
+    address.town,
+    locality_type.locality_type_name,
+    address.locality,
+    street_type.street_type_name,
+    address.street,
+    address.house,
+    address.house_body,
+    address.house_liter,
+    address.house_building,
+    address.flat,
+    address.town_district
+FROM CHILD
+JOIN PERSON ON CHILD.PERSON_ID = PERSON.PERSON_ID
+    JOIN DOCUMENT ON PERSON.DOCUMENT_ID = DOCUMENT.DOCUMENT_ID
+    JOIN GENDER ON PERSON.GENDER_ID = GENDER.GENDER_ID
+    JOIN CITIZENSHIP ON PERSON.CITIZENSHIP_ID = CITIZENSHIP.CITIZENSHIP_ID
+    JOIN DOCUMENT_TYPE ON DOCUMENT.DOCUMENT_TYPE_ID = DOCUMENT_TYPE.DOCUMENT_TYPE_ID
+    join person_address on person.person_id = person_address.person_id
+    join address on person_address.address_id = address.address_id
+    join address_type on address.address_type_id = address_type.address_type_id
+    join region_type on address.region_type_id = region_type.region_type_id
+    join town_type on address.town_type_id = town_type.town_type_id
+    join street_type on address.street_type_id = street_type.street_type_id
+    join locality_type on address.locality_type_id = locality_type.locality_type_id """
+
+query_read_address_reg = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 1 OR address.is_registration = true);'
+query_read_address_fact = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 2 OR address.IS_FACT = true);'
+query_read_address_res = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 3 OR address.IS_RESIDENCE = true);'
+
+
 def query_insert_into(table_name):
     fields = ', '.join(('%s',) * (len(DB_DICT[table_name])))
     val = ', '.join(('?',) * (len(DB_DICT[table_name])))
