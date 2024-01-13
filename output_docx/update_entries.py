@@ -15,19 +15,23 @@ class UserDataApp:
         self.combobox = ttk.Combobox(self.root, width=30)
         self.combobox.grid(row=0, column=0, columnspan=2)
         self.refresh_combobox_data('persons')
-        self.combobox.bind('<<ComboboxSelected>>', lambda event: self.on_combobox_select(None, 'persons'))
+        self.combobox.bind('<<ComboboxSelected>>', lambda event: self.on_combobox_select(None, 'person'))
         self.key_name = 'person'
         self.fields_names = {
-            'person': (("Фамилия1", 'last_name', None, 'persons'),
-                        ("Имя", 'first_name', 0, 'persons'),
-                        ("Отчество", 'patronymic', 0, 'persons'),
-                        ("Дата рождения", 'date_of_birth', 'DateEntry', 'persons'),
-                        ("Отдел", 'department', 'Combobox', 'persons')),
-            'child': (("Фамилия", 'last_name', None, 'persons'),
-                      ("Имя", 'first_name', 0, 'persons'),
-                      ("Отчество", 'patronymic', 0, 'persons'),
-                      ("Дата рождения", 'date_of_birth', 'DateEntry', 'persons'),
-                      ("Отдел", 'department', 'Combobox', 'persons')),
+            'person': (("Фамилия", 'last_name', 0, 'person'),
+                          ("Имя", 'first_name', 0, 'person'),
+                          ("Отчество", 'patronymic', 0, 'person'),
+                          ("Пол", 'gender_id', 'Combobox', 'person'),
+                          ("Дата рождения", 'date_of_birth', 'DateEntry', 'person'),
+                          ("Гражданство", 'citizenship_id', 'Combobox', 'person'),
+                          ("Тип документа", 'document_type_id', 'Combobox', 'person'),
+                          ("Место рождения", 'place_of_birth', 0, 'document'),
+                          ('№ актовой записи (для Св-ва о рожд.)', 'document_assembly_record', 0, 'document'),
+                          ("Серия", 'document_series', 0, 'document'),
+                          ("Номер", 'document_number', 0, 'document'),
+                          ("Кем выдан", 'document_issued_by', 0, 'document'),
+                          ("Дата выдачи", 'document_date_of_issue', 'DateEntry', 'document'),
+                          ("СНИЛС", 'sniils', 0, 'person')),
         }
 
         self.labels = []
