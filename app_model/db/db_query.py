@@ -7,7 +7,7 @@ person_parent, family, phone, email = 'person_parent', 'family', 'phone', 'email
 region_type, town_type, locality_type, street_type = 'region_type', 'town_type', 'locality_type', 'street_type'
 person_address, organization, compensation = 'person_address', 'organization', 'compensation'
 compensation_statement, compensation_add_document = 'compensation_statement', 'compensation_add_document'
-movement = 'movement'
+movement, town_district = 'movement', 'town_district'
 
 # dictionary key: table name, vaulue : fields names
 DB_DICT = {
@@ -42,6 +42,7 @@ DB_DICT = {
     'address_type': ('address_type_id', 'address_type_name'),
     'region_type': ('region_type_id', 'region_type_name'),
     'town_type': ('town_type_id', 'town_type_name'),
+    'town_district': ('town_district_id', 'town_district_name'),
     'locality_type': ('locality_type_id', 'locality_type_name'),
     'street_type': ('street_type_id', 'street_type_name'),
     'person_address': ('person_id', 'address_id'),
@@ -54,10 +55,9 @@ DB_DICT = {
                                'compensation_statement_start_date', 'compensation_statement_end_date',
                                'compensation_id', 'child_id', 'person_id', 'movement_id', 'parental_fee_id'),
     'compensation_add_document': ('add_document_name', 'add_document_data', 'compensation_statement_id'),
-    'movement': ('statement_number', 'statement_date', 'date_of_joining_team', 'contract_number', 'contarct_date',
+    'movement': ('statement_number', 'statement_date', 'date_of_joining_team', 'contract_number', 'contract_date',
                  'contract_begin_date', 'order_of_admission_number', 'order_of_admission_date',
-                 'date_of_add', 'child_id', 'referral_id',
-                 'team_id', 'person_id'),
+                 'date_of_add', 'child_id', 'referral_id', 'team_id', 'person_id'),
 }
 
 # compensation_statement_number, compensation_statement_date, compensation_statement_start_date, compensation_statement_end_date, compensation_id, child_id, person_id, movement_id, parental_fee_id
@@ -119,69 +119,6 @@ FROM movement
 WHERE child_id = ? 
 AND IS_VISIBLE = True;
 """
-
-query_read_birth_certificate = """
-SELECT 
-    PERSON.LAST_NAME, 
-    PERSON.FIRST_NAME, 
-    PERSON.PATRONYMIC, 
-    GENDER.GENDER_NAME,
-    PERSON.DATE_OF_BIRTH,
-    CITIZENSHIP.CITIZENSHIP_SHORT_NAME,
-    DOCUMENT_TYPE.DOCUMENT_TYPE_NAME,
-    DOCUMENT.PLACE_OF_BIRTH,
-    DOCUMENT.DOCUMENT_ASSEMBLY_RECORD,
-    DOCUMENT.DOCUMENT_SERIES, 
-    DOCUMENT.DOCUMENT_NUMBER, 
-    DOCUMENT.DOCUMENT_ISSUED_BY, 
-    DOCUMENT.DOCUMENT_DATE_OF_ISSUE,
-    PERSON.SNIILS
-FROM CHILD
-    JOIN PERSON ON CHILD.PERSON_ID = PERSON.PERSON_ID
-    JOIN DOCUMENT ON PERSON.DOCUMENT_ID = DOCUMENT.DOCUMENT_ID
-    JOIN GENDER ON PERSON.GENDER_ID = GENDER.GENDER_ID
-    JOIN CITIZENSHIP ON PERSON.CITIZENSHIP_ID = CITIZENSHIP.CITIZENSHIP_ID
-    JOIN DOCUMENT_TYPE ON DOCUMENT.DOCUMENT_TYPE_ID = DOCUMENT_TYPE.DOCUMENT_TYPE_ID
-WHERE CHILD.CHILD_ID = ?;
-"""
-
-
-query_read_address = """
-SELECT 
-    address_type.address_type_name,
-    address.zipcode,
-    region_type.region_type_name,
-    address.region,
-    address.district,
-    town_type.town_type_name,
-    address.town,
-    locality_type.locality_type_name,
-    address.locality,
-    street_type.street_type_name,
-    address.street,
-    address.house,
-    address.house_body,
-    address.house_liter,
-    address.house_building,
-    address.flat,
-    address.town_district
-FROM CHILD
-JOIN PERSON ON CHILD.PERSON_ID = PERSON.PERSON_ID
-    JOIN DOCUMENT ON PERSON.DOCUMENT_ID = DOCUMENT.DOCUMENT_ID
-    JOIN GENDER ON PERSON.GENDER_ID = GENDER.GENDER_ID
-    JOIN CITIZENSHIP ON PERSON.CITIZENSHIP_ID = CITIZENSHIP.CITIZENSHIP_ID
-    JOIN DOCUMENT_TYPE ON DOCUMENT.DOCUMENT_TYPE_ID = DOCUMENT_TYPE.DOCUMENT_TYPE_ID
-    join person_address on person.person_id = person_address.person_id
-    join address on person_address.address_id = address.address_id
-    join address_type on address.address_type_id = address_type.address_type_id
-    join region_type on address.region_type_id = region_type.region_type_id
-    join town_type on address.town_type_id = town_type.town_type_id
-    join street_type on address.street_type_id = street_type.street_type_id
-    join locality_type on address.locality_type_id = locality_type.locality_type_id """
-
-query_read_address_reg = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 1 OR address.is_registration = true);'
-query_read_address_fact = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 2 OR address.IS_FACT = true);'
-query_read_address_res = query_read_address + f'WHERE CHILD.CHILD_ID = ? and (address.address_type_id = 3 OR address.IS_RESIDENCE = true);'
 
 
 def query_insert_into(table_name):
