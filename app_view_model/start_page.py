@@ -57,8 +57,15 @@ class StartPage:
                   height=1).pack(padx=5, pady=15)
 
     def add_new_child(self):
-        self.root.destroy()  # Close the Start Page
-        ProjectAddNew()
+        self.root.withdraw()
+        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
+        new_child_window.root.mainloop()
+        self.root.destroy()
+
+        # self.root.withdraw()
+        # new_child_window = ProjectAddNew()
+        # self.root.destroy()  # Close the Start Page
+        # # ProjectAddNew()
 
     def open_organization(self):
         self.root.destroy()  # Close the Start Page
@@ -117,12 +124,20 @@ class ProjectAddNew(Gui):
                   height=1).pack()
 
     def open_window_referral(self):
+        self.root.withdraw()
+        new_ref_window = NewReferralWin()  # Предполагается, что ProjectAddNew инициализирует новое окно
+        new_ref_window.root.mainloop()
         self.root.destroy()
-        NewReferralWin()
+        # self.root.destroy()
+        # NewReferralWin()
 
     def open_window_parent(self):
+        self.root.withdraw()
+        new_parent_window = NewParentWin()
+        new_parent_window.root.mainloop()
         self.root.destroy()
-        NewParentWin()
+        # self.root.destroy()
+        # NewParentWin()
 
     def open_window_address(self):
         self.root.destroy()
@@ -194,11 +209,16 @@ class ReferenceInfoEdit(Gui):
 
 class NewReferralWin(NewReferral):
     def return_to_start_page(self):
+        self.root.withdraw()
+        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
+        new_child_window.root.mainloop()
         self.root.destroy()
-        ProjectAddNew()
+        # self.root.destroy()
+        # ProjectAddNew()
 
 
 class NewOrganizationWin(NewOrganization):
+
     def return_to_start_page(self):
         self.root.destroy()
         start_page()
@@ -212,8 +232,12 @@ class NewPersonalDatasWin(NewPersonalDatas):
 
 class NewParentWin(NewParent):
     def return_to_start_page(self):
+        self.root.withdraw()
+        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
+        new_child_window.root.mainloop()
         self.root.destroy()
-        ProjectAddNew()
+        # self.root.destroy()
+        # ProjectAddNew()
 
 
 class NewAddressWin(AddressWin):
