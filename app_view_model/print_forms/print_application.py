@@ -17,8 +17,9 @@ class PrintFormsApplication(Gui):
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
-        tk.Label(frame, text="Печать заявления на прием", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W, columnspan=4,
-                                                                       sticky="nsew")
+        tk.Label(frame, text="Печать заявления на прием", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W,
+                                                                                columnspan=4,
+                                                                                sticky="nsew")
         referral_select(self, frame)
         tk.Label(frame, text='Родитель/представитель: ').grid(row=10, column=0, cnf=CONF)
         self.person_select = person_select_combo(db, frame, 10, 1, 'parents')

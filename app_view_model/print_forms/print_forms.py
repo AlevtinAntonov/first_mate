@@ -15,7 +15,6 @@ class PrintAllForms(Gui):
     def __init__(self, width: str = '600', height: str = '400'):
         super().__init__(width, height)
 
-
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
@@ -77,7 +76,8 @@ class PrintAllForms(Gui):
         actions = {
             "Заявление на прием": (self.var1, 1, '../../../templates/template_application.docx', 'Заявление_на_прием'),
             "Договор об образовании": (self.var2, 2, '../../../templates/template_agreement.docx', 'Договор'),
-            "Согласие на обработку перс.данных": (self.var3, 3, '../../../templates/template_consent.docx', 'Согласие_ОПД'),
+            "Согласие на обработку перс.данных": (
+            self.var3, 3, '../../../templates/template_consent.docx', 'Согласие_ОПД'),
             "Заявление на компенсацию": (self.var4, 4, '../../../templates/template_compensation.docx', 'Компенсация'),
             "Расписка о приеме компенсации": (
                 self.var5, 5, '../../../templates/template_compensation_receipt.docx', 'Компенсация_расписка'),

@@ -1,12 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, BOTH
 from PIL import Image, ImageTk
 
-from app_model.db.db_connect import db
-from app_model.variables import LARGE_FONT, ICO_DIRECTORY, ADD_PNG, EDIT_PNG, DELETE_PNG, SEARCH_PNG, REFRESH_PNG, \
-    CONF_0
+from app_model.variables import ICO_DIRECTORY, ADD_PNG, EDIT_PNG, DELETE_PNG, SEARCH_PNG, REFRESH_PNG
 from app_view.gui_input_window import Gui
-from app_view_model.functions.functions import buttons_add_new, path_to_file, position_center
+from app_view_model.functions.functions import path_to_file
 
 
 class ReferencePage(Gui):

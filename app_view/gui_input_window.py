@@ -1,6 +1,3 @@
-import ctypes
-import win32api
-import tkinter as tk
 from tkinter import messagebox, ttk
 import keyboard
 import pyperclip

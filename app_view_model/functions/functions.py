@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 from functools import partial
 from os import path
@@ -7,9 +6,7 @@ from tkinter import ttk, messagebox
 
 from tkcalendar import DateEntry
 
-from app_model.db.db_query import query_insert_into, DB_DICT, gender, child, referral, query_check_person, \
-    query_check_document, building, person, query_find_id, \
-    query_insert_into_table_return_id, team, age, focus, mode, benefit
+from app_model.db.db_query import query_check_person, query_check_document, query_find_id
 from app_model.variables import CONF
 
 
@@ -87,8 +84,8 @@ def check_if_exists(db, tbl_name, field_1: str, field_2: str, field_3: str, fiel
             if check_res:
                 return check_res[0]
             return False
-        except Exception:
-            print('Ошибка в check_if_exists')
+        except Exception as err:
+            print(f'Ошибка в check_if_exists {err}')
 
 
 # Функция возвращает id человека или False.
@@ -101,8 +98,8 @@ def find_person(db, tbl_name, person_id):
             if result:
                 return result[0]
             return False
-        except Exception:
-            print('Ошибка в find_person')
+        except Exception as err:
+            print(f'Ошибка в find_person {err}')
 
 
 # Формат текущей даты и времени для записи в базу данных
@@ -126,8 +123,6 @@ def capitalize_double_surname(input_name):
     parts = input_name.split(separator, maxsplit=1)
     capitalized_parts = [part.capitalize() for part in parts]
     return separator.join(capitalized_parts)
-
-
 
 
 def check_russian_letters(input_str):
@@ -190,10 +185,8 @@ def check_and_highlight(entry):
 def validate_combobox(combobox, label):
     if combobox.get() == '':
         label.config(borderwidth=2, relief="solid", foreground='red')
-        # button.config(state=tk.DISABLED, background='LightGray', fg='white')
     else:
         label.config(borderwidth=0, relief="flat", foreground='black')
-        # button.config(state=tk.NORMAL, background='red', fg='white')
 
 
 def validate_input_btn_ok(*args):
@@ -261,7 +254,6 @@ def select_from_db(frame, db, tbl_name, field_id, field_data, row, column, cnf, 
     value_selected = ttk.Combobox(frame, values=value_from_db, state='readonly', width=width)
     if value_selected and tbl_name != 'child_list':
         value_selected.current(current)
-        # print(f'{value_selected=} {value_selected.current(0)=} {value_selected.current()}')
     value_selected.grid(row=row, column=column, cnf=cnf, columnspan=columnspan)
     return value_selected
 

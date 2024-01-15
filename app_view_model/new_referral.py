@@ -10,7 +10,7 @@ from app_model.variables import LARGE_FONT, label_referral_list, DEFAULT_REFERRA
     DEFAULT_DAY, CONF
 from app_view.gui_input_window import Gui
 from app_view_model.functions.functions import create_labels_in_grid, select_date, \
-    select_from_db, save_access, next_entries, buttons_add_new, on_validate_input
+    select_from_db, next_entries, buttons_add_new, on_validate_input
 from app_view_model.functions.referral_create import referral_save
 
 
@@ -46,13 +46,13 @@ class NewReferral(Gui):
         gender_id = select_from_db(frame, db, gender, DB_DICT[gender][0], DB_DICT[gender][1], 8, 1, CONF_D_W, width=15)
         date_of_birth = select_date(frame, DEFAULT_BORN_YEAR, DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY, 8, 3,
                                     CONF_D_W)
-        building_id = select_from_db(frame, db, building, DB_DICT[building][0], DB_DICT[building][1], 10, 1, CONF_D_W, 2)
+        building_id = select_from_db(frame, db, building, DB_DICT[building][0], DB_DICT[building][1], 10, 1, CONF_D_W,
+                                     2)
         age_id = select_from_db(frame, db, age, DB_DICT[age][0], DB_DICT[age][1], 12, 1, CONF_D_W, 2)
         focus_id = select_from_db(frame, db, focus, DB_DICT[focus][0], DB_DICT[focus][1], 14, 1, CONF_D_W, 2)
         mode_id = select_from_db(frame, db, mode, DB_DICT[mode][0], DB_DICT[mode][1], 16, 1, CONF_D_W, 2)
         referral_begin_date = select_date(frame, DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY, 18, 1, CONF_D_W)
         benefit_id = select_from_db(frame, db, benefit, DB_DICT[benefit][0], DB_DICT[benefit][1], 20, 1, CONF_D_W, 2)
-        # benefit_id = on_combobox_keyrelease(event, frame, db, benefit, DB_DICT[benefit][0], DB_DICT[benefit][1], 20, 1, CONF_D_W, 2)
         team_id = select_from_db(frame, db, team, DB_DICT[team][0], DB_DICT[team][1], 22, 1, CONF_D_W, 2)
         comment = ttk.Entry(frame, width=50)
         comment.grid(row=24, column=1, cnf=CONF_D_W, columnspan=3)

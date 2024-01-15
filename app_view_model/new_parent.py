@@ -8,9 +8,7 @@ from app_model.domain.parents import Parents
 from app_model.variables import LARGE_FONT, label_parent_list, CONF_D_W, CONF, DEFAULT_PARENT_BORN_YEAR, \
     DEFAULT_BORN_MONTH, DEFAULT_BORN_DAY
 from app_view.gui_input_window import Gui
-from app_view_model.address_toplevel import AddressWindow
 from app_view_model.functions.document_entries import document_entries
-from app_view_model.functions.find_address import print_addresses
 from app_view_model.functions.functions import on_validate_input, create_labels_in_grid, next_entries, buttons_add_new, \
     select_from_db, select_date, fill_combobox, find_child, get_key, validate_combobox, check_if_exists
 from app_view_model.functions.parent_create import parent_create

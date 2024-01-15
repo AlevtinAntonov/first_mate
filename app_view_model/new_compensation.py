@@ -46,10 +46,11 @@ class NewCompensation(Gui):
         self.gender_label.grid(row=4, column=2, cnf=CONF_D_W)
         self.number_application_compensation = ttk.Entry(frame)
         self.number_application_compensation.grid(row=7, column=1, cnf=CONF_D_W)
-        self.date_application_compensation = select_date(frame, CURRENT_YEAR,  CURRENT_MONTH, CURRENT_DAY, 8, 1, CONF_D_W)
+        self.date_application_compensation = select_date(frame, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, 8, 1,
+                                                         CONF_D_W)
 
         self.compensation_name = select_from_db(frame, db, compensation, DB_DICT[compensation][0],
-                                              DB_DICT[compensation][1], 10, 1, CONF_D_W, width=25)
+                                                DB_DICT[compensation][1], 10, 1, CONF_D_W, width=25)
         self.date_start_compensation = select_date(frame, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, 12, 1, CONF_D_W)
         self.date_end_compensation = select_date(frame, CURRENT_YEAR, 12, 31, 14, 1, CONF_D_W)
 
@@ -124,7 +125,6 @@ class NewCompensation(Gui):
         matching_values = [person_info[0] for person_info in self.data.values() if
                            search_text.lower() in person_info[0].lower()]
         self.child_select["values"] = matching_values
-
 
 
 if __name__ == '__main__':

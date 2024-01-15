@@ -26,12 +26,12 @@ def child_db_cert_create(db, child_id: int, citizenship_id, sniils: str, documen
             # document_id from table DOCUMENT
             document_id = cur.fetchone()[0]
 
-            # Update CHILD fields: document_id, sniils, citizenship_id into table PERSON
+            # Update CHILD fields: document_id, snils, citizenship_id into table PERSON
             cur.execute(query_child_person_id, (child_id,))
             person_id = cur.fetchone()[0]
 
             query_update_child = query_update_child_person % (
-                'person', 'document_id', 'sniils', 'citizenship_id', 'date_of_modify', 'person_id')
+                'person', 'document_id', 'snils', 'citizenship_id', 'date_of_modify', 'person_id')
             cur.execute(query_update_child, (document_id, sniils, citizenship_id, current_timestamp(), person_id))
             save_access()
 

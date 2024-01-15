@@ -58,7 +58,6 @@ label_referral_list = [
 ]
 
 label_parent_list = [
-    # {'text': 'ФИО ребенка', 'row': 2, 'column': 0},
     {'text': 'Степень родства', 'row': 3, 'column': 0},
     {'text': 'Фамилия', 'row': 4, 'column': 0},
     {'text': 'Имя', 'row': 6, 'column': 0},
@@ -72,13 +71,9 @@ label_parent_list = [
     {'text': 'Кем выдан', 'row': 22, 'column': 0},
     {'text': 'Дата выдачи', 'row': 24, 'column': 0},
     {'text': 'Действует до (при наличии)', 'row': 26, 'column': 0},
-    # {'text': '№ актовой записи (для Св-ва о рожд.)', 'row': 28, 'column': 0},
     {'text': 'Телефон', 'row': 30, 'column': 0},
     {'text': 'Email', 'row': 32, 'column': 0},
     {'text': 'СНИИЛС (11 цифр)', 'row': 34, 'column': 0},
-    # {'text': 'Адрес регистрации', 'row': 42, 'column': 0},
-    # {'text': 'Адрес фактический', 'row': 44, 'column': 0},
-    # {'text': 'Адрес рег. по месту пребывания', 'row': 46, 'column': 0},
 ]
 
 label_address_list = [
@@ -121,13 +116,6 @@ town_districts = {
 }
 
 label_child_list = [
-    # {'text': 'Фамилия', 'row': 2, 'column': 0},
-    # {'text': 'Имя', 'row': 4, 'column': 0},
-    # {'text': 'Отчество', 'row': 6, 'column': 0},
-    # {'text': 'Пол', 'row': 6, 'column': 0},
-    # {'text': 'Дата рождения', 'row': 8, 'column': 0},
-    # {'text': 'ФИО отца', 'row': 10, 'column': 0},
-    # {'text': 'ФИО матери', 'row': 12, 'column': 0},
     {'text': 'Гражданство', 'row': 14, 'column': 0},
     {'text': 'Тип документа', 'row': 16, 'column': 0},
     {'text': 'Место рождения', 'row': 18, 'column': 0},
@@ -137,10 +125,7 @@ label_child_list = [
     {'text': 'Кем выдан', 'row': 26, 'column': 0},
     {'text': 'Дата выдачи', 'row': 28, 'column': 0},
 
-    {'text': 'СНИИЛС (11 цифр)', 'row': 30, 'column': 0},
-    # {'text': 'Адрес регистрации', 'row': 42, 'column': 0},
-    # {'text': 'Адрес фактический', 'row': 44, 'column': 0},
-    # {'text': 'Адрес рег. по месту пребывания', 'row': 46, 'column': 0},
+    {'text': 'СНИЛС (11 цифр)', 'row': 30, 'column': 0},
 ]
 
 references_dict = {
@@ -188,7 +173,6 @@ label_compensation = [
 ]
 
 label_agreement = [
-    # {'text': 'Номер направления', 'row': 6, 'column': 0},
     {'text': 'ФИО родителя в договоре', 'row': 14, 'column': 0},
     {'text': 'Группа план', 'row': 15, 'column': 0},
     {'text': 'Номер заявления о приеме', 'row': 16, 'column': 0},
@@ -210,10 +194,14 @@ comp = {'compensation': ('compensation_id', 'compensation_short_basis'),
 fields_names = {
     'child_compensation': (("ФИО заявителя", 'person_id', 0, 'person', ''),
                            ("Номер заявления", 'compensation_statement_number', 0, 'compensation_statement', ''),
-                           ("Дата подачи заявления", 'compensation_statement_date', 'DateEntry', 'compensation_statement', ''),
-                           ("Основание компенсации", 'compensation_id', 'Combobox', 'compensation_statement', 'compensation'),
-                           ("Дата начала компенсации", 'compensation_statement_start_date', 'DateEntry', 'percompensation_statementson', ''),
-                           ("Дата окончания компенсации", 'compensation_statement_end_date', 'DateEntry', 'compensation_statement', ''),
+                           ("Дата подачи заявления", 'compensation_statement_date', 'DateEntry',
+                            'compensation_statement', ''),
+                           ("Основание компенсации", 'compensation_id', 'Combobox', 'compensation_statement',
+                            'compensation'),
+                           ("Дата начала компенсации", 'compensation_statement_start_date', 'DateEntry',
+                            'percompensation_statementson', ''),
+                           ("Дата окончания компенсации", 'compensation_statement_end_date', 'DateEntry',
+                            'compensation_statement', ''),
                            ("Наименование документа 1", 'add_document_name', 0, 'compensation_add_document', ''),
                            ("Реквизиты документа 1", 'add_document_data', 0, 'compensation_add_document', ''),
                            ("Наименование документа 2", 'add_document_name', 0, 'compensation_add_document', ''),
@@ -256,7 +244,7 @@ fields_names = {
                           ("Номер", 'document_number', 0, 'document', ''),
                           ("Кем выдан", 'document_issued_by', 0, 'document', ''),
                           ("Дата выдачи", 'document_date_of_issue', 'DateEntry', 'document', ''),
-                          ("СНИЛС", 'sniils', 0, 'person', ''),
+                          ("СНИЛС", 'snils', 0, 'person', ''),
                           ),
     'addresses': (("Выберите тип адреса*", 'address_type_id', 'Combobox', 'address', 'address_type'),
                   ("Индекс", 'zipcode', 0, 'address', ''),
@@ -313,7 +301,7 @@ fields_names = {
                         ("Действует до", 'document_date_of_expire', 'DateEntry', 'document', ''),
                         ("Телефон", 'phone', 0, 'phone', ''),
                         ("Эл.почта", 'email_name', 0, 'email', ''),
-                        ("СНИЛС", 'sniils', 0, 'person', ''),
+                        ("СНИЛС", 'snils', 0, 'person', ''),
                         ("Участник СВО", 'svo_participant', 0, 'parents', ''),
 
                         ),

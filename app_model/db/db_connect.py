@@ -39,22 +39,3 @@ db = DB(Path(pathlib.Path.cwd(), DB_PATH, DB_NAME))
 
 if __name__ == '__main__':
     pass
-    # db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/db/DB_PROD.FDB')
-    # print(Path(DB_PATH, DB_NAME))
-    # a = 22
-    # with db as cur:
-    #     # ccc = cur.execute("""SELECT * FROM age""").fetchall()
-    #     # ccc = cur.execute("""SELECT pf.parental_fee_id
-    #     #                         FROM parental_fee pf
-    #     #                         JOIN child c ON pf.team_id = c.team_id
-    #     #                         WHERE c.is_visible = True
-    #     #                         AND c.child_id = ?;""" , (a,)).fetchone()[0]
-    #     ccc = cur.execute("""SELECT MAX(movement_id)
-    #                         FROM movement
-    #                         WHERE child_id = ?
-    #                         AND IS_VISIBLE = True;""", (a,)).fetchone()[0]
-    #     # b = ccc.fetchone()
-    #     print(ccc, type(ccc))
-    #     # for c in ccc:
-    #     #     print(c)
-    # # print('Connection -> Ok')

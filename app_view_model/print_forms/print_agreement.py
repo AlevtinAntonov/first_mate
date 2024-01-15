@@ -17,8 +17,9 @@ class PrintFormsAgreement(Gui):
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
-        tk.Label(frame, text="Печать договора об образовании", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W, columnspan=4,
-                                                                       sticky="nsew")
+        tk.Label(frame, text="Печать договора об образовании", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W,
+                                                                                     columnspan=4,
+                                                                                     sticky="nsew")
         referral_select(self, frame)
         tk.Label(frame, text='Родитель/представитель: ').grid(row=10, column=0, cnf=CONF)
         self.person_select = person_select_combo(db, frame, 10, 1, 'parents')
@@ -27,7 +28,7 @@ class PrintFormsAgreement(Gui):
         btn_ok = tk.Button(frame, text='Сформировать', bg='red', fg='white')
         btn_ok.grid(row=30, column=3, cnf=CONF)
         btn_ok.bind('<Button-1>', lambda event: (print_agreement(self.child_id,
-                                                                   self.referral_id,
-                                                                   self.person_select.get()
-                                                                   )))
+                                                                 self.referral_id,
+                                                                 self.person_select.get()
+                                                                 )))
         next_entries(frame)

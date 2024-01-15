@@ -4,13 +4,12 @@ from tkinter import ttk, BOTH
 from app_model.db.db_connect import db
 from app_model.db.db_query import address_type, DB_DICT, region_type, town_type, locality_type, street_type, \
     query_full_addresses
-from app_model.domain.address import Address
-from app_model.variables import MAIN_ICO, label_address_list, CONF, CONF_D_W, LARGE_FONT, town_districts
+from app_model.variables import label_address_list, CONF, CONF_D_W, LARGE_FONT, town_districts
 from app_view.gui_input_window import Gui
 from app_view_model.functions.address_create import address_create
 from app_view_model.functions.find_address import find_full_addresses
-from app_view_model.functions.functions import position_center, create_labels_in_grid, select_from_db, next_entries, \
-    find_id, check_type_address, buttons_add_new, fill_combobox, find_child, get_key
+from app_view_model.functions.functions import create_labels_in_grid, select_from_db, next_entries, \
+    find_id, check_type_address, buttons_add_new, fill_combobox
 from app_view_model.functions.person_select_combo import person_select_combo
 
 
@@ -21,15 +20,12 @@ class AddressWin(Gui):
         self.width = width
         self.height = height
         self.root.geometry('x'.join((self.width, self.height)))
-        # self.address = Address()
 
     def create_widgets(self):
         frame = ttk.Frame(self.root)
         frame.pack(fill=BOTH, expand=1)
 
         tk.Label(frame, text="Адрес", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W, columnspan=4, sticky="nsew")
-
-        # address = Address()
 
         def update_address_info(event):
             type_var = self.address_type_id.get()
@@ -41,9 +37,6 @@ class AddressWin(Gui):
                     dict_key = 2
                 case 'регистрации по месту пребывания':
                     dict_key = 3
-
-            # if addresses_from_db_dict[dict_key][2]:
-            #     address_exists = True
 
             if person_select.get():
                 try:
@@ -101,7 +94,6 @@ class AddressWin(Gui):
         house_liter_var = tk.StringVar()
         house_building_var = tk.StringVar()
         flat_var = tk.StringVar()
-        address_exists: bool = False
 
         person_select = person_select_combo(db, frame, 2, 1)
 

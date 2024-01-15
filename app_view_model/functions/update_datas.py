@@ -54,7 +54,6 @@ def update_user_data(table_name, child_id, field, new_value, query):
         cur.execute(query, (new_value, data_id))
 
 
-
 query_child_compensation = """
 SELECT
 P.PERSON_ID,

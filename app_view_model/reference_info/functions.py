@@ -1,10 +1,3 @@
-import tkinter as tk
-from tkinter import ttk
-
-from app_model.variables import MAIN_ICO
-from app_view_model.functions.functions import position_center, button_cancel, next_entries
-
-
 # извлечение вложенного словаря по заданному ключу из исходного словаря data_dict
 def get_sub_dict(key, data_dict):
     if key in data_dict:
@@ -33,4 +26,3 @@ def get_edit_record(self, db, table_name):
         elif table_name == 'users':
             return row[0], row[1], row[2], row[3], row[4], row[5], row[6]
         return row[0], row[1], row[2]
-

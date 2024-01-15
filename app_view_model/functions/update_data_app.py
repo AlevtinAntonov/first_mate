@@ -12,9 +12,8 @@ from app_view_model.functions.update_datas import query_date_entry_child, update
     query_date_entry_movement, query_date_entry_referral, query_date_entry_compensation
 
 
-class ChildDataApp:
+class UpdateDataApp:
     def __init__(self, tab, key_name, query_read_data, update_id_query, table_name):
-        # Frame для размещения Label и Combobox в одной строке
         self.update_id_query = update_id_query
         self.query_read_data = query_read_data
         self.tab = tab
@@ -70,8 +69,6 @@ class ChildDataApp:
                 for i, label in enumerate(self.labels):
                     if not isinstance(child_selected[i], int) and child_selected[i] and isinstance(child_selected[i],
                                                                                                    date):
-                        print(child_selected)
-                        print(f"{child_selected[i]}")
                         label.config(text=f"{child_selected[i].strftime("%d.%m.%Y")}")
                     elif not isinstance(child_selected[i], int) and child_selected[i] and 85 < len(
                             child_selected[i]) < 171:
@@ -104,10 +101,6 @@ class ChildDataApp:
 
     def on_label_double_click(self, event, idx, table_name, table_dict, field, field_type, label):
         user_id = self.combobox.get().split(' - ')[-1]
-        # if self.key_name == 'birth_certificate' or self.key_name == 'movement':
-        #     query_date_entry = query_date_entry_child
-        # else:
-        #     query_date_entry = query_date_entry_parents
         if field_type == 'Combobox':
             top = tk.Toplevel(self.tab)
             top.title("Выбор из справочника")
@@ -153,7 +146,6 @@ class ChildDataApp:
             with db as cur:
                 query = f'SELECT {table_name}.{field} '
                 query += query_date_entry
-                print(f'on_label_double_click {query=} {user_id=}')
                 user_data = cur.execute(query, (user_id,)).fetchone()
                 default_date = user_data[0].strftime("%d.%m.%Y") if user_data[0] else '01.01.1970'
                 new_date.set_date(default_date)
@@ -170,9 +162,7 @@ class ChildDataApp:
                                                initialvalue=label.cget("text"))
             if new_value:
                 label.config(text=new_value)
-                # print(f'{table_name=} {user_id=} {field=} {new_value=}\n {self.update_id_query=}')
                 update_user_data(table_name, user_id, field, new_value, self.update_id_query)
-                # print(table_name)
                 self.refresh_combobox_data(self.table_name)
                 self.on_combobox_select(None, self.query_read_data)
 

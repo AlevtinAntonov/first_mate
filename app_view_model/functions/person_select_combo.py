@@ -12,12 +12,10 @@ def person_select_combo(db, window_frame, row, column, person=""):
 
     def update_info(event):
         person_name = combo.get()
-        # print(f'{person_name=}')
         try:
             with db as cur:
                 if len(person_name.split()) == 5 and person_name.split()[3] == 'д.р.:':
                     last_name, first_name, patronymic, _txt, date_of_birth = person_name.split()
-                    # print(last_name, first_name, patronymic, date_of_birth)
                     cur.execute(
                         "SELECT person_id FROM person "
                         "WHERE (last_name = ? AND first_name = ? AND patronymic = ? AND date_of_birth = ? "
@@ -27,7 +25,6 @@ def person_select_combo(db, window_frame, row, column, person=""):
                     if person:
                         person_id_var.set(person[0])
                 else:
-                    # print(len(person_name.split()), person_name[3])
                     print(f'Error len(person_name.split()) not equal 4 and person_name.split()[3] != д.р.:')
 
         except Exception as e:
@@ -51,7 +48,6 @@ def person_select_combo(db, window_frame, row, column, person=""):
 
     # Привязка функции update_combo_options к событию ввода текста в combobox
     combo.bind("<KeyRelease>", update_combo_options)
-    # print(f'person_select_combo {person_id_var=}')
     return person_id_var
 
 
@@ -82,9 +78,4 @@ def get_person_names(db, person):
 
 
 if __name__ == '__main__':
-    # db = DB('C:/Users/anton/PycharmProjects/first_mate/app_model/db/DB_PROD.FDB')
-    window = tk.Tk()
-    window.title("Выбор персоны")
-    person_select_combo(window, 2, 2)
-
-    window.mainloop()
+    pass

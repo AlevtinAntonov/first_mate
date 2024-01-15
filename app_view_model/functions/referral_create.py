@@ -36,9 +36,6 @@ def referral_save(db, referral_number, referral_date, referral_begin_date, refer
         focus_id = find_id(db, focus, DB_DICT[focus][0], DB_DICT[focus][1], focus_get)
         mode_id = find_id(db, mode, DB_DICT[mode][0], DB_DICT[mode][1], mode_get)
         benefit_id = find_id(db, benefit, DB_DICT[benefit][0], DB_DICT[benefit][1], benefit_get)
-        # referral_id = find_id(db, referral, DB_DICT[referral][0], DB_DICT[referral][1], referral_number)
-
-
 
         with db as cur:
             query_check_referral_number = """SELECT 1 FROM referral WHERE referral_number = ? AND is_visible = True"""

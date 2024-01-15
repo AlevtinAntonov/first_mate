@@ -16,7 +16,7 @@ DB_DICT = {
         'building_id', 'team_id', 'age_id', 'focus_id', 'benefit_id'),
     'person': ('last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'date_of_add'),
     'person_parent': ('last_name', 'first_name', 'patronymic', 'date_of_birth', 'gender_id', 'citizenship_id',
-                      'document_id', 'sniils', 'date_of_add'),
+                      'document_id', 'snils', 'date_of_add'),
 
     'child': ('person_id', 'date_of_add'),
     'parents': ('person_id', 'status_id', 'date_of_add'),
@@ -74,7 +74,6 @@ document_date_of_issue = ? AND document_type_id = ?) ;"""
 query_login = "SELECT user_name, user_password FROM users WHERE (user_name = ? AND user_password = ? AND " \
               "is_visible)"
 query_child_person_id = """SELECT person_id FROM child WHERE (child_id = ?) ;"""
-# query_update_child_person = """UPDATE person SET (document_id = ?, sniils = ?) WHERE (person_id = ?) ;"""
 query_update_child_person = "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE (%s=?); "
 
 query_full_addresses = """SELECT 
@@ -143,6 +142,4 @@ def get_total_table_records(db, table_name):
 
 
 if __name__ == '__main__':
-    # pass
-    query = query_insert_into(compensation_add_document) % DB_DICT[compensation_add_document]
-    print(query)
+    pass

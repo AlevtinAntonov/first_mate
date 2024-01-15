@@ -16,8 +16,6 @@ class EditCitizenship(ReferencePage):
         self.sort_col = 'citizenship_id'
         self.label_1 = "Краткое название"
         self.label_2 = 'Полное название'
-        # self.init_main()
-        # self.view_records()
 
         def create_widgets(self):
             super().create_widgets()

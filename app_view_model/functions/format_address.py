@@ -57,11 +57,4 @@ def format_address(list_input):
 
 
 if __name__ == '__main__':
-
-    address_list = (
-        '197375', 'Санкт-Петербург', None, '', 'Санкт-Петербург', 'г.', '', None, 'Вербная', 'ул.', '20/3', '', 'А', '',
-        '300')
-    # print(dict_to_string(assign_values(dict_address, address_list)))
-    print(format_address(address_list))
-
-
+    pass
