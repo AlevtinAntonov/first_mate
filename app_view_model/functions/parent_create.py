@@ -25,11 +25,12 @@ def parent_create(db, child_select: int, status_id: int, last_name: str, first_n
     if not check_if_exists(db, person, last_name, first_name, patronymic, date_of_birth):
         with db as cur:
             document_assembly_record = None
+            place_of_birth = None
 
             # Add document of parent to table DOCUMENT and return document_id for table PERSON
             query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
             cur.execute(query_add_doc, (document_series, document_number, document_issued_by, document_date_of_issue,
-                                        document_date_of_expire, document_type_id, current_timestamp(),
+                                        document_date_of_expire, document_type_id, place_of_birth, current_timestamp(),
                                         document_assembly_record))
 
             # document_id from table DOCUMENT
