@@ -12,7 +12,7 @@ EDIT_PNG = './ico/edit.png'
 REFRESH_PNG = './ico/refresh.png'
 SEARCH_PNG = './ico/search.png'
 
-DB_DIR = 'app_model'
+DB_DIR = 'db'
 DB_SUB_DIR = 'db'
 DB_NAME = 'DBASE.FDB'
 ORGANIZATION_SHORT_NAME = "ГБДОУ дс № ХХ"

@@ -3,7 +3,7 @@ from tkinter import ttk, BOTH
 
 from app_model.db.db_connect import db
 from app_model.db.db_query import address_type, DB_DICT, region_type, town_type, locality_type, street_type, \
-    query_full_addresses
+    query_full_addresses, town_district
 from app_model.variables import label_address_list, CONF, CONF_D_W, LARGE_FONT, town_districts
 from app_view.gui_input_window import Gui
 from app_view_model.functions.address_create import address_create
@@ -28,7 +28,7 @@ class AddressWin(Gui):
         tk.Label(frame, text="Адрес", font=LARGE_FONT).grid(row=0, column=1, cnf=CONF_D_W, columnspan=4, sticky="nsew")
 
         def update_address_info(event):
-            type_var = self.address_type_id.get()
+            type_var = self.address_type.get()
             addresses_from_db_dict = find_full_addresses(db, person_select.get(), query_full_addresses)
             match type_var:
                 case 'регистрации по месту жительства':
@@ -117,8 +117,8 @@ class AddressWin(Gui):
 
         value_from_db = [v for v in fill_combobox(db, 'address_type', 'address_type_id',
                                                   'address_type_name').values()]
-        self.address_type_id = ttk.Combobox(frame, values=value_from_db, state='readonly', width=45)
-        self.address_type_id.grid(row=4, column=1, columnspan=3, cnf=CONF_D_W)
+        self.address_type = ttk.Combobox(frame, values=value_from_db, state='readonly', width=45)
+        self.address_type.grid(row=4, column=1, columnspan=3, cnf=CONF_D_W)
 
         self.zipcode = ttk.Entry(frame, textvariable=zipcode_var)
         self.zipcode.grid(row=6, column=2, cnf=CONF_D_W)
@@ -160,8 +160,20 @@ class AddressWin(Gui):
         self.town_district = ttk.Combobox(frame, values=list(town_districts.keys()))
         self.town_district.grid(row=28, column=2, cnf=CONF_D_W)
 
-        self.address_type_id.bind("<<ComboboxSelected>>", update_address_info)
+        # self.address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1],
+        #                                self.address_type.get())
+        # self.region_type_id = find_id(db, region_type, DB_DICT[region_type][0], DB_DICT[region_type][1],
+        #                               self.region_type.get())
+        # self.town_type_id = find_id(db, town_type, DB_DICT[town_type][0], DB_DICT[town_type][1],
+        #                             self.town_type.get())
+        # self.locality_type_id = find_id(db, locality_type, DB_DICT[locality_type][0], DB_DICT[locality_type][1],
+        #                                 self.locality_type.get())
+        # self.street_type_id = find_id(db, street_type, DB_DICT[street_type][0], DB_DICT[street_type][1],
+        #                               self.street_type.get())
+        # self.town_district_id = find_id(db, town_district, DB_DICT[town_district][0], DB_DICT[town_district][1],
+        #                                 self.town_district.get())
 
+        self.address_type.bind("<<ComboboxSelected>>", update_address_info)
         buttons_add_new(self, frame, 40)
         btn_ok = tk.Button(frame, text='Сохранить', bg='red', fg='white')
         btn_ok.grid(row=40, column=3, cnf=CONF)
@@ -179,12 +191,12 @@ class AddressWin(Gui):
                                                                        self.house_liter.get(),
                                                                        self.house_building.get(), self.flat.get(),
                                                                        self.is_registration, self.is_fact,
-                                                                       self.is_residence, self.town_district.get())))
+                                                                       self.is_residence, self.town_district_id)))
         next_entries(frame)
 
         def take_type_address():
             self.address_type_id = find_id(db, address_type, DB_DICT[address_type][0], DB_DICT[address_type][1],
-                                           self.address_type_id.get() or self.address_type_id)
+                                           self.address_type.get())
             self.region_type_id = find_id(db, region_type, DB_DICT[region_type][0], DB_DICT[region_type][1],
                                           self.region_type.get())
             self.town_type_id = find_id(db, town_type, DB_DICT[town_type][0], DB_DICT[town_type][1],
@@ -193,6 +205,8 @@ class AddressWin(Gui):
                                             self.locality_type.get())
             self.street_type_id = find_id(db, street_type, DB_DICT[street_type][0], DB_DICT[street_type][1],
                                           self.street_type.get())
+            self.town_district_id = find_id(db, town_district, DB_DICT[town_district][0], DB_DICT[town_district][1],
+                                            self.town_district.get())
             match self.address_type_id:
                 case 1:
                     registration, fact, residence = True, False, False
@@ -207,6 +221,7 @@ class AddressWin(Gui):
                                                                                        fact, residence,
                                                                                        self.same_fact_as_register_var.get(),
                                                                                        self.same_residence_as_fact_var.get())
+            return self.is_registration, self.is_fact, self.is_residence
 
 
 if __name__ == '__main__':

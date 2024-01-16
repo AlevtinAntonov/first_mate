@@ -6,13 +6,20 @@ from app_view_model.functions.functions import save_access
 
 
 def address_create(db, person_id, address_type_id, zipcode, region, region_type_id, district, town, town_type_id,
-                   locality,
-                   locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,
-                   is_registration, is_fact, is_residence, town_district):
+                   locality, locality_type_id, street, street_type_id, house, house_body, house_liter, house_building,
+                   flat, is_registration, is_fact, is_residence, town_district):
+    print(0, person_id, address_type_id, zipcode, region, region_type_id, district, town, town_type_id,
+                   locality, locality_type_id, street, street_type_id, house, house_body, house_liter, house_building,
+                   flat, is_registration, is_fact, is_residence, town_district)
     try:
         with db as cur:
             # Add address to table ADDRESS
             query_add_address = query_insert_into_table_return_id(address, address) % DB_DICT[address]
+            print(3, query_add_address)
+            # INSERT INTO address(address_type_id, zipcode, region, region_type_id, district, town, town_type_id, locality,
+            #         locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,
+            #         is_registration, is_fact, is_residence, town_district)
+
             cur.execute(query_add_address,
                         (address_type_id, zipcode, region, region_type_id, district, town, town_type_id, locality,
                          locality_type_id, street, street_type_id, house, house_body, house_liter, house_building, flat,

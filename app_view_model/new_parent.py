@@ -62,8 +62,8 @@ class NewParent(Gui):
         phone_number.grid(row=30, column=1, cnf=CONF_D_W)
         email_name = ttk.Entry(frame)
         email_name.grid(row=32, column=1, cnf=CONF_D_W)
-        sniils = ttk.Entry(frame)
-        sniils.grid(row=34, column=1, cnf=CONF_D_W)
+        snils = ttk.Entry(frame)
+        snils.grid(row=34, column=1, cnf=CONF_D_W)
 
         buttons_add_new(self, frame, 40)
 
@@ -89,7 +89,7 @@ class NewParent(Gui):
                                                                                document_date_of_expire.get(),
                                                                                phone_number.get(),
                                                                                email_name.get(),
-                                                                               sniils.get(),
+                                                                               snils.get(),
                                                                                )))
         next_entries(frame)
 

@@ -16,7 +16,7 @@ def parent_create(db, child_select: int, status_id: int, last_name: str, first_n
     print('parent_create', child_select, status_id, last_name, first_name, patronymic,
           gender_id, date_of_birth, citizenship_id, document_type_id, document_series,
           document_number, document_issued_by, document_date_of_issue,
-          document_date_of_expire, phone_number, email_name, sniils)
+          document_date_of_expire, phone_number, email_name, snils)
     last_name = capitalize_double_surname(last_name)
     first_name = capitalize_double_surname(first_name)
     patronymic = capitalize_double_surname(patronymic)
