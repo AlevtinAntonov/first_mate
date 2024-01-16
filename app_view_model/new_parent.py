@@ -38,6 +38,7 @@ class NewParent(Gui):
 
         create_labels_in_grid(frame, label_parent_list)
         child_dict = fill_combobox(db, 'child_list', None, None)
+        print(child_dict)
         child_select = find_child(frame, child_dict, 2, 1, CONF_D_W)
 
         status_id = select_from_db(frame, db, status, DB_DICT[status][0], DB_DICT[status][1], 3, 1, CONF_D_W, width=25)

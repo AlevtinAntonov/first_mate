@@ -420,7 +420,7 @@ def print_all_forms(child_id, referral_id, person_id, result: dict, document_man
             if values[0] == 1:
                 template_path = os.path.abspath(os.path.join(current_dir, values[2]))
                 output_path = os.path.abspath(os.path.join(current_dir,
-                                                           f'../../../output_docx/{child_last_name}_{child_first_name}_'
+                                                           f'./output_docx/{child_last_name}_{child_first_name}_'
                                                            f'{agreement_number}_{values[3]}.docx'))
                 doc_application = DocxTemplate(template_path)
                 doc_application.render(context)

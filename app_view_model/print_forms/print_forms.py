@@ -74,15 +74,15 @@ class PrintAllForms(Gui):
 
     def execute_actions(self):
         actions = {
-            "Заявление на прием": (self.var1, 1, '../../../templates/template_application.docx', 'Заявление_на_прием'),
-            "Договор об образовании": (self.var2, 2, '../../../templates/template_agreement.docx', 'Договор'),
+            "Заявление на прием": (self.var1, 1, './templates/template_application.docx', 'Заявление_на_прием'),
+            "Договор об образовании": (self.var2, 2, './templates/template_agreement.docx', 'Договор'),
             "Согласие на обработку перс.данных": (
             self.var3, 3, '../../../templates/template_consent.docx', 'Согласие_ОПД'),
-            "Заявление на компенсацию": (self.var4, 4, '../../../templates/template_compensation.docx', 'Компенсация'),
+            "Заявление на компенсацию": (self.var4, 4, './templates/template_compensation.docx', 'Компенсация'),
             "Расписка о приеме компенсации": (
-                self.var5, 5, '../../../templates/template_compensation_receipt.docx', 'Компенсация_расписка'),
+                self.var5, 5, './templates/template_compensation_receipt.docx', 'Компенсация_расписка'),
             "Доп. соглашение о род.плате": (
-                self.var6, 6, '../../../templates/template_add_agreement.docx', 'Доп_согл_о_род_плате'),
+                self.var6, 6, './templates/template_add_agreement.docx', 'Доп_согл_о_род_плате'),
         }
 
         results_for_print = {}

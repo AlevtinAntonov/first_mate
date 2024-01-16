@@ -11,7 +11,12 @@ from app_view_model.functions.functions import current_timestamp, check_if_exist
 def parent_create(db, child_select: int, status_id: int, last_name: str, first_name: str, patronymic: str,
                   gender_id, date_of_birth, citizenship_id, document_type_id: int, document_series: str,
                   document_number: str, document_issued_by: str, document_date_of_issue: date,
-                  document_date_of_expire: date, phone_number: str, email_name: str, sniils: str):
+                  document_date_of_expire: date, phone_number: str, email_name: str, snils: str,
+                  place_of_birth: str = None):
+    print('parent_create', child_select, status_id, last_name, first_name, patronymic,
+          gender_id, date_of_birth, citizenship_id, document_type_id, document_series,
+          document_number, document_issued_by, document_date_of_issue,
+          document_date_of_expire, phone_number, email_name, sniils)
     last_name = capitalize_double_surname(last_name)
     first_name = capitalize_double_surname(first_name)
     patronymic = capitalize_double_surname(patronymic)
@@ -28,8 +33,9 @@ def parent_create(db, child_select: int, status_id: int, last_name: str, first_n
 
             # Add document of parent to table DOCUMENT and return document_id for table PERSON
             query_add_doc = query_insert_into_table_return_id(document, document) % DB_DICT[document]
+            print(query_add_doc)
             cur.execute(query_add_doc, (document_series, document_number, document_issued_by, document_date_of_issue,
-                                        document_date_of_expire, document_type_id, current_timestamp(),
+                                        document_date_of_expire, document_type_id, place_of_birth, current_timestamp(),
                                         document_assembly_record))
 
             # document_id from table DOCUMENT
@@ -39,7 +45,7 @@ def parent_create(db, child_select: int, status_id: int, last_name: str, first_n
             query = query_insert_into_table_return_id(person, person_parent) % DB_DICT[person_parent]
             cur.execute(query,
                         (last_name, first_name, patronymic, date_of_birth, gender_id, citizenship_id, document_id,
-                         sniils, current_timestamp()))
+                         snils, current_timestamp()))
             person_id = cur.fetchone()[0]
 
             # Add new person_id into table PARENTS

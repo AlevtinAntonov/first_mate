@@ -53,9 +53,17 @@ def fill_combobox(db, tbl_name, field_id, field_data):
         elif tbl_name == 'child_list':
             cur.execute(
                 """SELECT child.child_id, person.last_name, person.first_name, person.patronymic FROM person 
-                INNER JOIN child ON person.person_id = child.person_id WHERE (((child.is_visible)=True))
+                INNER JOIN child ON person.person_id = child.person_id WHERE child.is_visible = True
                 ORDER BY PERSON.last_name, PERSON.first_name, PERSON.patronymic;""")
-            [dict_combo.update({row[0]: ' '.join((row[1], row[2], row[3]))}) for row in cur.fetchall()]
+            # print(cur.fetchall())
+            # print(f'1 fill_combobox - {dict_combo=}')
+            for row in cur.fetchall():
+                print(f'{row=}')
+                print(f'1 fill_combobox - {dict_combo=}')
+                dict_combo.update({row[0]: ' '.join((row[1], row[2], row[3]))})
+
+            # [dict_combo.update({row[0]: ' '.join((row[1], row[2], row[3]))}) for row in cur.fetchall()]
+            print(f'2 fill_combobox - {dict_combo=}')
         else:
             cur.execute(
                 " SELECT %s, %s FROM %s WHERE is_visible ORDER BY %s;" % (field_id, field_data, tbl_name, field_id))
