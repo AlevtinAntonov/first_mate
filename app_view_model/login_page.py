@@ -70,7 +70,9 @@ class LoginPage:
 
 def start():
     root = tk.Tk()
+    root.withdraw()
     StartPage(root)
+    root.deiconify()
     root.mainloop()
 
 

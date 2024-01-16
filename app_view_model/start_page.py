@@ -20,13 +20,16 @@ from app_view_model.reference_info.functions import get_sub_dict
 
 def start_page():
     root = tk.Tk()
+    root.withdraw()
     StartPage(root)
+    root.deiconify()
     root.mainloop()
 
 
 class StartPage:
     def __init__(self, root):
         self.root = root
+        self.root.withdraw()
         self.root.title(MAIN_TITLE)
         self.root.iconbitmap(MAIN_ICO)
         self.width = '360'
@@ -55,17 +58,11 @@ class StartPage:
         tk.Button(self.root, text="Выход", bg='DarkSlateGray', fg='white', command=lambda: self.root.destroy(),
                   width=20,
                   height=1).pack(padx=5, pady=15)
+        self.root.deiconify()
 
     def add_new_child(self):
-        self.root.withdraw()
-        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
-        new_child_window.root.mainloop()
-        self.root.destroy()
-
-        # self.root.withdraw()
-        # new_child_window = ProjectAddNew()
-        # self.root.destroy()  # Close the Start Page
-        # # ProjectAddNew()
+        self.root.destroy()  # Close the Start Page
+        ProjectAddNew()
 
     def open_organization(self):
         self.root.destroy()  # Close the Start Page
@@ -124,20 +121,12 @@ class ProjectAddNew(Gui):
                   height=1).pack()
 
     def open_window_referral(self):
-        self.root.withdraw()
-        new_ref_window = NewReferralWin()  # Предполагается, что ProjectAddNew инициализирует новое окно
-        new_ref_window.root.mainloop()
         self.root.destroy()
-        # self.root.destroy()
-        # NewReferralWin()
+        NewReferralWin()
 
     def open_window_parent(self):
-        self.root.withdraw()
-        new_parent_window = NewParentWin()
-        new_parent_window.root.mainloop()
         self.root.destroy()
-        # self.root.destroy()
-        # NewParentWin()
+        NewParentWin()
 
     def open_window_address(self):
         self.root.destroy()
@@ -209,12 +198,8 @@ class ReferenceInfoEdit(Gui):
 
 class NewReferralWin(NewReferral):
     def return_to_start_page(self):
-        self.root.withdraw()
-        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
-        new_child_window.root.mainloop()
         self.root.destroy()
-        # self.root.destroy()
-        # ProjectAddNew()
+        ProjectAddNew()
 
 
 class NewOrganizationWin(NewOrganization):
@@ -232,12 +217,8 @@ class NewPersonalDatasWin(NewPersonalDatas):
 
 class NewParentWin(NewParent):
     def return_to_start_page(self):
-        self.root.withdraw()
-        new_child_window = ProjectAddNew()  # Предполагается, что ProjectAddNew инициализирует новое окно
-        new_child_window.root.mainloop()
         self.root.destroy()
-        # self.root.destroy()
-        # ProjectAddNew()
+        ProjectAddNew()
 
 
 class NewAddressWin(AddressWin):

@@ -11,6 +11,7 @@ class Gui(InputWindow):
         super().__init__()
         self.height = height
         self.width = width
+        self.root.withdraw()
         self.labels = None
         self.root.title(MAIN_TITLE)
         self.root.iconbitmap(MAIN_ICO)
@@ -19,6 +20,7 @@ class Gui(InputWindow):
         position_center(self.root, self.width, self.height)
         self.create_widgets()
         self.bind_keyboard_shortcuts()
+        self.root.deiconify()
 
     def create_widgets(self):
         pass
