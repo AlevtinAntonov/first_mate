@@ -8,6 +8,8 @@ if __name__ == '__main__':
     # при установке запускаем db_config ля записи пути к базе данных из base.ini
     # db_config()
     root = tk.Tk()
-    StartPage(root)
-    # LoginPage(root)
+    root.withdraw()
+    # StartPage(root)
+    LoginPage(root)
+    root.deiconify()
     root.mainloop()

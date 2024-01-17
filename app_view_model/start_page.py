@@ -20,13 +20,16 @@ from app_view_model.reference_info.functions import get_sub_dict
 
 def start_page():
     root = tk.Tk()
+    root.withdraw()
     StartPage(root)
+    root.deiconify()
     root.mainloop()
 
 
 class StartPage:
     def __init__(self, root):
         self.root = root
+        self.root.withdraw()
         self.root.title(MAIN_TITLE)
         self.root.iconbitmap(MAIN_ICO)
         self.width = '360'
@@ -55,6 +58,7 @@ class StartPage:
         tk.Button(self.root, text="Выход", bg='DarkSlateGray', fg='white', command=lambda: self.root.destroy(),
                   width=20,
                   height=1).pack(padx=5, pady=15)
+        self.root.deiconify()
 
     def add_new_child(self):
         self.root.destroy()  # Close the Start Page
