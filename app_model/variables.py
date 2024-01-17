@@ -4,15 +4,15 @@ from datetime import date
 MAIN_TITLE = "Помощник 3.24.01.01 "
 
 ICO_DIRECTORY = ''
-MAIN_ICO = "app_model/ico/mate.ico"
-START_IMAGE = 'app_model/ico/girl.png'
-ADD_PNG = 'app_model/ico/add.png'
-DELETE_PNG = 'app_model/ico/delete.png'
-EDIT_PNG = 'app_model/ico/edit.png'
-REFRESH_PNG = 'app_model/ico/refresh.png'
-SEARCH_PNG = 'app_model/ico/search.png'
+MAIN_ICO = "./ico/mate.ico"
+START_IMAGE = './ico/girl.png'
+ADD_PNG = './ico/add.png'
+DELETE_PNG = './ico/delete.png'
+EDIT_PNG = './ico/edit.png'
+REFRESH_PNG = './ico/refresh.png'
+SEARCH_PNG = './ico/search.png'
 
-DB_DIR = 'app_model'
+DB_DIR = './'
 DB_SUB_DIR = 'db'
 DB_NAME = 'DB_PROD.FDB'
 ORGANIZATION_SHORT_NAME = "ГБДОУ дс № ХХ"
