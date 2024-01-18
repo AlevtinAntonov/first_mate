@@ -41,7 +41,9 @@ variables.py – содержит константы и словари для о
 
 &emsp; db_connect.py – содержит класс DB для подключения к базе данных Firebird
 
-&emsp; db_query.py – SQL запросы к базе данных 
+&emsp; db_query.py – SQL запросы к базе данных
+
+&emsp; dbase_diagram.bmp – erd диаграмма базы данных
 
 директория domain: 
 
