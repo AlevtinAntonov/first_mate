@@ -103,9 +103,11 @@ class UpdateDataApp:
         user_id = self.combobox.get().split(' - ')[-1]
         if field_type == 'Combobox':
             top = tk.Toplevel(self.tab)
+            top.withdraw()
             top.title("Выбор из справочника")
             top.geometry('300x100')
             position_center(top, 250, 100)
+            top.deiconify()
             top.grab_set()
 
             new_data = tk.StringVar()
@@ -125,9 +127,11 @@ class UpdateDataApp:
         elif field_type == 'DateEntry':
             # Окно для изменения даты
             top = tk.Toplevel(self.tab)
+            top.withdraw()
             top.title("Редактирование даты")
             top.geometry('300x100')
             position_center(top, 300, 100)
+            top.deiconify()
             top.grab_set()
 
             new_date = DateEntry(top, foreground='black', normalforeground='black', selectforeground='red',
