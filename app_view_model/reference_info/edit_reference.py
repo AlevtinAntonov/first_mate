@@ -57,6 +57,7 @@ class EditReference(ReferencePage):
 
     def open_toplevel_window(self, window_title, lambda_function):
         top = tk.Toplevel()
+        top.withdraw()
         if self.table_name == 'users':
             top.geometry('500x340')
         else:
@@ -182,6 +183,7 @@ class EditReference(ReferencePage):
         else:
             button_cancel(top)
         next_entries(top)
+        top.deiconify()
         top.grab_set()
         top.focus_set()
 

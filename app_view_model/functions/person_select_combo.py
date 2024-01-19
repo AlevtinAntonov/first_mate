@@ -57,15 +57,19 @@ def get_person_names(db, person):
             query = """ SELECT last_name, first_name, patronymic, date_of_birth
                         FROM person p
                         JOIN parents pa ON p.person_id = pa.person_id
+                        WHERE p.IS_VISIBLE = True
                         ORDER BY last_name, first_name, patronymic"""
         case 'children':
             query = """ SELECT last_name, first_name, patronymic, date_of_birth
                         FROM person p
                         JOIN child c ON p.person_id = c.person_id
+                        WHERE p.IS_VISIBLE = True
                         ORDER BY last_name, first_name, patronymic"""
         case _:
-            query = """SELECT last_name, first_name, patronymic, date_of_birth FROM person ORDER BY last_name, 
-                    first_name, patronymic"""
+            query = """ SELECT last_name, first_name, patronymic, date_of_birth
+                        FROM person
+                        WHERE PERSON.IS_VISIBLE = True
+                        ORDER BY last_name, first_name, patronymic"""
 
     with db as cur:
         cur.execute(query)

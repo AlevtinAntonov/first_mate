@@ -3,8 +3,8 @@ import os
 from petrovich.main import Petrovich
 from petrovich.enums import Case, Gender
 
-current_dir = os.path.dirname(__file__)
-custom_path = './db/rules.json'
+current_dir = './'
+custom_path = os.path.join(current_dir, './db/rules.json')
 petro = Petrovich(rules_path=custom_path)
 
 
