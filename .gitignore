@@ -10,7 +10,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-#dist/
+fm_package/
 downloads/
 eggs/
 .eggs/
@@ -83,7 +83,7 @@ profile_default/
 ipython_config.py
 
 # Firebird
-*.FDB
+#*.FDB
 
 # Tests
 test/
